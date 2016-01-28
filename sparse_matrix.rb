@@ -1,22 +1,47 @@
 require 'matrix'
 
-class SparseMatrix 
+class SparseMatrix
+
+=begin
+Do we want attr_readers and writers at this point?
+Don't see need for them yet, therefore not adding right now.
+=end
 
   @values
-  @val_row 
+  @val_row
   @val_col
-  @full_matrix
-  
+
+  attr_reader :full_matrix
+=begin
+INITIALIZATION METHODS - may change on what we choose to support
+=end
   def initialize(rows)
-    @full_matrix = Matrix(rows) 
-    store(rows);  
+    @full_matrix = Matrix.new(rows)
+    compress_store(@full_matrix)
   end
-  
-   def SparseMatrix.[](*rows)
+
+  def rows(rows)
+    #this method will overwrite existing rows
+    if not rows.kind_of?(Array) or not rows[0].kind_of?(Array)
+      raise Exception.new("Parameter must be Array of Arrays.")
+    end
+    @full_matrix = Matrix.rows(rows, false)
     store(rows)
   end
- 
-  def store(matrix)
+
+  def columns(columns)
+    #this method will overwrite existing rows
+    if not rows.kind_of?(Array) or not columns[0].kind_of?(Array)
+      raise Exception.new("Parameter must be Array of Arrays.")
+    end
+    @full_matrix = Matrix.columns(columns)
+    store(@full_matrix.rows)
+  end
+
+
+
+
+  def compress_store(matrix)
     if not matrix.is_a? Matrix
       raise Exception.new("Parameter must be a Matrix instance")
     end
@@ -32,6 +57,9 @@ class SparseMatrix
       end
     end
   end
-  
+
+
+
+
  
 end
