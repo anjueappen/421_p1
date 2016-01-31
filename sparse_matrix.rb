@@ -27,12 +27,21 @@ INITIALIZATION METHODS - may change on what we choose to support
   end
 
   # methods that will be delegated to Matrix class go here!
-  def_delegators :full_matrix, :square?, :real?, 
+  def_delegators :full_matrix, :square?, :real?,
   	:row_count, :column_count, :index
 
   def SparseMatrix.[](*rows)
   	#stub
   	SparseMatrix.new(*rows)	#delegate to initialize
+  end
+
+  def SparseMatrix.zero(row,col)
+  	#stub
+  	@full_matrix = Matrix.zero(row,col)
+  	# stub values below, TODO: code actual functionality with compress_store
+    @values = []
+  	@val_col = []
+  	@val_row = []
   end
 
   def rows(rows)
@@ -75,7 +84,7 @@ INITIALIZATION METHODS - may change on what we choose to support
   	#stub
   end
 
-  def nonZeroCount
+  def nonzero_count
   	#stub
   end
 
