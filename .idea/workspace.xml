@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="12bd7b5f-89c6-4340-af7d-ce2b3ff5bfba" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UnitTests/initialization_spec.rb" afterPath="$PROJECT_DIR$/UnitTests/initialization_spec.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UnitTests/initialization_unit_tests.rb" afterPath="$PROJECT_DIR$/UnitTests/initialization_unit_tests.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UnitTests/matrix_augmentation_test.rb" afterPath="$PROJECT_DIR$/UnitTests/matrix_augmentation_test.rb" />
     </list>
     <ignored path="421Assigment1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,18 +27,28 @@
       <file leaf-file-name="matrix_augmentation_test.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/UnitTests/matrix_augmentation_test.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
+            <state vertical-scroll-proportion="-17.409836">
+              <caret line="59" column="51" selection-start-line="59" selection-start-column="51" selection-end-line="59" selection-end-column="51" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="initialization_unit_tests.rb" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tridiagonal_tests.rb" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/UnitTests/tridiagonal_tests.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.3778111">
+              <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="initialization_unit_tests.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/UnitTests/initialization_unit_tests.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="7.205397">
-              <caret line="267" column="9" selection-start-line="267" selection-start-column="9" selection-end-line="267" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="218" column="20" selection-start-line="218" selection-start-column="20" selection-end-line="218" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -61,8 +70,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Ruby Class Template" />
-        <option value="TestUnit Test Template" />
         <option value="RSpec Test Template" />
+        <option value="TestUnit Test Template" />
       </list>
     </option>
   </component>
@@ -77,9 +86,10 @@
         <option value="$PROJECT_DIR$/lazy_matrix_factory.rb" />
         <option value="$PROJECT_DIR$/unit_tests.rb" />
         <option value="$PROJECT_DIR$/initialization_unit_tests.rb" />
-        <option value="$PROJECT_DIR$/UnitTests/matrix_augmentation_test.rb" />
         <option value="$PROJECT_DIR$/UnitTests/initialization_spec.rb" />
+        <option value="$PROJECT_DIR$/UnitTests/tridiagonal_tests.rb" />
         <option value="$PROJECT_DIR$/UnitTests/initialization_unit_tests.rb" />
+        <option value="$PROJECT_DIR$/UnitTests/matrix_augmentation_test.rb" />
       </list>
     </option>
   </component>
@@ -378,18 +388,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/UnitTests/matrix_augmentation_test.rb">
+    <entry file="file://$PROJECT_DIR$/UnitTests/initialization_unit_tests.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
+          <caret line="218" column="20" selection-start-line="218" selection-start-column="20" selection-end-line="218" selection-end-column="20" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/UnitTests/initialization_unit_tests.rb">
+    <entry file="file://$PROJECT_DIR$/UnitTests/matrix_augmentation_test.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="7.205397">
-          <caret line="267" column="9" selection-start-line="267" selection-start-column="9" selection-end-line="267" selection-end-column="9" />
+        <state vertical-scroll-proportion="-17.409836">
+          <caret line="59" column="51" selection-start-line="59" selection-start-column="51" selection-end-line="59" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/UnitTests/tridiagonal_tests.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3778111">
+          <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
           <folding />
         </state>
       </provider>
