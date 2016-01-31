@@ -3,43 +3,34 @@ require '../sparse_matrix.rb'
 require 'matrix'
 
 =begin
-layout for tests
-
-def testThing(arg1,arg2)
+	decide which will be delegated to matrix class and which
+	will not be delegated
 	
-	# comment(s) for clarity (brief description of what is being tested)
-
-	# pre conditions
-	
-	# method usage tests
-
-	#post conditions
-	
-	end #testThing
-
-	# invariants - for class?
-	
+	are we keeping Matrix.scalar?
 =end
-
 
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	# Addition
-	def test_addition_numeric_int
+	def test_increase_all_values_by_int
+		# it's not valid to add a single value to a matrix.
+		# in order to 
+		
 		# setup
 		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
-		
+		sparse_matrix
 		#pre
 		assert sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		
 		#data tests
+		assert_equal 
 		
 		#post
 		
 	end
 
-	def test_addition_numeric_float
+	def test_increase_values_by_float
 		#setup
 		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
 		
@@ -51,6 +42,26 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 
+	def test_addition_numeric_int
+		#setup
+		
+		#pre
+		
+		#data tests
+		
+		#post
+	end
+
+	def test_addition_numeric_float
+		#setup
+		
+		#pre
+		
+		#data tests
+		
+		#post
+	end
+	
 	def test_addition_vector_int
 		#pre
 		
@@ -228,6 +239,9 @@ todo:
 	try a "non sparse matrix test" just to see our performance differences?
 	test cases with 0 - specifically division, multiplication and exponentiation
 		
+	coerce values? currently assuming values are ok
+	
+	are we going to allow char addition? if so, how will we treat it?
 we are using ints, floats and chars
 	- number
 	- vector
