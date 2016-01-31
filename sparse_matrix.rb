@@ -96,4 +96,9 @@ INITIALIZATION METHODS - may change on what we choose to support
   	#stub
   end
  
+  def increase_all_values_by(number)
+	# waiting on design decision.
+	#will not stay here. just need it to eliminate errors in tests
+  end
+ 
 end

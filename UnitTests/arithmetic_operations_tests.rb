@@ -11,29 +11,32 @@ require 'matrix'
 
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
+	def increase_all_values_by
+		# waiting on design decision.
+		#will not stay here.
+	end
+	
 	# Addition
-	def test_increase_all_values_by_int
-		# it's not valid to add a single value to a matrix.
-		# in order to 
-		
+	def test_increase_all_values_by_int 
 		# setup
 		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
-		sparse_matrix
+		increased_values_matrix = SparseMatrix[[5,6,4],[6,4,4],[4,4,5]]
+		@increase_by = 4
+		
 		#pre
 		assert sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		
 		#data tests
-		assert_equal 
-		
+		assert_equal sparse_matrix.increase_all_values_by(4), increased_values_matrix, "Matrix values were not correctly increased."
 		#post
 		
 	end
 
-	def test_increase_values_by_float
+	def test_increase_all_values_by_float
 		#setup
 		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
-		
+		increased_values_matrix = SparseMatrix[[5.4,6.4,4.4],[6.4,4.4,4.4],[4.4,4.4,5.4]]
 		#pre
 		
 		#data tests
@@ -91,6 +94,31 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	end
 
 	# Subraction
+	def test_decrease_all_values_by_int
+		#setup
+		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		
+		#pre
+		
+		#data tests
+		
+		#post
+		
+	end
+
+	def test_decrease_all_values_by_float
+		#setup
+		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		
+		#pre
+		
+		#data tests
+		
+		#post
+		
+	end
+
+
 	def test_subtraction_numeric_int
 		#pre
 		
@@ -242,6 +270,11 @@ todo:
 	coerce values? currently assuming values are ok
 	
 	are we going to allow char addition? if so, how will we treat it?
+
+	implement a sparsity calculator?
+	
+	operations on only non-zero values?
+	
 we are using ints, floats and chars
 	- number
 	- vector
