@@ -1,4 +1,5 @@
 =begin
+#assert
 #assert_block
 #assert_equal
 #assert_no_match
@@ -92,13 +93,26 @@ class AccessUnitTests < Test::Unit::TestCase
 
     #data tests
     assert_equal [1,1], sparse_matrix.index(2), "Testing index() method for unique value failed."
-    assert_equal [[0,0], [2,0]], sparse_matrix.index(1), "Testing index() method for value that occurs more than once in the matrix failed."
+    assert_equal [0,0], sparse_matrix.index(1), "Testing index() method for value that occurs more than once in the matrix failed."
+    assert_equal nil, sparse_matrix.index(3), "Testing index(n) method for result when n does not exist in the matrix failed."
 
     #post
 
   end
 
   def test_first_minor
+    #setup
+    sparse_matrix = SparseMatrix[[0,1,0], [0,1,0], [0,1,0]]
+    # [ 0 1 0 ]
+    # [ 0 1 0 ]
+    # [ 0 1 0 ]
+
+    #pre
+
+    #data tests
+    assert_equal Matrix[[1,0],[1,0]], sparse_matrix.first_minor(0,0), "first_minor() function failed."
+
+    #posts
 
   end
 
@@ -116,6 +130,15 @@ class AccessUnitTests < Test::Unit::TestCase
     #post
 
   end
+
+  def test_full
+    #setup
+    
+    #pre
+    #data tests
+    #post
+  end
+
 
 
 end #end class

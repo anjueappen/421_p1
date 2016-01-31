@@ -82,5 +82,9 @@ INITIALIZATION METHODS - may change on what we choose to support
   def nonzeros
   	#stub
   end
+
+  def first_minor(row, col)
+  	#stub
+  end
  
 end
