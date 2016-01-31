@@ -1,5 +1,6 @@
 require 'test/unit'
 require '../sparse_matrix.rb'
+require 'matrix'
 
 =begin
 layout for tests
@@ -23,7 +24,7 @@ def testThing(arg1,arg2)
 
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
-# +
+# Addition
 def testAdditionNumericInt
 end
 
@@ -42,7 +43,7 @@ end
 def testAdditionMatrixFloat
 end
 
-# -
+# Subraction
 def testSubtractionNumericInt
 end
 
@@ -61,7 +62,7 @@ end
 def testSubtractionMatrixFloat
 end
 
-# *
+# Multiplication
 def testMultiplicationNumericInt
 end
 
@@ -80,7 +81,7 @@ end
 def testMultiplicationMatrixFloat
 end
 
-# /
+# Division
 def testDivisionNumericInt
 end
 
@@ -99,7 +100,7 @@ end
 def testDivisionMatrixFloat
 end
 
-# ** (eponetiation)
+# Exponentiation
 
 def testExponentiationNumericInt
 end
@@ -107,17 +108,6 @@ end
 def testExponentiationNumericFloat
 end
 
-def testExponentiationVectorInt
-end
-
-def testExponentiationVectorFloat
-end
-
-def testExponentiationMatrixInt
-end
-
-def testExponentiationMatrixFloat
-end
 
 end
 
