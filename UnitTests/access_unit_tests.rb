@@ -26,6 +26,7 @@ class AccessUnitTests < Test::Unit::TestCase
     sparse_matrix = SparseMatrix.new([[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]])
 
     #pre
+    assert sparse_matrix.real?
     assert_not_nil sparse_matrix.values, "Sparse matrix values stored should not be nil"
     
     #data tests
@@ -111,10 +112,10 @@ class AccessUnitTests < Test::Unit::TestCase
 
     #data tests
     # reference: http://www.mathwords.com/c/cofactor_matrix.htm
-    assert_equal Matrix.new([[24,5,-4], [-12,3,2], [-2,-5,4]]), sparse_matrix.cofactor(), "cofactor() method failed."
+    assert_equal Matrix[[24,5,-4], [-12,3,2], [-2,-5,4]], sparse_matrix.cofactor(), "cofactor() method failed."
 
     #post
-    
+
   end
 
 
