@@ -31,118 +31,187 @@ sparse_matrix = SparseMatrix.new([[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]])
 
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
-# Addition
-def testAdditionNumericInt
+	# Addition
+	def testAdditionNumericInt
 
-	#pre
-	SparseMatrix.new([1 2 0][2 0 0][0 0 1])
+		#pre
+		SparseMatrix.new([1 2 0][2 0 0][0 0 1])
+		
+		#post
+	end
+
+	def testAdditionNumericFloat
+		SparseMatrix.new([1 2 0][2 0 0][0 0 1])
+		
+		#pre
+		
+		
+		#post
+		
+	end
+
+	def testAdditionVectorInt
+		#pre
+		
+		#post
+	end
+
+	def testAdditionVectorFloat
+		#pre
+		
+		#post
+	end
+
+	def testAdditionMatrixInt
+		
+		#pre
+		#dimensions must correspond
+		
+		#post
+
+	end
+
+	def testAdditionMatrixFloat
+		#pre
+		# dimensions must correspond
+		
+		#post
+	end
+
+	# Subraction
+	def testSubtractionNumericInt
+		#pre
+		
+		#post
+	end
+
+	def testSubtractionNumericFloat
+		#pre
+		
+		#post
+	end
+
+	def testSubtractionVectorInt
+		#pre
+		
+		#post
+	end
+
+	def testSubtractionVectorFloat
+		#pre
+		
+		#post 	
+	end
+
+	def testSubtractionMatrixInt
+		#pre
+		
+		#post
+	end
+
+	def testSubtractionMatrixFloat
+		#pre
+		
+		#post
+	end
+
+	# Multiplication
+	def testMultiplicationNumericInt
+		#pre
+		
+		#post
+	end
+
+	def testMultiplicationNumericFloat
+		#pre
+		
+		#post
+	end
+
+	def testMultiplicationVectorInt
+		#pre
+		
+		#post
+	end
+
+	def testMultiplicationVectorFloat
+		#pre
+		
+		#post
+	end
+
+	def testMultiplicationMatrixInt
+		#pre
+		
+		#post
+	end
+
+	def testMultiplicationMatrixFloat
+		#pre
+		
+		#post
+	end
+
+	# Division
+	def testDivisionNumericInt
+		#pre
+		
+		#post
+	end
+
+	def testDivisonNumericFloat
+		#pre
+		
+		#post
+	end
+
+	def testDivisionVectorInt
+		#pre
+		
+		#post
+	end
+
+	def testDivisionVectorFloat
+		#pre
+		
+		#post
+	end
+
+	def testDivisionMatrixInt
+		#pre
+		
+		#post
+	end
+
+	def testDivisionMatrixFloat
+		#pre
+		
+		#post
+	end
+
 	
-	#post
-end
+	# Exponentiation
+	def testExponentiationNumericInt
+		#pre
+		
+		#post
+	end
 
-def testAdditionNumericFloat
-	SparseMatrix.new([1 2 0][2 0 0][0 0 1])
-	
-	#pre
-	
-	
-	#post
-	
-end
+	def testExponentiationNumericFloat
+		#pre
+		
+		#post
 
-def testAdditionVectorInt
-	#pre
-	#post
-end
-
-def testAdditionVectorFloat
-	#pre
-	#post
-end
-
-def testAdditionMatrixInt
-	
-	#pre
-	#dimensions must correspond
-	#post
-
-end
-
-def testAdditionMatrixFloat
-	#pre
-	# dimensions must correspond
-	
-	#post
-end
-
-# Subraction
-def testSubtractionNumericInt
-end
-
-def testSubtractionNumericFloat
-end
-
-def testSubtractionVectorInt
-end
-
-def testSubtractionVectorFloat
-end
-
-def testSubtractionMatrixInt
-end
-
-def testSubtractionMatrixFloat
-end
-
-# Multiplication
-def testMultiplicationNumericInt
-end
-
-def testMultiplicationNumericFloat
-end
-
-def testMultiplicationVectorInt
-end
-
-def testMultiplicationVectorFloat
-end
-
-def testMultiplicationMatrixInt
-end
-
-def testMultiplicationMatrixFloat
-end
-
-# Division
-def testDivisionNumericInt
-end
-
-def testDivisonNumericFloat
-end
-
-def testDivisionVectorInt
-end
-
-def testDivisionVectorFloat
-end
-
-def testDivisionMatrixInt
-end
-
-def testDivisionMatrixFloat
-end
-
-# Exponentiation
-
-def testExponentiationNumericInt
-end
-
-def testExponentiationNumericFloat
-end
+	end
 
 
-# Matrix Equality
+	# Matrix Equality
+	def testMatrixEquality
+		#pre
+		
+		#post
 
+	end
 end
 
 =begin
@@ -156,7 +225,8 @@ put equality tests here as well?
 
 todo:
 	try a "non sparse matrix test" just to see our performance differences?
- 
+	test cases with 0 - specifically division, multiplication and exponentiation
+		
 we are using ints, floats and chars
 	- number
 	- vector
