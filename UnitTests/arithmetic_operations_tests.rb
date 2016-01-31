@@ -21,30 +21,31 @@ def testThing(arg1,arg2)
 	
 =end
 
-=begin
-ways to intialize:
-sparse_matrix = SparseMatrix[[1.00, 0.00], [0.00, 2.00]]
-sparse_matrix = SparseMatrix.new([[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]])
-
-=end
-
 
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	# Addition
 	def test_addition_numeric_int
-
+		# setup
+		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		
 		#pre
-		SparseMatrix.new([1 2 0][2 0 0][0 0 1])
+		assert sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		
+		#data tests
 		
 		#post
+		
 	end
 
 	def test_addition_numeric_float
-		SparseMatrix.new([1 2 0][2 0 0][0 0 1])
+		#setup
+		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
 		
 		#pre
 		
+		#data tests
 		
 		#post
 		
