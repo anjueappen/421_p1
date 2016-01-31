@@ -32,7 +32,7 @@ sparse_matrix = SparseMatrix.new([[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]])
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	# Addition
-	def testAdditionNumericInt
+	def test_addition_numeric_int
 
 		#pre
 		SparseMatrix.new([1 2 0][2 0 0][0 0 1])
@@ -40,7 +40,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 	end
 
-	def testAdditionNumericFloat
+	def test_addition_numeric_float
 		SparseMatrix.new([1 2 0][2 0 0][0 0 1])
 		
 		#pre
@@ -50,19 +50,19 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 
-	def testAdditionVectorInt
+	def test_addition_vector_int
 		#pre
 		
 		#post
 	end
 
-	def testAdditionVectorFloat
+	def test_addition_vector_float
 		#pre
 		
 		#post
 	end
 
-	def testAdditionMatrixInt
+	def test_addition_matrix_int
 		
 		#pre
 		#dimensions must correspond
@@ -71,7 +71,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	end
 
-	def testAdditionMatrixFloat
+	def test_addition_matrix_float
 		#pre
 		# dimensions must correspond
 		
@@ -79,111 +79,111 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	end
 
 	# Subraction
-	def testSubtractionNumericInt
+	def test_subtraction_numeric_int
 		#pre
 		
 		#post
 	end
 
-	def testSubtractionNumericFloat
+	def test_subtraction_numeric_float
 		#pre
 		
 		#post
 	end
 
-	def testSubtractionVectorInt
+	def test_subtraction_vector_int
 		#pre
 		
 		#post
 	end
 
-	def testSubtractionVectorFloat
+	def test_subtraction_vector_float
 		#pre
 		
 		#post 	
 	end
 
-	def testSubtractionMatrixInt
+	def test_subtraction_matrix_int
 		#pre
 		
 		#post
 	end
 
-	def testSubtractionMatrixFloat
+	def test_subtraction_matrix_float
 		#pre
 		
 		#post
 	end
 
 	# Multiplication
-	def testMultiplicationNumericInt
+	def test_multiplication_numeric_int
 		#pre
 		
 		#post
 	end
 
-	def testMultiplicationNumericFloat
+	def test_multiplication_numeric_float
 		#pre
 		
 		#post
 	end
 
-	def testMultiplicationVectorInt
+	def test_multiplication_vector_int
 		#pre
 		
 		#post
 	end
 
-	def testMultiplicationVectorFloat
+	def test_multiplication_vector_float
 		#pre
 		
 		#post
 	end
 
-	def testMultiplicationMatrixInt
+	def test_multiplication_matrix_int
 		#pre
 		
 		#post
 	end
 
-	def testMultiplicationMatrixFloat
+	def test_multiplication_matrix_float
 		#pre
 		
 		#post
 	end
 
 	# Division
-	def testDivisionNumericInt
+	def test_division_numeric_int
 		#pre
 		
 		#post
 	end
 
-	def testDivisonNumericFloat
+	def test_divison_numeric_float
 		#pre
 		
 		#post
 	end
 
-	def testDivisionVectorInt
+	def test_division_vector_int
 		#pre
 		
 		#post
 	end
 
-	def testDivisionVectorFloat
+	def test_division_vector_float
 		#pre
 		
 		#post
 	end
 
-	def testDivisionMatrixInt
+	def test_division_matrix_int
 		#pre
 		
 		#post
 	end
 
-	def testDivisionMatrixFloat
+	def test_division_matrix_float
 		#pre
 		
 		#post
@@ -191,13 +191,13 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	
 	# Exponentiation
-	def testExponentiationNumericInt
+	def test_exponentiation_numeric_int
 		#pre
 		
 		#post
 	end
 
-	def testExponentiationNumericFloat
+	def test_exponentiation_numeric_float
 		#pre
 		
 		#post
@@ -206,7 +206,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 
 	# Matrix Equality
-	def testMatrixEquality
+	def test_matrix_equality
 		#pre
 		
 		#post
