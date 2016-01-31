@@ -11,11 +11,6 @@ require 'matrix'
 
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
-	def increase_all_values_by
-		# waiting on design decision.
-		#will not stay here.
-	end
-	
 	# Addition
 	def test_increase_all_values_by_int 
 		# setup
@@ -26,35 +21,53 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		#assert values not char?
 		
 		#data tests
 		assert_equal sparse_matrix.increase_all_values_by(4), increased_values_matrix, "Matrix values were not correctly increased."
-		#post
 		
+		#post
+		# are we going to delete the matrix used to add the scalar?
 	end
 
 	def test_increase_all_values_by_float
 		#setup
 		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
-		increased_values_matrix = SparseMatrix[[5.4,6.4,4.4],[6.4,4.4,4.4],[4.4,4.4,5.4]]
+		increased_values_matrix = SparseMatrix[[5.45,6.45,4.45],[6.45,4.45,4.45],[4.45,4.45,5.45]]
+		@increase_by = 4.45
+		
 		#pre
+		assert sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		# assert values not char?
 		
 		#data tests
+		assert_equal sparse_matrix.increase_all_values_by(4.45), increased_values_matrix, "Matrix values were not correctly increased."
 		
 		#post
+		# are we going to delete the matrix used to add the scalar?
 		
 	end
-
+	
+	# this test currently is meant to throw exception
 	def test_addition_numeric_int
-		#setup
+		# setup
+		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		@value = 4
 		
 		#pre
+		assert sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		#assert values not char?
+		#value is_a Matrix
 		
 		#data tests
+		sparse_matrix +(value)
 		
 		#post
 	end
-
+	
+	#this test is currently meant to throw exception
 	def test_addition_numeric_float
 		#setup
 		
@@ -274,6 +287,8 @@ todo:
 	implement a sparsity calculator?
 	
 	operations on only non-zero values?
+	
+	worry about really big and really small numbers for floats
 	
 we are using ints, floats and chars
 	- number
