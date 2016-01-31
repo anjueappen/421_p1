@@ -1,6 +1,8 @@
 require 'matrix'
+require 'forwardable'
 
-class SparseMatrix
+class SparseMatrix 
+	extend Forwardable
 
 =begin
 Do we want attr_readers and writers at this point?
@@ -20,6 +22,9 @@ INITIALIZATION METHODS - may change on what we choose to support
     #compress_store(@full_matrix)
   end
 
+  # methods that will be delegated to Matrix class go here!
+  def_delegators :full_matrix, :square?, :real?
+
   def rows(rows)
     #this method will overwrite existing rows
     if not rows.kind_of?(Array) or not rows[0].kind_of?(Array)
@@ -38,10 +43,8 @@ INITIALIZATION METHODS - may change on what we choose to support
     store(@full_matrix.rows)
   end
 
-
-
-
   def compress_store(matrix)
+  	# MICHELLE'S NOTE: This function throws an error when matrix.rows is called because it's a protected function... not sure why though. maybe it's getting confused with the base Matrix class having a function called rows too?
     # if not matrix.is_a? Matrix
     #   raise Exception.new("Parameter must be a Matrix instance")
     # end
@@ -58,6 +61,9 @@ INITIALIZATION METHODS - may change on what we choose to support
     # end
   end
 
+  def cofactor
+  	#stub
+  end
 
 
 
