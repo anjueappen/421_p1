@@ -36,6 +36,12 @@ end
 def testAdditionVectorFloat
 end
 
+def testAdditionMatrixInt
+end
+
+def testAdditionMatrixFloat
+end
+
 # -
 def testSubtractionNumericInt
 end
@@ -49,6 +55,11 @@ end
 def testSubtractionVectorFloat
 end
 
+def testSubtractionMatrixInt
+end
+
+def testSubtractionMatrixFloat
+end
 
 # *
 def testMultiplicationNumericInt
@@ -61,6 +72,12 @@ def testMultiplicationVectorInt
 end
 
 def testMultiplicationVectorFloat
+end
+
+def testMultiplicationMatrixInt
+end
+
+def testMultiplicationMatrixFloat
 end
 
 # /
@@ -76,6 +93,11 @@ end
 def testDivisionVectorFloat
 end
 
+def testDivisionMatrixInt
+end
+
+def testDivisionMatrixFloat
+end
 
 # ** (eponetiation)
 
@@ -91,6 +113,11 @@ end
 def testExponentiationVectorFloat
 end
 
+def testExponentiationMatrixInt
+end
+
+def testExponentiationMatrixFloat
+end
 
 end
 
