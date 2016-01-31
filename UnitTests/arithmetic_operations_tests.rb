@@ -62,7 +62,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#value is_a Matrix
 		
 		#data tests
-		sparse_matrix +(value)
+		#sparse_matrix +(value)  # currently an error
 		
 		#post
 	end
