@@ -11,13 +11,13 @@ Don't see need for them yet, therefore not adding right now.
   @val_row
   @val_col
 
-  attr_reader :full_matrix
+  attr_reader :full_matrix, :values, :val_row, :val_col
 =begin
 INITIALIZATION METHODS - may change on what we choose to support
 =end
-  def initialize(rows)
-    @full_matrix = Matrix.new(rows)
-    compress_store(@full_matrix)
+  def initialize(rows_input)
+    @full_matrix = Matrix.rows(rows_input)
+    #compress_store(@full_matrix)
   end
 
   def rows(rows)
@@ -42,20 +42,20 @@ INITIALIZATION METHODS - may change on what we choose to support
 
 
   def compress_store(matrix)
-    if not matrix.is_a? Matrix
-      raise Exception.new("Parameter must be a Matrix instance")
-    end
-    i = 0
-    for row in 0 ..matrix.rows.length
-      for column in 0..row.length
-        if matrix.rows[row][column] != 0
-          @values[i] = matrix.rows[row][column]
-          @val_row[i] = row
-          @val_col[i] = column 
-          i = i+1  
-        end
-      end
-    end
+    # if not matrix.is_a? Matrix
+    #   raise Exception.new("Parameter must be a Matrix instance")
+    # end
+    # i = 0
+    # for row in 0 ..matrix.rows.length
+    #   for column in 0..row.length
+    #     if matrix.rows[row][column] != 0
+    #       @values[i] = matrix.rows[row][column]
+    #       @val_row[i] = row
+    #       @val_col[i] = column 
+    #       i = i+1  
+    #     end
+    #   end
+    # end
   end
 
 
