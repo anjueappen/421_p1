@@ -21,26 +21,58 @@ def testThing(arg1,arg2)
 	
 =end
 
+=begin
+ways to intialize:
+sparse_matrix = SparseMatrix[[1.00, 0.00], [0.00, 2.00]]
+sparse_matrix = SparseMatrix.new([[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]])
+
+=end
+
 
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 # Addition
 def testAdditionNumericInt
+
+	#pre
+	SparseMatrix.new([1 2 0][2 0 0][0 0 1])
+	
+	#post
 end
 
 def testAdditionNumericFloat
+	SparseMatrix.new([1 2 0][2 0 0][0 0 1])
+	
+	#pre
+	
+	
+	#post
+	
 end
 
 def testAdditionVectorInt
+	#pre
+	#post
 end
 
 def testAdditionVectorFloat
+	#pre
+	#post
 end
 
 def testAdditionMatrixInt
+	
+	#pre
+	#dimensions must correspond
+	#post
+
 end
 
 def testAdditionMatrixFloat
+	#pre
+	# dimensions must correspond
+	
+	#post
 end
 
 # Subraction
@@ -109,9 +141,22 @@ def testExponentiationNumericFloat
 end
 
 
+# Matrix Equality
+
 end
 
 =begin
+need to test @+() and @-() before deciding how to test them.
+
+put equality tests here as well?
+=end
+
+
+=begin
+
+todo:
+	try a "non sparse matrix test" just to see our performance differences?
+ 
 we are using ints, floats and chars
 	- number
 	- vector
