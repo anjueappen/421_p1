@@ -8,6 +8,6 @@ describe 'Initialization Behaviour' do
   end
 
   it 'should initialize with an Array' do
-       
+
   end
 end
