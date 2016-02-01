@@ -28,7 +28,7 @@ INITIALIZATION METHODS - may change on what we choose to support
 
   # methods that will be delegated to Matrix class go here!
   def_delegators :full_matrix, :square?, :real?,
-  	:row_count, :column_count, :index
+  	:row_count, :column_count, :index, :+, :-
 
   def SparseMatrix.[](*rows)
   	#stub
@@ -99,6 +99,7 @@ INITIALIZATION METHODS - may change on what we choose to support
   def increase_all_values_by(number)
 	# waiting on design decision.
 	#will not stay here. just need it to eliminate errors in tests
+	#stub
   end
  
 end

@@ -16,7 +16,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		# setup
 		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
 		increased_values_matrix = SparseMatrix[[5,6,4],[6,4,4],[4,4,5]]
-		@increase_by = 4
 		
 		#pre
 		assert sparse_matrix.real?, "SparseMatrix should be real."
@@ -34,7 +33,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#setup
 		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
 		increased_values_matrix = SparseMatrix[[5.45,6.45,4.45],[6.45,4.45,4.45],[4.45,4.45,5.45]]
-		@increase_by = 4.45
 		
 		#pre
 		assert sparse_matrix.real?, "SparseMatrix should be real."
@@ -53,18 +51,21 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	def test_addition_numeric_int
 		# setup
 		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
-		@value = 4
+		
 		
 		#pre
 		assert sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		#assert values not char?
 		#value is_a Matrix
+		# assert_true @sparse_matrix.is_a? Matrix
 		
 		#data tests
-		#sparse_matrix +(value)  # currently an error
+		#sparse_matrix Matrix.+(4)
+		#assert_raise(Matrix.ErrOperationNotDefined)  
 		
 		#post
+		
 	end
 	
 	#this test is currently meant to throw exception
@@ -82,19 +83,29 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		
 		#post
+		
 	end
 
 	def test_addition_vector_float
 		#pre
 		
 		#post
+		
 	end
 
 	def test_addition_matrix_int
+		#setup
+		sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0]]
+		sparse_matrix2 = SparseMatrix[[0,1,0],[0,0,2],[1,0,0]]
+		expected_after_addition = SparseMatrix[[1,1,3],[0,0,3],[3,0,0]]
 		
 		#pre
 		#dimensions must correspond
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count
+		assert_equal sparse_matrix1.col_count, sparse_matrix2.col_count
 		
+		#data tests
+		#assert_equal sparse_matrix1+(sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
 		#post
 
 	end
