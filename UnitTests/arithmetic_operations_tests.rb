@@ -355,6 +355,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#post
 	
+	#todo test case where exponent is zero?
+	
 	def test_negative_exponentiation_int
 		#setup
 		sparse_matrix1 = SparseMatrix[[],[],[]]
@@ -405,11 +407,16 @@ todo:
 	
 	worry about really big and really small numbers for floats
 	
+	in terms of post - will have to have resulting matrix with different dimensions for * and /
+	in terms of invariants, will need to have original matrices untouched because things return new matrices
+	
 we are using ints, floats and chars
 	- number
 	- vector
 	- matrix
 
 different tests for ints and floats.  what is a good tolerance for floats?
-
+need two tests? worried about tolerance for floats.
+what about chars?
+do we always have to ask if a method can call things? or has that method?
 =end
