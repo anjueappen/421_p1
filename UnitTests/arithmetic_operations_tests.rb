@@ -12,16 +12,15 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	# Addition
 	def test_increase_all_values_by_int 
 		# setup
-		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		@sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
 		increased_values_matrix = SparseMatrix[[5,6,4],[6,4,4],[4,4,5]]
 		
 		#pre
-		assert sparse_matrix.real?, "SparseMatrix should be real."
-		assert_not_nil sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		#assert values not char?
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		
 		#data tests
-		assert_equal sparse_matrix.increase_all_values_by(4), increased_values_matrix, "Matrix values were not correctly increased."
+		assert_equal @sparse_matrix.increase_all_values_by(4), increased_values_matrix, "Matrix values were not correctly increased."
 		
 		#post
 		# are we going to delete the matrix used to add the scalar?
@@ -29,16 +28,15 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_increase_all_values_by_float
 		#setup
-		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		@sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
 		increased_values_matrix = SparseMatrix[[5.45,6.45,4.45],[6.45,4.45,4.45],[4.45,4.45,5.45]]
 		
 		#pre
-		assert sparse_matrix.real?, "SparseMatrix should be real."
-		assert_not_nil sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		# assert values not char?
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		
 		#data tests
-		assert_equal sparse_matrix.increase_all_values_by(4.45), increased_values_matrix, "Matrix values were not correctly increased."
+		assert_equal @sparse_matrix.increase_all_values_by(4.45), increased_values_matrix, "Matrix values were not correctly increased."
 		
 		#post
 		# are we going to delete the matrix used to add the scalar?
@@ -48,17 +46,17 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	# this test currently is meant to throw exception
 	def test_addition_numeric_int
 		# setup
-		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		@sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
 		
 		#pre
-		assert sparse_matrix.real?, "SparseMatrix should be real."
-		assert_not_nil sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		#assert values not char?
 		#value is_a Matrix
-		# assert_true @sparse_matrix.is_a? Matrix
+		# assert_true @@sparse_matrix.is_a? Matrix
 		
 		#data tests
-		#sparse_matrix Matrix.+(4)
+		#@sparse_matrix Matrix.+(4)
 		#assert_raise(Matrix.ErrOperationNotDefined)  
 		
 		#post
@@ -92,17 +90,16 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_addition_matrix_int
 		#setup
-		sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0],[0,1,0]]
-		sparse_matrix2 = SparseMatrix[[0,1,0],[0,0,2],[1,0,0],[0,2,0]]
+		@sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0],[0,1,0]]
+		@sparse_matrix2 = SparseMatrix[[0,1,0],[0,0,2],[1,0,0],[0,2,0]]
 		expected_after_addition = SparseMatrix[[1,1,3],[0,0,3],[3,0,0],[0,3,0]]
 		
 		#pre
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
-		assert_equal sparse_matrix1.column_count, sparse_matrix2.column_count, "Incompatible dimension (column) for matrix addition"
+		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
+		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.column_count, "Incompatible dimension (column) for matrix addition"
 		
 		#data tests
-		#can't be coerced into full matrix, so can't delegate currently
-		assert_equal sparse_matrix1+(sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
+		assert_equal @sparse_matrix1+(@sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
 		
 		#post
 
@@ -110,17 +107,17 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_addition_matrix_float
 		#setup
-		sparse_matrix1 = SparseMatrix[[1.08,0,3.14],[0,0,1.00],[2.02,0,0],[0,1.08,0]]
-		sparse_matrix2 = SparseMatrix[[0,1.16,0],[0,0,2.04],[1.06,0,0],[0,2.14,0]]
+		@sparse_matrix1 = SparseMatrix[[1.08,0,3.14],[0,0,1.00],[2.02,0,0],[0,1.08,0]]
+		@sparse_matrix2 = SparseMatrix[[0,1.16,0],[0,0,2.04],[1.06,0,0],[0,2.14,0]]
 		expected_after_addition = SparseMatrix[[1.08,1.16,3.14],[0,0,3.04],[3.08,0,0],[0,3.24,0]]
 		
 		#pre
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
-		assert_equal sparse_matrix1.column_count, sparse_matrix2.column_count, "Incompatible dimension (column) for matrix addition"
+		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
+		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.column_count, "Incompatible dimension (column) for matrix addition"
 		
 		#data tests
 		#can't be coerced into full matrix, so can't delegate currently
-		assert_equal sparse_matrix1+(sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
+		assert_equal @sparse_matrix1+(@sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
 		
 		#post
 		
@@ -128,26 +125,36 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	# Subraction
 	def test_decrease_all_values_by_int
-		#setup
-		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		# setup
+		@sparse_matrix = SparseMatrix[[1,2,0,0],[2,1,0,0],[1,0,1,0]]
+		decreased_values_matrix = SparseMatrix[[0,1,-1,-1],[1,0,-1,-1],[0,-1,0,-1]]
 		
 		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		
 		#data tests
+		assert_equal @sparse_matrix.increase_all_values_by(-1), decreased_values_matrix, "Matrix values were not correctly increased."
 		
 		#post
+		# are we going to delete the matrix used to add the scalar?
 		
 	end
 
 	def test_decrease_all_values_by_float
-		#setup
-		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		@sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		increased_values_matrix = SparseMatrix[[5.45,6.45,4.45],[6.45,4.45,4.45],[4.45,4.45,5.45]]
 		
 		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		
 		#data tests
+		assert_equal @sparse_matrix.increase_all_values_by(4.45), increased_values_matrix, "Matrix values were not correctly increased."
 		
 		#post
+		# are we going to delete the matrix used to add the scalar?
+		
 		
 	end
 
@@ -179,17 +186,17 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_subtraction_matrix_int
 		#setup
-		sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0],[0,1,0]]
-		sparse_matrix2 = SparseMatrix[[0,1,0],[0,0,2],[1,0,0],[0,2,0]]
+		@sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0],[0,1,0]]
+		@sparse_matrix2 = SparseMatrix[[0,1,0],[0,0,2],[1,0,0],[0,2,0]]
 		expected_after_subtraction = SparseMatrix[[1,-1,3],[0,0,-1],[1,0,0],[0,-1,0]]
 		
 		#pre
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count, "Incompatible dimension (row) for matrix subtraction"
-		assert_equal sparse_matrix1.column_count, sparse_matrix2.column_count, "Incompatible dimension (column) for matrix subtraction"
+		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.row_count, "Incompatible dimension (row) for matrix subtraction"
+		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.column_count, "Incompatible dimension (column) for matrix subtraction"
 		
 		#data tests
 		#can't be coerced into full matrix, so can't delegate currently
-		assert_equal sparse_matrix1-(sparse_matrix2), expected_after_subtraction, "Matrix subtraction not working correctly"
+		assert_equal @sparse_matrix1-(@sparse_matrix2), expected_after_subtraction, "Matrix subtraction not working correctly"
 		
 		#post
 		
@@ -197,17 +204,17 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_subtraction_matrix_float
 		#setup
-		sparse_matrix1 = SparseMatrix[[1.08,0,3.14],[0,0,1.00],[2.06,0,0],[0,2.14,0]]
-		sparse_matrix2 = SparseMatrix[[0,1.16,0],[0,0,2.04],[1.02,0,0],[0,1.08,0]]
+		@sparse_matrix1 = SparseMatrix[[1.08,0,3.14],[0,0,1.00],[2.06,0,0],[0,2.14,0]]
+		@sparse_matrix2 = SparseMatrix[[0,1.16,0],[0,0,2.04],[1.02,0,0],[0,1.08,0]]
 		expected_after_subtraction = SparseMatrix[[1.08,-1.16,3.14],[0,0,-1.04],[1.04,0,0],[0,1.06,0]]
 		
 		#pre
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count, "Incompatible dimension (row) for matrix subtraction"
-		assert_equal sparse_matrix1.column_count, sparse_matrix2.column_count, "Incompatible dimension (column) for matrix subtraction"
+		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.row_count, "Incompatible dimension (row) for matrix subtraction"
+		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.column_count, "Incompatible dimension (column) for matrix subtraction"
 		
 		#data tests
 		#can't be coerced into full matrix, so can't delegate currently
-		assert_equal sparse_matrix1+(sparse_matrix2), expected_after_subtraction, "Matrix subtraction not working correctly"
+		assert_equal @sparse_matrix1+(@sparse_matrix2), expected_after_subtraction, "Matrix subtraction not working correctly"
 		
 		#post
 		
@@ -216,11 +223,11 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	# Multiplication
 	def test_multiplication_numeric_int
 		#setup
-		sparse_matrix1 = SparseMatrix[]
-		sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[]
+		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
+		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
 		
 		#data tests
 		
@@ -230,39 +237,39 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_multiplication_numeric_float
 		#setup
-		sparse_matrix1 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[]
 		
 	end
 
 	def test_multiplication_vector_int
 		#setup
-		sparse_matrix1 = SparseMatrix[]
-		sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[]
+		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
+		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
 		
 		#post
 	end
 
 	def test_multiplication_vector_float
 		#setup
-		sparse_matrix1 = SparseMatrix[]
-		sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[]
+		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
+		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
 		
 		#post
 	end
 
 	def test_multiplication_matrix_int
 		#setup
-		sparse_matrix1 = SparseMatrix[[],[],[]]
-		sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[],[],[]]
+		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
+		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
 		
 		#post
 		
@@ -270,11 +277,11 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_multiplication_matrix_float
 		#setup
-		sparse_matrix1 = SparseMatrix[[],[],[]]
-		sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[],[],[]]
+		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
+		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
 		
 		#post
 		
@@ -295,8 +302,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_division_vector_int
 		#setup
-		sparse_matrix1 = SparseMatrix[[],[],[]]
-		sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[],[],[]]
+		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
 		
@@ -305,8 +312,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_division_vector_float
 		#setup
-		sparse_matrix1 = SparseMatrix[[],[],[]]
-		sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[],[],[]]
+		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
 		
@@ -315,8 +322,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_division_matrix_int
 		#setup
-		sparse_matrix1 = SparseMatrix[[],[],[]]
-		sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[],[],[]]
+		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
 		
@@ -325,8 +332,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_division_matrix_float
 		#setup
-		sparse_matrix1 = SparseMatrix[[],[],[]]
-		sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[],[],[]]
+		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
 		
@@ -337,7 +344,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	# Exponentiation
 	def test_exponentiation_numeric_int
 		#setup
-		sparse_matrix1 = SparseMatrix[[],[],[]]
+		@sparse_matrix1 = SparseMatrix[[],[],[]]
 		
 		#pre
 		
@@ -346,8 +353,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_exponentiation_numeric_float
 		#setup
-		sparse_matrix1 = SparseMatrix[[],[],[]]
-		sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[],[],[]]
+		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
 		
@@ -359,8 +366,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	def test_negative_exponentiation_int
 		#setup
-		sparse_matrix1 = SparseMatrix[[],[],[]]
-		sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[],[],[]]
+		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
 		
@@ -375,7 +382,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	# Matrix Equality
 	def test_matrix_equality
 		#setup
-		sparse_matrix = SparseMatrix[]
+		@sparse_matrix = SparseMatrix[]
 		
 		#pre
 		
