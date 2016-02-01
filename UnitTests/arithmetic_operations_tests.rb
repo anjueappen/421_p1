@@ -4,6 +4,7 @@ require 'matrix'
 
 =begin
 	are we keeping Matrix.scalar?
+	need invariants
 =end
 
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
@@ -96,14 +97,11 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		expected_after_addition = SparseMatrix[[1,1,3],[0,0,3],[3,0,0],[0,3,0]]
 		
 		#pre
-		assert_equal 4, sparse_matrix1.row_count, "First sparse matrix has incompatible number of rows for matrix addition"
-		assert_equal 4, sparse_matrix2.row_count, "Second sparse matrix has incompatible number of rows for matrix addition"
-		assert_equal 3, sparse_matrix1.column_count, "First sparse matrix has incompatible number of columns for matrix addition"
-		assert_equal 3, sparse_matrix2.column_count, "Second sparse matrix has incompatible number of columns for matrix addition"
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
+		assert_equal sparse_matrix1.column_count, sparse_matrix2.column_count, "Incompatible dimension (column) for matrix addition"
 		
 		#data tests
-		#can't be coerced into full matrix
+		#can't be coerced into full matrix, so can't delegate currently
 		assert_equal sparse_matrix1+(sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
 		
 		#post
@@ -117,17 +115,15 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		expected_after_addition = SparseMatrix[[1.08,1.16,3.14],[0,0,3.04],[3.08,0,0],[0,3.24,0]]
 		
 		#pre
-		assert_equal 4, sparse_matrix1.row_count, "First sparse matrix has incompatible number of rows for matrix addition"
-		assert_equal 4, sparse_matrix2.row_count, "Second sparse matrix has incompatible number of rows for matrix addition"
-		assert_equal 3, sparse_matrix1.column_count, "First sparse matrix has incompatible number of columns for matrix addition"
-		assert_equal 3, sparse_matrix2.column_count, "Second sparse matrix has incompatible number of columns for matrix addition"
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
+		assert_equal sparse_matrix1.column_count, sparse_matrix2.column_count, "Incompatible dimension (column) for matrix addition"
 		
 		#data tests
-		#can't be coerced into full matrix
+		#can't be coerced into full matrix, so can't delegate currently
 		assert_equal sparse_matrix1+(sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
 		
 		#post
+		
 	end
 
 	# Subraction
@@ -181,15 +177,39 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	end
 
 	def test_subtraction_matrix_int
+		#setup
+		sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0],[0,1,0]]
+		sparse_matrix2 = SparseMatrix[[0,1,0],[0,0,2],[1,0,0],[0,2,0]]
+		expected_after_subtraction = SparseMatrix[[1,-1,3],[0,0,-1],[1,0,0],[0,-1,0]]
+		
 		#pre
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count, "Incompatible dimension (row) for matrix subtraction"
+		assert_equal sparse_matrix1.column_count, sparse_matrix2.column_count, "Incompatible dimension (column) for matrix subtraction"
+		
+		#data tests
+		#can't be coerced into full matrix, so can't delegate currently
+		assert_equal sparse_matrix1-(sparse_matrix2), expected_after_subtraction, "Matrix subtraction not working correctly"
 		
 		#post
+		
 	end
 
 	def test_subtraction_matrix_float
+		#setup
+		sparse_matrix1 = SparseMatrix[[1.08,0,3.14],[0,0,1.00],[2.06,0,0],[0,2.14,0]]
+		sparse_matrix2 = SparseMatrix[[0,1.16,0],[0,0,2.04],[1.02,0,0],[0,1.08,0]]
+		expected_after_subtraction = SparseMatrix[[1.08,-1.16,3.14],[0,0,-1.04],[1.04,0,0],[0,1.06,0]]
+		
 		#pre
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count, "Incompatible dimension (row) for matrix subtraction"
+		assert_equal sparse_matrix1.column_count, sparse_matrix2.column_count, "Incompatible dimension (column) for matrix subtraction"
+		
+		#data tests
+		#can't be coerced into full matrix, so can't delegate currently
+		assert_equal sparse_matrix1+(sparse_matrix2), expected_after_subtraction, "Matrix subtraction not working correctly"
 		
 		#post
+		
 	end
 
 	# Multiplication
