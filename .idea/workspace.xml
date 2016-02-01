@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="12bd7b5f-89c6-4340-af7d-ce2b3ff5bfba" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UnitTests/tridiagonal_tests.rb" afterPath="$PROJECT_DIR$/UnitTests/tridiagonal_tests.rb" />
     </list>
     <ignored path="421Assigment1.iws" />
@@ -37,8 +36,8 @@
       <file leaf-file-name="tridiagonal_tests.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/UnitTests/tridiagonal_tests.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.29685158">
-              <caret line="23" column="29" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
+            <state vertical-scroll-proportion="3.3463268">
+              <caret line="124" column="9" selection-start-line="124" selection-start-column="9" selection-end-line="124" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -439,8 +438,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/UnitTests/tridiagonal_tests.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29685158">
-          <caret line="23" column="29" selection-start-line="23" selection-start-column="29" selection-end-line="23" selection-end-column="29" />
+        <state vertical-scroll-proportion="3.3463268">
+          <caret line="124" column="9" selection-start-line="124" selection-start-column="9" selection-end-line="124" selection-end-column="9" />
           <folding />
         </state>
       </provider>

@@ -43,7 +43,7 @@ class TriDiagonalTests < Test::Unit::TestCase
   def test_init_diagonal_improper_lengths
     begin
       @sparse_matrix = SparseMatrix.diagonal([5, 6, 5], [6, 8, 7], [3, 2])
-    rescue Exception e
+    rescue Exception => e
       if e.is_a? ImproperDiagonalsError
         pass
       else
@@ -67,18 +67,18 @@ class TriDiagonalTests < Test::Unit::TestCase
 
 
   def test_extend_diagonal_integers
-      @sparse_matrix.extend_diagonal(2, 3, 4)
+    @sparse_matrix.extend_diagonal(2, 3, 4)
 
-      #invariant
-      assert_true @sparse_matrix.is_a? Matrix
-      assert_true @sparse_matrix.is_tridiagonal?
+    #invariant
+    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_tridiagonal?
 
-      #post
-      assert_equal 4, @sparse_matrix.row_count
-      assert_equal 4, @sparse_matrix.col_count
-      assert_equal [6, 5, 3, 8, 6, 2, 7, 2, 3, 4], @sparse_matrix.values
-      assert_equal [0, 0, 2, 2, 2, 3, 3, 2, 3, 3], @sparse_matrix.val_row
-      assert_equal [0, 1, 0, 1, 2, 1, 2, 3, 3, 2], @sparse_matrix.val_col
+    #post
+    assert_equal 4, @sparse_matrix.row_count
+    assert_equal 4, @sparse_matrix.col_count
+    assert_equal [6, 5, 3, 8, 6, 2, 7, 2, 3, 4], @sparse_matrix.values
+    assert_equal [0, 0, 2, 2, 2, 3, 3, 2, 3, 3], @sparse_matrix.val_row
+    assert_equal [0, 1, 0, 1, 2, 1, 2, 3, 3, 2], @sparse_matrix.val_col
   end
 
 
@@ -128,11 +128,12 @@ class TriDiagonalTests < Test::Unit::TestCase
 
   def test_thomas_algorithm_insufficient_length
     begin
-    rescue Exception e
+    rescue Exception => e
       if e.is_a? InsufficientVectorLength
         pass "Correct exception raised"
       else
         fail "Incorrect excpetion raised"
+      end
     end
   end
 end
