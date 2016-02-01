@@ -28,9 +28,8 @@ INITIALIZATION METHODS - may change on what we choose to support
 
   # methods that will be delegated to Matrix class go here!
   def_delegators :full_matrix, :square?, :real?,
-
   	:row_count, :column_count, :index, :empty?,
-  	:diagonal?
+  	:diagonal?, :+, :-
 
   def SparseMatrix.[](*rows)
   	#stub

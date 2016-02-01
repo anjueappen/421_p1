@@ -3,9 +3,6 @@ require '../sparse_matrix.rb'
 require 'matrix'
 
 =begin
-	decide which will be delegated to matrix class and which
-	will not be delegated
-	
 	are we keeping Matrix.scalar?
 =end
 
@@ -51,7 +48,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	def test_addition_numeric_int
 		# setup
 		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
-		
 		
 		#pre
 		assert sparse_matrix.real?, "SparseMatrix should be real."
@@ -100,20 +96,36 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		expected_after_addition = SparseMatrix[[1,1,3],[0,0,3],[3,0,0],[0,3,0]]
 		
 		#pre
-		assert_equal 4, sparse_matrix1.row_count, "First sparse matrix has incorrect number of rows"
-		assert_equal 4,sparse_matrix2.row_count, "Second sparse matrix has incorrect number of rows for ma"
-		assert_equal 3, sparse_matrix1.col_count, "First sparse matrix has incorrect number of columns for matrix addition"
-		assert_equal 3, sparse_matrix2.col_count, "Second sparse matrix has incorrect number of columns"
+		assert_equal 4, sparse_matrix1.row_count, "First sparse matrix has incompatible number of rows for matrix addition"
+		assert_equal 4, sparse_matrix2.row_count, "Second sparse matrix has incompatible number of rows for matrix addition"
+		assert_equal 3, sparse_matrix1.column_count, "First sparse matrix has incompatible number of columns for matrix addition"
+		assert_equal 3, sparse_matrix2.column_count, "Second sparse matrix has incompatible number of columns for matrix addition"
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count
 		
 		#data tests
-		#assert_equal sparse_matrix1+(sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
+		#can't be coerced into full matrix
+		assert_equal sparse_matrix1+(sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
+		
 		#post
 
 	end
 
 	def test_addition_matrix_float
+		#setup
+		sparse_matrix1 = SparseMatrix[[1.08,0,3.14],[0,0,1.00],[2.02,0,0],[0,1.08,0]]
+		sparse_matrix2 = SparseMatrix[[0,1.16,0],[0,0,2.04],[1.06,0,0],[0,2.14,0]]
+		expected_after_addition = SparseMatrix[[1.08,1.16,3.14],[0,0,3.04],[3.08,0,0],[0,3.24,0]]
+		
 		#pre
-		# dimensions must correspond
+		assert_equal 4, sparse_matrix1.row_count, "First sparse matrix has incompatible number of rows for matrix addition"
+		assert_equal 4, sparse_matrix2.row_count, "Second sparse matrix has incompatible number of rows for matrix addition"
+		assert_equal 3, sparse_matrix1.column_count, "First sparse matrix has incompatible number of columns for matrix addition"
+		assert_equal 3, sparse_matrix2.column_count, "Second sparse matrix has incompatible number of columns for matrix addition"
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count
+		
+		#data tests
+		#can't be coerced into full matrix
+		assert_equal sparse_matrix1+(sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
 		
 		#post
 	end
