@@ -151,13 +151,14 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 
-
+	# throw exception
 	def test_subtraction_numeric_int
 		#pre
 		
 		#post
 	end
 
+	# throw exception
 	def test_subtraction_numeric_float
 		#pre
 		
@@ -214,39 +215,69 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	# Multiplication
 	def test_multiplication_numeric_int
+		#setup
+		sparse_matrix1 = SparseMatrix[]
+		sparse_matrix2 = SparseMatrix[]
+		
 		#pre
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
+		
+		#data tests
 		
 		#post
+
 	end
 
 	def test_multiplication_numeric_float
-		#pre
+		#setup
+		sparse_matrix1 = SparseMatrix[]
 		
-		#post
 	end
 
 	def test_multiplication_vector_int
+		#setup
+		sparse_matrix1 = SparseMatrix[]
+		sparse_matrix2 = SparseMatrix[]
+		
 		#pre
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
 		
 		#post
 	end
 
 	def test_multiplication_vector_float
+		#setup
+		sparse_matrix1 = SparseMatrix[]
+		sparse_matrix2 = SparseMatrix[]
+		
 		#pre
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
 		
 		#post
 	end
 
 	def test_multiplication_matrix_int
+		#setup
+		sparse_matrix1 = SparseMatrix[[],[],[]]
+		sparse_matrix2 = SparseMatrix[]
+		
 		#pre
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
 		
 		#post
+		
 	end
 
 	def test_multiplication_matrix_float
+		#setup
+		sparse_matrix1 = SparseMatrix[[],[],[]]
+		sparse_matrix2 = SparseMatrix[]
+		
 		#pre
+		assert_equal sparse_matrix1.row_count, sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
 		
 		#post
+		
 	end
 
 	# Division
@@ -263,24 +294,40 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	end
 
 	def test_division_vector_int
+		#setup
+		sparse_matrix1 = SparseMatrix[[],[],[]]
+		sparse_matrix2 = SparseMatrix[]
+		
 		#pre
 		
 		#post
 	end
 
 	def test_division_vector_float
+		#setup
+		sparse_matrix1 = SparseMatrix[[],[],[]]
+		sparse_matrix2 = SparseMatrix[]
+		
 		#pre
 		
 		#post
 	end
 
 	def test_division_matrix_int
+		#setup
+		sparse_matrix1 = SparseMatrix[[],[],[]]
+		sparse_matrix2 = SparseMatrix[]
+		
 		#pre
 		
 		#post
 	end
 
 	def test_division_matrix_float
+		#setup
+		sparse_matrix1 = SparseMatrix[[],[],[]]
+		sparse_matrix2 = SparseMatrix[]
+		
 		#pre
 		
 		#post
@@ -289,21 +336,45 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	# Exponentiation
 	def test_exponentiation_numeric_int
+		#setup
+		sparse_matrix1 = SparseMatrix[[],[],[]]
+		
 		#pre
 		
 		#post
 	end
 
 	def test_exponentiation_numeric_float
+		#setup
+		sparse_matrix1 = SparseMatrix[[],[],[]]
+		sparse_matrix2 = SparseMatrix[]
+		
 		#pre
 		
+		#data tests
+		
 		#post
-
+	
+	def test_negative_exponentiation_int
+		#setup
+		sparse_matrix1 = SparseMatrix[[],[],[]]
+		sparse_matrix2 = SparseMatrix[]
+		
+		#pre
+		
+		#data tests
+		
+		#post
+		
+	end
 	end
 
 
 	# Matrix Equality
 	def test_matrix_equality
+		#setup
+		sparse_matrix = SparseMatrix[]
+		
 		#pre
 		
 		#post
