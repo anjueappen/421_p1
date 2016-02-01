@@ -95,14 +95,15 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_addition_matrix_int
 		#setup
-		sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0]]
-		sparse_matrix2 = SparseMatrix[[0,1,0],[0,0,2],[1,0,0]]
-		expected_after_addition = SparseMatrix[[1,1,3],[0,0,3],[3,0,0]]
+		sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0],[0,1,0]]
+		sparse_matrix2 = SparseMatrix[[0,1,0],[0,0,2],[1,0,0],[0,2,0]]
+		expected_after_addition = SparseMatrix[[1,1,3],[0,0,3],[3,0,0],[0,3,0]]
 		
 		#pre
-		#dimensions must correspond
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count
-		assert_equal sparse_matrix1.col_count, sparse_matrix2.col_count
+		assert_equal 4, sparse_matrix1.row_count, "First sparse matrix has incorrect number of rows"
+		assert_equal 4,sparse_matrix2.row_count, "Second sparse matrix has incorrect number of rows for ma"
+		assert_equal 3, sparse_matrix1.col_count, "First sparse matrix has incorrect number of columns for matrix addition"
+		assert_equal 3, sparse_matrix2.col_count, "Second sparse matrix has incorrect number of columns"
 		
 		#data tests
 		#assert_equal sparse_matrix1+(sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
