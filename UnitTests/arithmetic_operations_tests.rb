@@ -101,6 +101,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		end
 		
 		#post
+		
 	end
 	
 	def test_addition_vector_int
@@ -143,7 +144,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		@result_matrix =  @sparse_matrix1+(@sparse_matrix2)
 		assert_in_delta @result_matrix.full(), Matrix[[5.05],[1.02],[0],[4.04]], 0.01, "Vector addition failed"
 		
-		
 		#post
 		
 		#invariant
@@ -151,6 +151,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert !@sparse_matrix1.empty?
 		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
+		
 	end
 
 	def test_addition_matrix_int
@@ -429,9 +430,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @actual_matrix.full(), Matrix[[4,0,12],[0,0,4],[0,8,0]], "Multiplication of matrix by integer failed."
 		
 		#post
-		 # same number of zeroes in new and old matrix
-		 # old matrix did not change
-		 # col and row vectors did not change
 		
 		#invariant
 		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
@@ -456,14 +454,10 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_in_delta @actual_matrix.full(), Matrix[[1.5,0,4.5],[0,0,1.5],[0.3,0]], 0.01, "Multiplication of matrix by float failed."
 		
 		#post
-		# same number of zeroes in new and old matrix
-		# old matrix did not change
-		# col and row vectors did not change
 		
 		#invariant
 		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
-		
 		 
 	end
 
@@ -487,9 +481,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @expected_matrix.full(), Matrix[[9],[4],[3]], "Multiplication of matrix by vector(integer) failed."
 		
 		#post
-		# same number of zeroes in new and old matrix
-		# old matrix did not change
-		# col and row vectors did not change
 		
 		#invariant
 		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
@@ -507,7 +498,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		@sparse_matrix2 = SparseMatrix[[1.01],[0],[0],[1.02]] #4x1
 		@sparse_clone1 = @sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
 		@sparse_clone2 = @sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
-
 		
 		#pre
 		assert @sparse_matrix1.real?, "SparseMatrix should be real."
@@ -522,9 +512,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_in_delta @expected_matrix.full(), Matrix[[5.6101],[2.0604],[2.0503]], 0.01, "Multiplication of matrix by vector(float) failed."
 		
 		#post
-		# same number of zeroes in new and old matrix
-		# old matrix did not change
-		# col and row vectors did not change
 		
 		#invariant
 		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
@@ -619,7 +606,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_in_delta @result_matrix.full(), [[1,0.5,0,0],[1.5,0,0,0],[0,2,2,0]], 0.01, "Integer divsion incorrect"
 		
 		#post
-		# see multiplication_numeric_int
 		
 		#invariant
 		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
@@ -681,7 +667,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert !@sparse_matrix1.empty?
 		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
-		
+		assert_equal @expected_matrix.row_count, @sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
+		assert_equal @expected_matrix.column_count, @sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
+
 	end
 
 	def test_division_matrix_float
@@ -712,6 +700,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert !@sparse_matrix1.empty?
 		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
+		assert_equal @expected_matrix.row_count, @sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
+		assert_equal @expected_matrix.column_count, @sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
+
 		
 	end
 
@@ -733,7 +724,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @actual_matrix.full(), Matrix.identity(@sparse_matrix.row_count), "Matrix eponentiation failed"
 		
 		#post
-		# same as matrix multiplication
 		
 		#invariant
 		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
@@ -758,7 +748,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @actual_matrix.full(), Matrix[[2,3,0],[0,2,1],[3,0,0]], "Integer matrix eponentiation failed"
 		
 		#post
-		# same as matrix multiplication
 		
 		#invariant
 		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
