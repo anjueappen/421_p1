@@ -1,15 +1,3 @@
-=begin
-@sparse?
-@diagonal?
-@empty?
-@orthogonal?
-@permutation?
-@square? 
-@zero?
-@symmetric?
-@unitary?	
-@sparsity()
-=end
 
 require 'test/unit'
 require '../sparse_matrix.rb'
@@ -18,6 +6,7 @@ require 'matrix'
 class AttributesUnitTests < Test::Unit::TestCase
 	def setup
 		@max_degree_of_sparsity = 0.5	# to be considered a sparse matrix
+		
 		#invariants for all methods
 		@sparse_matrix = SparseMatrix[[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]]
 		@zero_matrix = SparseMatrix.zero(2)
@@ -25,7 +14,6 @@ class AttributesUnitTests < Test::Unit::TestCase
 		@symmetric_matrix = SparseMatrix[[1,0,0], [0,0,1], [0,1,0]]
 		@sparse_diag_matrix = SparseMatrix.diagonal(1,2,3,4)
 		@empty_matrix = SparseMatrix[[]]
-
 
 		#pre
 		# matrices must be real
