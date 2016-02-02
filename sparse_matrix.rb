@@ -31,7 +31,7 @@ INITIALIZATION METHODS - may change on what we choose to support
   def_delegators :full_matrix, :square?, :real?,
   	:row_count, :column_count, :index, :empty?,
   	:diagonal?, :zero?, :unitary?, :permutation?,
-	:+, :-
+	:+, :-, :determinant, :inverse
 
   def SparseMatrix.[](*rows)
   	#stub
