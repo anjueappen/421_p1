@@ -393,17 +393,26 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	# Division
 	def test_division_numeric_int
+		#setup
+		
 		#pre
+		
+		#data tests
 		
 		#post
 	end
 
 	def test_divison_numeric_float
+		#setup
+		
 		#pre
+		
+		#data tests
 		
 		#post
 	end
-
+	
+	# no implementation in matrix class
 	def test_division_vector_int
 		#setup
 		@sparse_matrix1 = SparseMatrix[[],[],[]]
@@ -413,7 +422,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#post
 	end
-
+	# no implementation in matrix class
 	def test_division_vector_float
 		#setup
 		@sparse_matrix1 = SparseMatrix[[],[],[]]
@@ -465,6 +474,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#data tests
 		
 		#post
+	end
 	
 	#todo test case where exponent is zero?
 	
@@ -480,7 +490,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 	end
-	end
+	
 
 
 	# Matrix Equality
