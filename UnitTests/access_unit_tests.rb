@@ -115,6 +115,11 @@ class AccessUnitTests < Test::Unit::TestCase
     assert_equal Matrix[[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]], @sparse_matrix.full(), "Full matrix should be properly constructed from the SparseMatrix representation."
   end
 
+  def test_full_empty
+    @sparse_matrix = Matrix.zero(3)
+    assert_equal Matrix[[0, 0, 0], [0, 0, 0], [0, 0, 0]],  @sparse_matrix.full(), "Full matrix should be properly constructed from the SparseMatrix representation."
+  end
+
   def test_to_s
     string_rep = @sparse_matrix.to_s
     assert_equal "[[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]]",
