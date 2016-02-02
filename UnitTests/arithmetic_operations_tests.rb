@@ -576,6 +576,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		
 		#post
+		# same as matrix multiplication
 	end
 
 	def test_exponentiation_numeric_float
@@ -588,6 +589,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#data tests
 		
 		#post
+		# same as matrix multiplication
 	end
 	
 	#todo test case where exponent is zero?
@@ -605,52 +607,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 	
-
-
-	# Matrix Equality
-	def test_matrix_equality
-		#setup
-		@sparse_matrix = SparseMatrix[]
-		
-		#pre
-		
-		#post
-
-	end
-	
 	# todo won't store this here. just to remind me to do it
 	def test_matrix_inverse
 	
 	end
 	
 end
-
-
-=begin
-
-todo:
-	try a "non sparse matrix test" just to see our performance differences?
-	test cases with 0 - specifically division, multiplication and exponentiation
-		
-	coerce values? currently assuming values are ok
-	
-
-	implement a sparsity calculator?
-	
-	operations on only non-zero values?
-	
-	worry about really big and really small numbers for floats
-	
-	in terms of post - will have to have resulting matrix with different dimensions for * and /
-	in terms of invariants, will need to have original matrices untouched because things return new matrices
-	
-we are using ints, floats and chars
-	- number
-	- vector
-	- matrix
-
-different tests for ints and floats.  what is a good tolerance for floats?
-need two tests? worried about tolerance for floats.
-what about chars?
-do we always have to ask if a method can call things? or has that method?
-=end
