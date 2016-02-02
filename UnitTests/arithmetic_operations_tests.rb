@@ -647,7 +647,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_in_delta @result_matrix.full(), Matrix[[1,0.48,0,0],[1.22,0,0,0],[0,1.80,1.76,0]], 0.01, "Float divsion incorrect"
 		
 		#post
-		# see multiplication_numeric_float
 		
 		#invariant
 		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
@@ -657,8 +656,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	def test_division_matrix_int
 		#setup
-		@sparse_matrix1 = SparseMatrix[[1,2],[4,5],[6,7]]
-		@sparse_matrix2 = SparseMatrix[[2,4],[7,9]]
+		@sparse_matrix1 = SparseMatrix[[1,0],[4,0],[0,7]]
+		@sparse_matrix2 = SparseMatrix[[2,0],[0,9]]
 		@sparse_clone1 = @sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
 		@sparse_clone2 = @sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
 		
@@ -673,7 +672,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#data tests
 		@result_matrix = @sparse_matrix1/(@sparse_matrix2)
-		assert_in_delta @result_matrix.full(), Matrix[[0.5,0],[-0.10,0.6],[-0.5,1]], 0.01, "Integer matrix division failed"
+		assert_in_delta @result_matrix.full(), Matrix[[0.5,0],[2,0],[0,0.77778]], 0.01, "Integer matrix division failed"
 		
 		#post
 		
@@ -687,8 +686,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_division_matrix_float
 		#setup
-		@sparse_matrix1 = SparseMatrix[[1.10,2.10],[4.50,5.10],[6.20,7.50]]
-		@sparse_matrix2 = SparseMatrix[[2.10,4.10],[7.10,9.10]]
+		@sparse_matrix1 = SparseMatrix[[1.10,0],[4.50,0],[0,0]]
+		@sparse_matrix2 = SparseMatrix[[2.10,0],[0,9.10]]
 		@sparse_clone1 = @sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
 		@sparse_clone2 = @sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
 		
@@ -699,12 +698,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_not_nil @sparse_matrix2.values, "SparseMatrix values stored should not be nil."
 		assert sparse_matrix2.square?, "Cannot didvide - divisor matrix is not square"
 		assert !sparse_matrix2.singular?, "Cannot divide - divisor matrix is singular"
-		assert_equal sparse_matrix1.column_count, sparse_matrix2.row_count, "Incompatible dimensions for matrix division"  ############################## todo when are these initialized?
+		assert_equal sparse_matrix1.column_count, sparse_matrix2.row_count, "Incompatible dimensions for matrix division"
 		
 		
 		#data tests
 		@result_matrix = @sparse_matrix1/(@sparse_matrix2)
-		assert_in_delta @result_matrix.full(), Matrix[[0.49,0.01],[-0.474,0.774],[-0.317,0.967]], 0.01, "Float matrix division failed"
+		assert_in_delta @result_matrix.full(), Matrix[[0.5238,0],[2.1429,0],[0,0]], 0.01, "Float matrix division failed"
 		
 		#post
 		
@@ -713,6 +712,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert !@sparse_matrix1.empty?
 		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
+		
 	end
 
 	# Exponentiation
@@ -738,6 +738,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#invariant
 		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
+		
 	end
 	
 	def test_exponentiation_numeric_int
@@ -762,6 +763,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#invariant
 		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
+		
 	end
 	
 	def test_negative_exponentiation_int
@@ -781,7 +783,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @actual_matrix.full(), Matrix[[0,0,1],[1,0,-1],[-1,1,1]], "Integer matrix eponentiation failed"
 		
 		#post
-		# same as matrix multiplication
 		
 		#invariant
 		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
@@ -791,7 +792,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	def test_matrix_inverse
 		#setup
-		@sparse_matrix = SparseMatrix[[2,4],[7,9]]
+		@sparse_matrix = SparseMatrix[[2,0],[0,1]]
 		@sparse_clone = @sparse_matrix.clone()  # used to check that matrix used in operation was not changed
 		
 		#pre
@@ -802,7 +803,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#data tests
 		@result_matrix = @sparse_matrix.inverse
-		assert_in_delta @result_matrix, Matrix[[-0.9,0.4],[0.7,-0.2]], 0.01, "Matrix inversion failed"
+		assert_in_delta @result_matrix, Matrix[[0.5,0],[0,1]], 0.01, "Matrix inversion failed"
 		
 		#post
 		
