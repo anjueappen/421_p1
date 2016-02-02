@@ -9,6 +9,10 @@ require 'matrix'
 
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
+	#invariant
+	assert !sparse_matrix.empty?
+	# original matrix not changed
+	
 	# Addition
 	def test_increase_all_values_by_int 
 		# setup
@@ -430,7 +434,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 	
-	# no implementation in matrix class
+	# no implementation in matrix class - not valid
 	def test_division_vector_int
 		#setup
 		@sparse_matrix1 = SparseMatrix[[],[],[]]
