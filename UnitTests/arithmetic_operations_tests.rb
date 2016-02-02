@@ -76,31 +76,37 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	def test_addition_vector_int
 		#setup
-		@sparse_matrix1 = SparseMatrix[]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[4],[0],[0],[4]]  #4x1
+		@sparse_matrix2 = SparseMatrix[[1],[1],[0],[0]]  #4x1
 				
 		#pre
 		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.column_count, "Incompatible dimension (column) for matrix addition"
 		
 		#data tests
-		assert_equal
+		assert_equal sparse_matrix1-(sparse_matrix2).values, [5,1,4]
+		assert_equal sparse_matrix1-(sparse_matrix2).val_row, []
+		assert_equal sparse_matrix1-(sparse_matrix2).val_col, []
 		
 	end
 
 	def test_addition_vector_float
 		#setup
-		@sparse_matrix1 = SparseMatrix[]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[4.04],[0],[0],[4.04]]  #4x1
+		@sparse_matrix2 = SparseMatrix[[1.01],[1.02],[0],[0]]  #4x1
 				
 		#pre
 		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.column_count, "Incompatible dimension (column) for matrix addition"
 		
 		#data tests
-		assert_equal
+		assert_equal sparse_matrix1-(sparse_matrix2).values, [5.05,1.02,4.04]
+		assert_equal sparse_matrix1-(sparse_matrix2).val_row, []
+		assert_equal sparse_matrix1-(sparse_matrix2).val_col, []
 		
 		#post
+		assert_equal sparse_matrix1-(sparse_matrix2).row_count, 4
+		assert_equal sparse_matrix1-(sparse_matrix2).column_count, 1
 		
 	end
 
@@ -136,6 +142,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @sparse_matrix1+(@sparse_matrix2), expected_after_addition, "Matrix addition not working correctly"
 		
 		#post
+		
 		
 	end
 
@@ -190,28 +197,40 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_subtraction_vector_int
 		#setup
-		@sparse_matrix1 = SparseMatrix[]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[4],[0],[0],[4]]  #4x1
+		@sparse_matrix2 = SparseMatrix[[1],[1],[0],[0]]  # 4x1
 				
 		#pre
 		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.column_count, "Incompatible dimension (column) for matrix addition"
 		
 		#data tests
-		assert_equal
+		assert_equal sparse_matrix1-(sparse_matrix2).values, [3,-1,4]
+		assert_equal sparse_matrix1-(sparse_matrix2).val_row, []
+		assert_equal sparse_matrix1-(sparse_matrix2).val_col, []
+		
+		#post
+		assert_equal sparse_matrix1-(sparse_matrix2).row_count, 4
+		assert_equal sparse_matrix1-(sparse_matrix2).column_count, 1
 	end
 
 	def test_subtraction_vector_float
 		#setup
-		@sparse_matrix1 = SparseMatrix[]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[4.04],[0],[0],[4.02]]  #4x1
+		@sparse_matrix2 = SparseMatrix[[4.01],[0],[0],[1.01]]  #4x1
 				
 		#pre
 		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.column_count, "Incompatible dimension (column) for matrix addition"
 		
 		#data tests
-		assert_equal	
+		assert_equal sparse_matrix1-(sparse_matrix2).values, [0.03,3.01]
+		assert_equal sparse_matrix1-(sparse_matrix2).val_row, []
+		assert_equal sparse_matrix1-(sparse_matrix2).val_col, []
+		
+		#post
+		assert_equal sparse_matrix1-(sparse_matrix2).row_count, 4
+		assert_equal sparse_matrix1-(sparse_matrix2).column_count, 1
 	end
 
 	def test_subtraction_matrix_int
