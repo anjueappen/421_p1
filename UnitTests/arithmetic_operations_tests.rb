@@ -261,25 +261,44 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	# will return a vector
 	def test_multiplication_vector_int
 		#setup
-		@sparse_matrix1 = SparseMatrix[]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[1,0,3,4],[0,0,0,2],[1,0,0,1]] #3x4
+		@sparse_matrix2 = SparseMatrix[[1],[0],[0],[2]] #4x1
 		
 		#pre
-		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
+		assert @sparse_matrix1.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix1.values, "SparseMatrix values stored should not be nil."
+		assert @sparse_matrix2.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix2.values, "SparseMatrix values stored should not be nil."
+		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
+		
+		#data tests
+		assert_equal @sparse_matrix1*(sparse_matrix2).values, [9,4,3]
 		
 		#post
+		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 1
+		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 3
 	end
 
 	# will return a vector
 	def test_multiplication_vector_float
 		#setup
-		@sparse_matrix1 = SparseMatrix[]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[1.01,0,3.03,4.50],[0,0,0,2.02],[1.01,0,0,1.01]]  #3x4
+		@sparse_matrix2 = SparseMatrix[[1.01],[0],[0],[1.02]] #4x1
 		
 		#pre
-		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
+		assert @sparse_matrix1.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix1.values, "SparseMatrix values stored should not be nil."
+		assert @sparse_matrix2.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix2.values, "SparseMatrix values stored should not be nil."
+		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
+		
+		#data tests
+		assert_equal @sparse_matrix1*(sparse_matrix2).values, [5.6101, 2.0604, 2.0503]
 		
 		#post
+		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 1
+		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 3
+		
 	end
 
 	def test_multiplication_matrix_int
@@ -288,7 +307,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
-		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
+		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
 		#post
 		
@@ -299,8 +318,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		@sparse_matrix1 = SparseMatrix[[],[],[]]
 		@sparse_matrix2 = SparseMatrix[]
 		
-		#pre
-		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.column_count, "incompatible dimensions for matrix multiplication"
+		#pre	
+		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
 		#post
 		
