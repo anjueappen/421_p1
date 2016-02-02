@@ -494,7 +494,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#data tests
 		@result_matrix = @sparse_matrix/(@divisor)
 		assert_equal @result_matrix.values, Matrix[1,0.5,2,2], "Values vector incorrect after integer divsion"
-		assert_equal @result_matrix.full(), [[1,0.5,0,0],[1.5,0,0,0],[0,2,2,0]], "Integer divsion incorrect"
+		assert_in_delta @result_matrix.full(), [[1,0.5,0,0],[1.5,0,0,0],[0,2,2,0]], 0.01, "Integer divsion incorrect"
 		
 		#post
 		# see multiplication_numeric_int
@@ -540,7 +540,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#data tests
 		@result_matrix = @sparse_matrix1/(@sparse_matrix2)
-		assert_equal @result_matrix.full(), Matrix[[0.5,0],[-0.10,0.6],[-0.5,1]], "Integer matrix division failed"
+		assert_in_delta @result_matrix.full(), Matrix[[0.5,0],[-0.10,0.6],[-0.5,1]], 0.01, "Integer matrix division failed"
 		
 		#post
 		
@@ -630,7 +630,21 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	# todo won't store this here. just to remind me to do it
 	def test_matrix_inverse
-	
+		#setup
+		sparse_matrix = SparseMatrix[[2,4],[7,9]]
+		
+		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert sparse_matrix.square?, "Matrix is not square"
+		assert !sparse_matrix.singular?, "Cannot take inverse - matrix is singular"
+		
+		#data tests
+		@result_matrix = @sparse_matrix.inverse
+		assert_in_delta @result_matrix, Matrix[[-0.9,0.4],[0.7,-0.2]], 0.01, "Matrix inversion failed"
+		
+		#post
+		
 	end
 	
 end
