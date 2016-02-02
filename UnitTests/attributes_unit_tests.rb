@@ -24,6 +24,8 @@ class AttributesUnitTests < Test::Unit::TestCase
 		@identity_matrix = SparseMatrix.identity(2)
 		@symmetric_matrix = SparseMatrix[[1,0,0], [0,0,1], [0,1,0]]
 		@sparse_diag_matrix = SparseMatrix.diagonal(1,2,3,4)
+		@empty_matrix = SparseMatrix[[]]
+
 
 		#pre
 		# matrices must be real
@@ -55,7 +57,8 @@ class AttributesUnitTests < Test::Unit::TestCase
 
 	def test_empty?
 		assert !@sparse_matrix .empty?, "Matrix should not be empty."
-		assert @zero_matrix.empty?, "Zero matrix should be empty."
+		assert !@zero_matrix.empty?, "Zero matrix should not be empty."
+		assert @empty_matrix.empty?, "Empty matrix should be empty."
 	end
 
 	def test_orthogonal?
