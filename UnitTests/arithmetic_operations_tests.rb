@@ -26,7 +26,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -50,7 +50,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 	end
 	
@@ -121,9 +121,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 		
 	end
@@ -147,9 +147,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 	end
 
@@ -172,9 +172,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 		
 	end
@@ -198,9 +198,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 	end
 
@@ -224,7 +224,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 
 	end
@@ -247,7 +247,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 				
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -319,9 +319,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 		
 	end
@@ -345,9 +345,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 	end
 
@@ -374,9 +374,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 		
 	end
@@ -404,9 +404,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 		
 	end
@@ -434,7 +434,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		 # col and row vectors did not change
 		
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -461,7 +461,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		# col and row vectors did not change
 		
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 		
 		 
@@ -492,9 +492,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		# col and row vectors did not change
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 	end
 
@@ -524,9 +524,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		# col and row vectors did not change
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 		
 	end
@@ -553,9 +553,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 		
 	end
@@ -582,9 +582,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 	end
 
@@ -612,7 +612,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		# see multiplication_numeric_int
 		
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -640,7 +640,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		# see multiplication_numeric_float
 		
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -668,9 +668,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 		
 	end
@@ -699,9 +699,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
+		assert_equal @sparse_clone1, @sparse_matrix1, "Original matrix was altered"
 		assert !@sparse_matrix1.empty?
-		@assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
+		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
 	end
 
@@ -726,7 +726,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		# same as matrix multiplication
 		
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 	end
 	
@@ -750,7 +750,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		# same as matrix multiplication
 		
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 	end
 	
@@ -774,7 +774,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		# same as matrix multiplication
 		
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -797,7 +797,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		@assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
 		assert !@sparse_matrix.empty?
 		
 	end
