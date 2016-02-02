@@ -394,22 +394,40 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	# Division
 	def test_division_numeric_int
 		#setup
+		@sparse_matrix = SparseMatrix[[2,1,0,0],[3,0,0,0],[0,4,4,0]]
+		@divisor = 2
 		
 		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert @divisor.real?, "Divisor should be real."
+		assert_not_nil @divisor,  "Divisor should not be nil."
+		assert_not_equal(0, @divisor, "divisor cannot be zero")
 		
 		#data tests
+		assert_equal @sparse_matrix/(@divisor).full, [[1,0.5,0,0],[1.5,0,0,0],[0,2,2,0]]
 		
 		#post
+		
 	end
 
 	def test_divison_numeric_float
 		#setup
+		@sparse_matrix = SparseMatrix[[2.50,1.20,0,0],[3.05,0,0,0],[0,4.50,4.40,0]]
+		@divisor = 2.50
 		
 		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert @divisor.real?, "Divisor should be real."
+		assert_not_nil @divisor,  "Divisor should not be nil."
+		assert_not_equal(0, @divisor, "divisor cannot be zero")
 		
 		#data tests
+		assert_equal @sparse_matrix/(@divisor).full, [[1,0.48,0,0],[1.22,0,0,0],[0,1.80,1.76,0]]
 		
 		#post
+		
 	end
 	
 	# no implementation in matrix class
@@ -439,6 +457,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		@sparse_matrix2 = SparseMatrix[]
 		
 		#pre
+		#check if second matrix invertible - not singular
 		
 		#post
 	end
@@ -520,7 +539,6 @@ todo:
 		
 	coerce values? currently assuming values are ok
 	
-	are we going to allow char addition? if so, how will we treat it?
 
 	implement a sparsity calculator?
 	
