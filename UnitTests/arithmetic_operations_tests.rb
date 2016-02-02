@@ -453,21 +453,20 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_division_matrix_int
 		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[1,2],[4,5],[6,7]]
+		@sparse_matrix2 = SparseMatrix[[2,4],[7,9]]
 		
 		#pre
-		#check if second matrix invertible - not singular
 		assert @sparse_matrix1.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix1.values, "SparseMatrix values stored should not be nil."
 		assert @sparse_matrix2.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix2.values, "SparseMatrix values stored should not be nil."
-		assert sparse_matrix2.square?
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count, "incompatible dimensions for matrix division"  ############################## todo when are these initialized?
-		assert_equal sparse_matrix1.column_count, sparse_matrix2.column_count, "incompatible dimensions for matrix division"
+		assert sparse_matrix2.square?, "Cannot didvide - divisor matrix is not square"
+		assert !sparse_matrix2.singular?, "Cannot divide - divisor matrix is singular"
+		assert_equal sparse_matrix1.column_count, sparse_matrix2.row_count, "Incompatible dimensions for matrix division"
 		
 		#data tests
-		assert_equal @sparse_matrix1/(@sparse_matrix2).full, []
+		assert_equal (@sparse_matrix1/(@sparse_matrix2)).full, [[0.5,0],[-0.10,0.6],[-0.5,1]]
 		
 		#post
 		
@@ -475,21 +474,21 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_division_matrix_float
 		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[1.10,2.10],[4.50,5.10],[6.20,7.50]]
+		@sparse_matrix2 = SparseMatrix[[2.10,4.10],[7.10,9.10]]
 		
 		#pre
 		assert @sparse_matrix1.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix1.values, "SparseMatrix values stored should not be nil."
 		assert @sparse_matrix2.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix2.values, "SparseMatrix values stored should not be nil."
-		# what happens with zero values?
-		assert sparse_matrix2.square?
-		assert_equal sparse_matrix1.row_count, sparse_matrix2.row_count, "incompatible dimensions for matrix division"  ############################## todo when are these initialized?
-		assert_equal sparse_matrix1.column_count, sparse_matrix2.column_count, "incompatible dimensions for matrix division"
+		assert sparse_matrix2.square?, "Cannot didvide - divisor matrix is not square"
+		assert !sparse_matrix2.singular?, "Cannot divide - divisor matrix is singular"
+		assert_equal sparse_matrix1.column_count, sparse_matrix2.row_count, "Incompatible dimensions for matrix division"  ############################## todo when are these initialized?
+		
 		
 		#data tests
-		assert_equal @sparse_matrix1/(@sparse_matrix2).full, []
+		assert_equal (@sparse_matrix1/(@sparse_matrix2)).full, [[0.49,0.01],[-0.474,0.774],[-0.317,0.967]]
 		
 		#post
 		
@@ -545,6 +544,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 
 	end
+	
+	# todo won't store this here. just to remind me to do it
+	def test_matrix_inverse
+	
+	end
+	
 end
 
 =begin
