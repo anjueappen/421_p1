@@ -96,8 +96,6 @@ class AccessUnitTests < Test::Unit::TestCase
   end
 
   def test_cofactor
-    # TODO: sm must be a sparse matrix, so can't use example from link
-    #setup
     sm = SparseMatrix[[1,0,0,0], [0,2,0,0], [0,0,3,0],[0,0,0,4]]
 
     #pre        
