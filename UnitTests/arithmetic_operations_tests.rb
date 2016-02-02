@@ -108,8 +108,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#setup
 		@sparse_matrix1 = SparseMatrix[[4],[0],[0],[4]]  #4x1
 		@sparse_matrix2 = SparseMatrix[[1],[1],[0],[0]]  #4x1
-		@sparse_clone1 = @sparse_matrix.clone1()  # used to check that matrix used in operation was not changed
-		@sparse_clone2 = @sparse_matrix.clone2()  # used to check that matrix used in operation was not changed
+		@sparse_clone1 = @sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		@sparse_clone2 = @sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
 		
 		#pre
 		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
@@ -133,8 +133,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#setup
 		@sparse_matrix1 = SparseMatrix[[4.04],[0],[0],[4.04]]  #4x1
 		@sparse_matrix2 = SparseMatrix[[1.01],[1.02],[0],[0]]  #4x1
-		@sparse_clone1 = @sparse_matrix.clone1()  # used to check that matrix used in operation was not changed
-		@sparse_clone2 = @sparse_matrix.clone2()  # used to check that matrix used in operation was not changed
+		@sparse_clone1 = @sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		@sparse_clone2 = @sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
 				
 		#pre
 		assert_equal @sparse_matrix1.row_count, @sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
@@ -158,8 +158,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#setup
 		@sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0],[0,1,0]]
 		@sparse_matrix2 = SparseMatrix[[0,1,0],[0,0,2],[1,0,0],[0,2,0]]
-		@sparse_clone1 = @sparse_matrix.clone1()  # used to check that matrix used in operation was not changed
-		@sparse_clone2 = @sparse_matrix.clone2()  # used to check that matrix used in operation was not changed
+		@sparse_clone1 = @sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		@sparse_clone2 = @sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
 		@expected_matrix = Matrix[[1,1,3],[0,0,3],[3,0,0],[0,3,0]]
 		
 		#pre
@@ -184,8 +184,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#setup
 		@sparse_matrix1 = SparseMatrix[[1.08,0,3.14],[0,0,1.00],[2.02,0,0],[0,1.08,0]]
 		@sparse_matrix2 = SparseMatrix[[0,1.16,0],[0,0,2.04],[1.06,0,0],[0,2.14,0]]
-		@sparse_clone1 = @sparse_matrix.clone1()  # used to check that matrix used in operation was not changed
-		@sparse_clone2 = @sparse_matrix.clone2()  # used to check that matrix used in operation was not changed
+		@sparse_clone1 = @sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		@sparse_clone2 = @sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
 		@expected_matrix = Matrix[[1.08,1.16,3.14],[0,0,3.04],[3.08,0,0],[0,3.24,0]]
 		
 		#pre
