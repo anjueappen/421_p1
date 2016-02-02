@@ -30,7 +30,8 @@ INITIALIZATION METHODS - may change on what we choose to support
   # methods that will be delegated to Matrix class go here!
   def_delegators :full_matrix, :square?, :real?,
   	:row_count, :column_count, :index, :empty?,
-  	:diagonal?, :zero?, :unitary?, :permutation?
+  	:diagonal?, :zero?, :unitary?, :permutation?,
+	:+, :-
 
   def SparseMatrix.[](*rows)
   	#stub
@@ -124,4 +125,34 @@ INITIALIZATION METHODS - may change on what we choose to support
   	#The fraction of non-zero elements over the total number of elements
   end
  
+  def increase_all_values_by(number)
+	# waiting on design decision.
+	#will not stay here. just need it to eliminate errors in tests
+	#stub
+  end
+  
+  # currently need these to have tests which fail but do not have errors
+  # can't call operators from matrix class at the moment due to storage of sparse matrix
+  # could delegate + and - but would need something to convert the matrix to full first
+  
+=begin
+  def +()
+  #stub
+  end
+  
+  def-()
+  #stub
+  end
+ 
+  def *(number)
+  #stub
+  end
+  
+  def /(matrix)
+  #stub
+  end
+  
+  def**(number)
+  end
+=end
 end

@@ -1,0 +1,7 @@
+#require_relative './access_unit_tests.rb'
+require_relative './arithmetic_operations_tests.rb'
+require_relative './attributes_unit_tests.rb'
+require_relative './initialization_unit_tests.rb'
+require_relative './matrix_augmentation_test.rb'
+require_relative './matrix_operation_test.rb'
+require_relative './tridiagonal_tests.rb'

@@ -5,7 +5,7 @@ class TriDiagonalTests < Test::Unit::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    @sparse_matrix = SparseMatrix[[6, 5, 0], [3, 8, 6], [0, 2, 7]]
+    @sparse_matrix = TriDiagonalMatrix[[6, 5, 0], [3, 8, 6], [0, 2, 7]]
 
     #pre
     assert_equal 3, @sparse_matrix.row_count
@@ -15,7 +15,7 @@ class TriDiagonalTests < Test::Unit::TestCase
     assert_equal [0, 1, 0, 1, 2, 1, 2], @sparse_matrix.val_col
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
     assert_true @sparse_matrix.is_tridiagonal?
 
   end
@@ -28,10 +28,10 @@ class TriDiagonalTests < Test::Unit::TestCase
   end
 
   def test_init_diagonal
-    @sparse_matrix = SparseMatrix.diagonal([5,6], [6, 8, 7], [3, 2])
+    @sparse_matrix = TriDiagonalMatrix.diagonal([5,6], [6, 8, 7], [3, 2])
 
     #post
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
     assert_true @sparse_matrix.is_tridiagonal?
     assert_equal 3, @sparse_matrix.row_count
     assert_equal 3, @sparse_matrix.col_count
@@ -56,7 +56,7 @@ class TriDiagonalTests < Test::Unit::TestCase
     @sparse_matrix = SparseMatrix.diagonal(['a', 'b'], ['c', 'd', 'e'], ['f', 'g'])
 
     #post
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
     assert_true @sparse_matrix.is_tridiagonal?
     assert_equal 3, @sparse_matrix.row_count
     assert_equal 3, @sparse_matrix.col_count
@@ -70,7 +70,7 @@ class TriDiagonalTests < Test::Unit::TestCase
     @sparse_matrix.extend_diagonal(2, 3, 4)
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
     assert_true @sparse_matrix.is_tridiagonal?
 
     #post
@@ -86,7 +86,7 @@ class TriDiagonalTests < Test::Unit::TestCase
     @sparse_matrix.extend_diagonal(2.01, 3.01, 4.01)
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
     assert_true @sparse_matrix.is_tridiagonal?
 
     #post
@@ -101,7 +101,7 @@ class TriDiagonalTests < Test::Unit::TestCase
     @sparse_matrix.extend_diagonal('a', 'b', 'c')
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
     assert_true @sparse_matrix.is_tridiagonal?
 
     #post
@@ -117,7 +117,7 @@ class TriDiagonalTests < Test::Unit::TestCase
     x = @sparse_matrix.solve_thomas([4, 4, 3])
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
     assert_true @sparse_matrix.is_tridiagonal?
     assert_equal 3, @sparse_matrix.row_count
     assert_equal 3, @sparse_matrix.col_count
