@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'minitest/unit'
 require '../sparse_matrix.rb'
 require 'matrix'
 
@@ -10,7 +11,7 @@ require 'matrix'
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	#invariant
-	assert !@sparse_matrix.empty?
+	#assert !@sparse_matrix.empty?
 	# original matrix not changed - assert_same?
 	
 	# Addition
@@ -23,7 +24,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_add.is_a? Integer, "Value is not an integer"
+		assert (@value.is_a? Integer), "Value is not an integer"
 		
 		#data tests
 		@actual_matrix = @sparse_matrix.increase_all_values_by(@value)
@@ -42,18 +43,17 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_add.is_a? Float, "Value is not a float"
+		assert (@value.is_a? Float), "Value is not a float"
 		
 		#data tests
-		@actual_matrix = @sparse_matrix.increase_all_values_by(value)
-		assert_equal @actual_matrix.full(), @expected_matrix, "Matrix values were not increased correctly."
+		@actual_matrix = @sparse_matrix.increase_all_values_by(@value)
+		assert_in_delta @actual_matrix.full(), @expected_matrix, 0.01, "Matrix values were not increased correctly."
 		
 		#post
 		# are we going to delete the matrix used to add the scalar?
 		
 	end
 	
-	# this test currently is meant to throw exception
 	def test_addition_numeric_int
 		# setup
 		@sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
@@ -62,7 +62,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_add.is_a? Integer, "Value is not an integer"
+		assert (@value_to_add.is_a? Integer), "Value is not an integer"
 		
 		#data tests  
 		begin
@@ -79,7 +79,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 	
-	#this test is currently meant to throw exception
 	def test_addition_numeric_float
 		# setup
 		@sparse_matrix = SparseMatrix[[1.20,2.20,0],[2.40,0,0],[0,0,1.04]]
@@ -88,7 +87,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_add.is_a? Float, "Value is not a float"
+		assert (@value_to_add.is_a? Float), "Value is not a float"
 		
 		#data tests  
 		begin
@@ -130,7 +129,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#data tests
 		@result_matrix =  @sparse_matrix1+(@sparse_matrix2)
-		assert_equal @result_matrix.full(), Matrix[[5.05],[1.02],[0],[4.04]], "Vector addition failed"
+		assert_in_delta @result_matrix.full(), Matrix[[5.05],[1.02],[0],[4.04]], 0.01, "Vector addition failed"
 		
 		
 		#post
@@ -168,7 +167,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#data tests
 		@result_matrix = @sparse_matrix1+(@sparse_matrix2)
-		assert_equal @result_matrix.full(), expected_matrix, "Float matrix addition not working correctly"
+		assert_in_delta @result_matrix.full(), expected_matrix, 0.01, "Float matrix addition not working correctly"
 		
 		#post
 		
@@ -184,7 +183,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_add.is_a? Integer, "Value is not an integer"
+		assert (@value.is_a? Integer), "Value is not an integer"
 		
 		#data tests
 		@actual_matrix = @sparse_matrix.increase_all_values_by(@value)
@@ -203,11 +202,11 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_add.is_a? Float, "Value is not a float"
+		assert (@value.is_a? Float), "Value is not a float"
 		
 		#data tests
 		@actual_matrix = @sparse_matrix.increase_all_values_by(@value)
-		assert_equal @actual_matrix.full(), @expected_matrix, "Matrix values were not correctly decreased."
+		assert_in_delta @actual_matrix.full(), @expected_matrix, 0.01, "Matrix values were not correctly decreased."
 		
 		#post
 		# are we going to delete the matrix used to add the scalar?
@@ -223,7 +222,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_subtract.is_a? Integer, "Value is not an integer"
+		assert (@value_to_subtract.is_a? Integer), "Value is not an integer"
 		
 		#data tests  
 		begin
@@ -247,7 +246,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_subtract.is_a? Float, "Value is not a float"
+		assert (@value_to_subtract.is_a? Float), "Value is not a float"
 		
 		#data tests  
 		begin
@@ -293,7 +292,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#data tests
 		@actual_matrix =  @sparse_matrix1-(@sparse_matrix2)
-		assert_equal @actual_matrix.full(), @expected_matrix, "Float vector subtraction failed"
+		assert_in_delta @actual_matrix.full(), @expected_matrix, 0.01, "Float vector subtraction failed"
 		
 		#post
 
@@ -337,7 +336,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#data tests
 		@actual_matrix = @sparse_matrix1-(@sparse_matrix2)
-		assert_equal @actual_matrix.full(), @expected_matrix, "Float matrix subtraction not working correctly"
+		assert_in_delta @actual_matrix.full(), @expected_matrix, 0.01, "Float matrix subtraction not working correctly"
 		
 		#post
 		
@@ -347,35 +346,47 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	def test_multiplication_numeric_int
 		#setup
 		@sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
+		@value = 4
 		
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert (@value.is_a? Integer), "Value is not an integer"
 		
 		#data tests
-		assert_equal @sparse_matrix*(4).values, [4,12,4,8] 
+		@actual_matrix =  @sparse_matrix*(@value)
+		assert_equal @actual_matrix.values, Matrix[4,12,4,8], "Multiplication by integer - values vector incorrect"
+		assert_equal @actual_matrix.full(), Matrix[[4,0,12],[0,0,4],[0,8,0]], "Multiplication of matrix by integer failed."
 		
 		#post
-		  
+		 # same number of zeroes in new and old matrix
+		 # old matrix did not change
+		 # col and row vectors did not change
 		
 	end
 
 	def test_multiplication_numeric_float
 		#setup
 		@sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
+		@value = 1.5
 		
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert (@value.is_a? Float), "Value is not a float"
 		
 		#data tests
-		assert_equal @sparse_matrix*(1.5).values, [1.5,4.5,1.5,3] 
+		@actual_matrix =  @sparse_matrix*(@value)
+		assert_equal @actual_matrix.values, [1.5,4.5,1.5,3], "Multiplication by float - values vector incorrect"
+		assert_in_delta @actual_matrix.full(), Matrix[[1.5,0,4.5],[0,0,1.5],[0.3,0]], 0.01, "Multiplication of matrix by float failed."
 		
 		#post
-		
+		# same number of zeroes in new and old matrix
+		# old matrix did not change
+		# col and row vectors did not change
+		 
 	end
 
-	# will return a vector
 	def test_multiplication_vector_int
 		#setup
 		@sparse_matrix1 = SparseMatrix[[1,0,3,4],[0,0,0,2],[1,0,0,1]] #3x4
@@ -389,14 +400,16 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
 		#data tests
-		assert_equal @sparse_matrix1*(sparse_matrix2).values, [9,4,3]
+		@expected_matrix = @sparse_matrix1*(@sparse_matrix2)
+		assert_equal @expected_matrix.values, [9,4,3], "Multiplication by vector(integer) - values vector incorrect "
+		assert_equal @expected_matrix.full(), Matrix[[9],[4],[3]], "Multiplication of matrix by vector(integer) failed."
 		
 		#post
-		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 1
-		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 3
+		# same number of zeroes in new and old matrix
+		# old matrix did not change
+		# col and row vectors did not change
 	end
 
-	# will return a vector
 	def test_multiplication_vector_float
 		#setup
 		@sparse_matrix1 = SparseMatrix[[1.01,0,3.03,4.50],[0,0,0,2.02],[1.01,0,0,1.01]]  #3x4
@@ -410,11 +423,14 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
 		#data tests
-		assert_equal @sparse_matrix1*(sparse_matrix2).values, [5.6101, 2.0604, 2.0503]
+		@expected_matrix = @sparse_matrix1*(@sparse_matrix2)
+		assert_in_delta @expected_matrix.values, [5.6101, 2.0604, 2.0503], 0.01, "Multiplication by vector(float) - values vector incorrect"
+		assert_in_delta @expected_matrix.full(), Matrix[[5.6101],[2.0604],[2.0503]], 0.01, "Multiplication of matrix by vector(float) failed."
 		
 		#post
-		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 1
-		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 3
+		# same number of zeroes in new and old matrix
+		# old matrix did not change
+		# col and row vectors did not change
 		
 	end
 
@@ -431,11 +447,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
 		# data tests
-		assert_equal @sparse_matrix1*(sparse_matrix2).values,[3]
+		@actual_matrix = @sparse_matrix1*(@sparse_matrix2)
+		assert_equal @actual_matrix.values,[3], "Multiplication by matrix(integer) - values vector incorrect"
+		assert_equal @actual_matrix.full(),Matrix[[3,0],[0,0],[0,0]], "Multiplication of matrix by matrix(integer) failed."
 		
 		#post
-		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 3
-		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 2
+		
 	end
 
 	def test_multiplication_matrix_float
@@ -451,11 +468,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
 		#data tests
-		assert_equal @sparse_matrix1*(sparse_matrix2).values,[3.0603]
+		@actual_matrix = @sparse_matrix1*(@sparse_matrix2)
+		assert_in_delta @actual_matrix.values,[3.0603], 0.01, "Multiplication by matrix(float) - values vector incorrect"
+		assert_in_delta @actual_matrix.full(),Matrix[[3.0603,0],[0,0],[0,0]], 0.01, "Multiplication of matrix by matrix(float) failed."
 		
 		#post
-		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 3
-		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 2
+		
 		
 	end
 
@@ -470,12 +488,16 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert @divisor.real?, "Divisor should be real."
 		assert_not_nil @divisor,  "Divisor should not be nil."
+		assert (@divisor.is_a? Integer), "Divisor is not an integer"
 		assert_not_equal(0, @divisor, "divisor cannot be zero")
 		
 		#data tests
-		assert_equal @sparse_matrix/(@divisor).full, [[1,0.5,0,0],[1.5,0,0,0],[0,2,2,0]]
+		@result_matrix = @sparse_matrix/(@divisor)
+		assert_equal @result_matrix.values, Matrix[1,0.5,2,2], "Values vector incorrect after integer divsion"
+		assert_in_delta @result_matrix.full(), [[1,0.5,0,0],[1.5,0,0,0],[0,2,2,0]], 0.01, "Integer divsion incorrect"
 		
 		#post
+		# see multiplication_numeric_int
 		
 	end
 
@@ -489,36 +511,19 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert @divisor.real?, "Divisor should be real."
 		assert_not_nil @divisor,  "Divisor should not be nil."
+		assert (@divisor.is_a? Float), "Divisor is not a float"
 		assert_not_equal(0, @divisor, "divisor cannot be zero")
 		
 		#data tests
-		assert_equal @sparse_matrix/(@divisor).full, [[1,0.48,0,0],[1.22,0,0,0],[0,1.80,1.76,0]]
+		@result_matrix =  @sparse_matrix/(@divisor)
+		assert_in_delta @result_matrix.values, Matrix[1,0.48,1.22,1.80,1.76], 0.01, "Values vector incorrect after float divsion"
+		assert_in_delta @result_matrix.full(), Matrix[[1,0.48,0,0],[1.22,0,0,0],[0,1.80,1.76,0]], 0.01, "Float divsion incorrect"
 		
 		#post
+		# see multiplication_numeric_float
 		
 	end
 	
-	# no implementation in matrix class - not valid
-	def test_division_vector_int
-		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
-		
-		#pre
-		
-		#post
-	end
-	# no implementation in matrix class
-	def test_division_vector_float
-		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
-		
-		#pre
-		
-		#post
-	end
-
 	def test_division_matrix_int
 		#setup
 		@sparse_matrix1 = SparseMatrix[[1,2],[4,5],[6,7]]
@@ -534,7 +539,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal sparse_matrix1.column_count, sparse_matrix2.row_count, "Incompatible dimensions for matrix division"
 		
 		#data tests
-		assert_equal (@sparse_matrix1/(@sparse_matrix2)).full, [[0.5,0],[-0.10,0.6],[-0.5,1]]
+		@result_matrix = @sparse_matrix1/(@sparse_matrix2)
+		assert_in_delta @result_matrix.full(), Matrix[[0.5,0],[-0.10,0.6],[-0.5,1]], 0.01, "Integer matrix division failed"
 		
 		#post
 		
@@ -556,102 +562,89 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		
 		#data tests
-		assert_equal (@sparse_matrix1/(@sparse_matrix2)).full, [[0.49,0.01],[-0.474,0.774],[-0.317,0.967]]
+		@result_matrix = @sparse_matrix1/(@sparse_matrix2)
+		assert_in_delta @result_matrix.full(), Matrix[[0.49,0.01],[-0.474,0.774],[-0.317,0.967]], 0.01, "Float matrix division failed"
 		
 		#post
 		
 	end
 
-	
 	# Exponentiation
-	def test_exponentiation_numeric_int
+	def test_exponentiation_zero
 		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
+		@sparse_matrix = SparseMatrix[[0,2],[1,0]]
+		@exponent = 0
 		
 		#pre
-		
-		#post
-	end
-
-	def test_exponentiation_numeric_float
-		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
-		
-		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert (@exponent.is_a? Integer), "Exponent is not an integer"
+		assert @sparse_matrix.square?, "Matrix is not square"
 		
 		#data tests
+		@actual_matrix = @sparse_matrix**(@exponent)
+		assert_equal @actual_matrix.full(), Matrix.identity(@sparse_matrix.row_count), "Matrix eponentiation failed"
 		
 		#post
+		# same as matrix multiplication
 	end
 	
-	#todo test case where exponent is zero?
+	def test_exponentiation_numeric_int
+		#setup
+		@sparse_matrix = SparseMatrix[[0,2,1],[1,0,0],[0,3,0]]
+		@exponent = 2
+		
+		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert (@exponent.is_a? Integer), "Exponent is not an integer"
+		assert @sparse_matrix.square?, "Matrix is not square"
+		
+		#data tests
+		@actual_matrix = @sparse_matrix**(@exponent)
+		assert_equal @actual_matrix.full(), Matrix[[2,3,0],[0,2,1],[3,0,0]], "Integer matrix eponentiation failed"
+		
+		#post
+		# same as matrix multiplication
+	end
 	
 	def test_negative_exponentiation_int
 		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix = SparseMatrix[[0,1,1],[1,0,0],[0,1,0]]
+		@exponent = -2
 		
 		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert (@exponent.is_a? Integer), "Exponent is not an integer"
+		assert @sparse_matrix.square?, "Matrix is not square"
 		
 		#data tests
+		@actual_matrix = @sparse_matrix**(@exponent)
+		assert_equal @actual_matrix.full(), Matrix[[0,0,1],[1,0,-1],[-1,1,1]], "Integer matrix eponentiation failed"
 		
 		#post
+		# same as matrix multiplication
 		
-	end
-	
-
-
-	# Matrix Equality
-	def test_matrix_equality
-		#setup
-		@sparse_matrix = SparseMatrix[]
-		
-		#pre
-		
-		#post
-
 	end
 	
 	# todo won't store this here. just to remind me to do it
 	def test_matrix_inverse
-	
+		#setup
+		sparse_matrix = SparseMatrix[[2,4],[7,9]]
+		
+		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert sparse_matrix.square?, "Matrix is not square"
+		assert !sparse_matrix.singular?, "Cannot take inverse - matrix is singular"
+		
+		#data tests
+		@result_matrix = @sparse_matrix.inverse
+		assert_in_delta @result_matrix, Matrix[[-0.9,0.4],[0.7,-0.2]], 0.01, "Matrix inversion failed"
+		
+		#post
+		
 	end
 	
 end
-
-=begin
-need to test @+() and @-() before deciding how to test them.
-
-put equality tests here as well?
-=end
-
-
-=begin
-
-todo:
-	try a "non sparse matrix test" just to see our performance differences?
-	test cases with 0 - specifically division, multiplication and exponentiation
-		
-	coerce values? currently assuming values are ok
-	
-
-	implement a sparsity calculator?
-	
-	operations on only non-zero values?
-	
-	worry about really big and really small numbers for floats
-	
-	in terms of post - will have to have resulting matrix with different dimensions for * and /
-	in terms of invariants, will need to have original matrices untouched because things return new matrices
-	
-we are using ints, floats and chars
-	- number
-	- vector
-	- matrix
-
-different tests for ints and floats.  what is a good tolerance for floats?
-need two tests? worried about tolerance for floats.
-what about chars?
-do we always have to ask if a method can call things? or has that method?
-=end

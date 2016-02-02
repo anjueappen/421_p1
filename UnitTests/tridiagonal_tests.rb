@@ -137,4 +137,11 @@ class TriDiagonalTests < Test::Unit::TestCase
       end
     end
   end
+
+  def test_isTridiagonal_2x2
+    @sparse_matrix = TriDiagonalMatrix[[1, 2], [3, 4]]
+    assert_false @sparse_matrix.is_tridiagonal?
+    assert_false @sparse_matrix.is_sparse?
+
+  end
 end
