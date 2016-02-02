@@ -131,15 +131,8 @@ INITIALIZATION METHODS - may change on what we choose to support
   end
 
   def increase_all_values_by(number)
-	# waiting on design decision.
-	#will not stay here. just need it to eliminate errors in tests
 	#stub
   end
-  
-  # currently need these to have tests which fail but do not have errors
-  # can't call operators from matrix class at the moment due to storage of sparse matrix
-  # could delegate + and - but would need something to convert the matrix to full first
-  
  
   def *(numeric_arg)
   #stub
