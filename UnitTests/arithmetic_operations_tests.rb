@@ -569,41 +569,61 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	end
 
 	# Exponentiation
-	def test_exponentiation_numeric_int
+	def test_exponentiation_zero
 		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
+		@sparse_matrix = SparseMatrix[[0,2],[1,0]]
+		@exponent = 0
 		
 		#pre
-		
-		#post
-		# same as matrix multiplication
-	end
-
-	def test_exponentiation_numeric_float
-		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
-		
-		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert @exponent.is_a? Integer, "Exponent is not an integer"
+		assert @sparse_matrix.square?, "Matrix is not square"
 		
 		#data tests
+		@actual_matrix = @sparse_matrix**(@exponent)
+		assert_equal @actual_matrix.full(), Matrix.identity(@sparse_matrix.row_count), "Matrix eponentiation failed"
 		
 		#post
 		# same as matrix multiplication
 	end
 	
-	#todo test case where exponent is zero?
+	def test_exponentiation_numeric_int
+		#setup
+		@sparse_matrix = SparseMatrix[[0,2,1],[1,0,0],[0,3,0]]
+		@exponent = 2
+		
+		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert @exponent.is_a? Integer, "Exponent is not an integer"
+		assert @sparse_matrix.square?, "Matrix is not square"
+		
+		#data tests
+		@actual_matrix = @sparse_matrix**(@exponent)
+		assert_equal @actual_matrix.full(), Matrix[[2,3,0],[0,2,1],[3,0,0]], "Integer matrix eponentiation failed"
+		
+		#post
+		# same as matrix multiplication
+	end
 	
 	def test_negative_exponentiation_int
 		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix = SparseMatrix[[0,1,1],[1,0,0],[0,1,0]]
+		@exponent = -2
 		
 		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert @exponent.is_a? Integer, "Exponent is not an integer"
+		assert @sparse_matrix.square?, "Matrix is not square"
 		
 		#data tests
+		@actual_matrix = @sparse_matrix**(@exponent)
+		assert_equal @actual_matrix.full(), Matrix[[0,0,1],[1,0,-1],[-1,1,1]], "Integer matrix eponentiation failed"
 		
 		#post
+		# same as matrix multiplication
 		
 	end
 	
