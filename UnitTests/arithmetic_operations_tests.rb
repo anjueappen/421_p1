@@ -303,25 +303,42 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_multiplication_matrix_int
 		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[0,0,1,0],[0,2,0,2],[0,1,0,2]]  #3x4
+		@sparse_matrix2 = SparseMatrix[[0,1],[0,0],[3,0],[0,0]]  #4x2
 		
 		#pre
+		assert @sparse_matrix1.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix1.values, "SparseMatrix values stored should not be nil."
+		assert @sparse_matrix2.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix2.values, "SparseMatrix values stored should not be nil."
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
-		#post
+		# data tests
+		assert_equal @sparse_matrix1*(sparse_matrix2).values,[3]
 		
+		#post
+		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 3
+		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 2
 	end
 
 	def test_multiplication_matrix_float
 		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
+		@sparse_matrix1 = SparseMatrix[[0,0,1.01,0],[0,2.05,0,2.50],[0,1.20,0,2.02]]  #3x4
+		@sparse_matrix2 = SparseMatrix[[0,1.04],[0,0],[3.03,0],[0,0]]  #4x2
 		
-		#pre	
+		#pre
+		assert @sparse_matrix1.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix1.values, "SparseMatrix values stored should not be nil."
+		assert @sparse_matrix2.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix2.values, "SparseMatrix values stored should not be nil."
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
+		#data tests
+		assert_equal @sparse_matrix1*(sparse_matrix2).values,[3.0603]
+		
 		#post
+		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 3
+		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 2
 		
 	end
 
