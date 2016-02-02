@@ -491,9 +491,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_not_equal(0, @divisor, "divisor cannot be zero")
 		
 		#data tests
-		assert_equal @sparse_matrix/(@divisor).full, [[1,0.5,0,0],[1.5,0,0,0],[0,2,2,0]]
+		@result_matrix = @sparse_matrix/(@divisor)
+		assert_equal @result_matrix.values, Matrix[1,0.5,2,2]
+		assert_equal @result_matrix.full(), [[1,0.5,0,0],[1.5,0,0,0],[0,2,2,0]]
 		
 		#post
+		# see multiplication_numeric_int
 		
 	end
 
@@ -511,9 +514,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_not_equal(0, @divisor, "divisor cannot be zero")
 		
 		#data tests
-		assert_equal @sparse_matrix/(@divisor).full, [[1,0.48,0,0],[1.22,0,0,0],[0,1.80,1.76,0]]
+		@result_matrix =  @sparse_matrix/(@divisor)
+		assert_equal @result_matrix.values, Matrix[1,0.48,1.22,1.80,1.76]
+		assert_equal @result_matrix.full(), Matrix[[1,0.48,0,0],[1.22,0,0,0],[0,1.80,1.76,0]]
 		
 		#post
+		# see multiplication_numeric_float
 		
 	end
 	
@@ -532,7 +538,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal sparse_matrix1.column_count, sparse_matrix2.row_count, "Incompatible dimensions for matrix division"
 		
 		#data tests
-		assert_equal (@sparse_matrix1/(@sparse_matrix2)).full, [[0.5,0],[-0.10,0.6],[-0.5,1]]
+		@result_matrix = @sparse_matrix1/(@sparse_matrix2)
+		assert_equal @result_matrix.full(), Matrix[[0.5,0],[-0.10,0.6],[-0.5,1]]
 		
 		#post
 		
@@ -554,7 +561,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		
 		#data tests
-		assert_equal (@sparse_matrix1/(@sparse_matrix2)).full, [[0.49,0.01],[-0.474,0.774],[-0.317,0.967]]
+		@result_matrix = @sparse_matrix1/(@sparse_matrix2)
+		assert_equal @result_matrix.full(), Matrix[[0.49,0.01],[-0.474,0.774],[-0.317,0.967]]
 		
 		#post
 		
