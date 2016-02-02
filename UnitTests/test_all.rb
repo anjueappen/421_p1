@@ -1,4 +1,4 @@
-#require_relative './access_unit_tests.rb'
+require_relative './access_unit_tests.rb'
 require_relative './arithmetic_operations_tests.rb'
 require_relative './attributes_unit_tests.rb'
 require_relative './initialization_unit_tests.rb'

@@ -6,7 +6,7 @@ require 'matrix'
 class AccessUnitTests < Test::Unit::TestCase
   def setup
     @sparse_matrix = SparseMatrix[[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]]
-    @zero_matrix = SparseMatrix.zero(2,2)
+    @zero_matrix = SparseMatrix.zero(2)
     @sm_w_duplicates = SparseMatrix[[1,0], [0,2], [1,0]]
     @empty_matrix = SparseMatrix[[]]
 
@@ -53,16 +53,9 @@ class AccessUnitTests < Test::Unit::TestCase
   end
 
   def test_collect
-    # TODO: not sure how to test block argument that collect will take for pre-conditions (i.e. valid operation on elements in the matrix)
-    #setup
-    @sparse_matrix = SparseMatrix[[0,1,0],[2,0,0]]
+    collect_result = @sparse_matrix.collect{|e| e}
 
-    #pre
-    assert !@sparse_matrix.empty?
-
-    #data tests
-
-    #post
+    assert_equal collect_result, @sparse_matrix.full(), "These matrices should be equal."
   end
 
   def test_index
