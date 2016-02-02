@@ -496,6 +496,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert !@sparse_matrix1.empty?
 		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
+		assert_equal @expected_matrix.row_count, @sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
+		assert_equal @expected_matrix.column_count, @sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
+		
 	end
 
 	def test_multiplication_vector_float
@@ -528,6 +531,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert !@sparse_matrix1.empty?
 		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
+		assert_equal @expected_matrix.row_count, @sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
+		assert_equal @expected_matrix.column_count, @sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
 		
 	end
 
@@ -557,7 +562,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert !@sparse_matrix1.empty?
 		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
-		
+		assert_equal @expected_matrix.row_count, @sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
+		assert_equal @expected_matrix.column_count, @sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
+	
 	end
 
 	def test_multiplication_matrix_float
@@ -586,6 +593,9 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert !@sparse_matrix1.empty?
 		assert_equal @sparse_clone2, @sparse_matrix2, "Original matrix was altered"
 		assert !@sparse_matrix2.empty?
+		assert_equal @expected_matrix.row_count, @sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
+		assert_equal @expected_matrix.column_count, @sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
+	
 	end
 
 	# Division
