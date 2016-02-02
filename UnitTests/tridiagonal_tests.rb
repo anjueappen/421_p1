@@ -128,6 +128,7 @@ class TriDiagonalTests < Test::Unit::TestCase
 
   def test_thomas_algorithm_insufficient_length
     begin
+      @sparse_matrix.solve_thomas([1])
     rescue Exception => e
       if e.is_a? InsufficientVectorLength
         pass "Correct exception raised"

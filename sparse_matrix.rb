@@ -12,6 +12,7 @@ Don't see need for them yet, therefore not adding right now.
   @values
   @val_row
   @val_col
+  @max_degree_of_sparsity = 0.5
 
   attr_reader :full_matrix, :values, :val_row, :val_col
 =begin
@@ -29,7 +30,8 @@ INITIALIZATION METHODS - may change on what we choose to support
   # methods that will be delegated to Matrix class go here!
   def_delegators :full_matrix, :square?, :real?,
   	:row_count, :column_count, :index, :empty?,
-  	:diagonal?, :+, :-
+  	:diagonal?, :zero?, :unitary?, :permutation?,
+	:+, :-
 
   def SparseMatrix.[](*rows)
   	#stub
@@ -48,6 +50,15 @@ INITIALIZATION METHODS - may change on what we choose to support
   def SparseMatrix.diagonal(*elements)
   	#stub
   	@full_matrix = Matrix.diagonal(*elements)
+  	# stub values below, TODO: code actual functionality with compress_store
+    @values = []
+  	@val_col = []
+  	@val_row = []
+  end
+
+  def SparseMatrix.identity(col)
+  	#stub
+  	@full_matrix = Matrix.identity(col)
   	# stub values below, TODO: code actual functionality with compress_store
     @values = []
   	@val_col = []
@@ -108,6 +119,10 @@ INITIALIZATION METHODS - may change on what we choose to support
 
   def sparse?
   	#stub
+  end
+
+  def sparsity
+  	#The fraction of non-zero elements over the total number of elements
   end
  
   def increase_all_values_by(number)

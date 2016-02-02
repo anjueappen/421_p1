@@ -10,10 +10,10 @@ class MatrixAugmentationTest < Test::Unit::TestCase
     @sparse_matrix = SparseMatrix[[1,0], [0,2]]
 
     #pre
-    assert_true sparse_matrix.is_a? Matrix 
-    assert_equal [1, 2], @sparse_matrix.values 
-    assert_equal [0, 1], @sparse_matrix.val_row 
-    assert_equal [0, 1], @sparse_matrix.val_col 
+    assert_true sparse_matrix.is_a? Matrix
+    assert_equal [1, 2], @sparse_matrix.values
+    assert_equal [0, 1], @sparse_matrix.val_row
+    assert_equal [0, 1], @sparse_matrix.val_col
   end
 
   # Called after every test method runs. Can be used to tear
@@ -27,48 +27,60 @@ class MatrixAugmentationTest < Test::Unit::TestCase
   def test_add_integer
     row = 3
     column = 3
-    @sparse_matrix.putNonZero 5, row, column 
+    @sparse_matrix.putNonZero 5, row, column
 
     #post
-    assert_true sparse_matrix.is_a? Matrix 
-    assert_equal [1, 2, 5], @sparse_matrix.values 
-    assert_equal [0, 1, 3], @sparse_matrix.val_row 
-    assert_equal [0, 1, 3], @sparse_matrix.val_col 
+    assert_true sparse_matrix.is_a? Matrix
+    assert_equal [1, 2, 5], @sparse_matrix.values
+    assert_equal [0, 1, 3], @sparse_matrix.val_row
+    assert_equal [0, 1, 3], @sparse_matrix.val_col
   end
 
   def test_add_char
     row = 3
     column = 3
-    @sparse_matrix.putNonZero 'a', row, column 
+    @sparse_matrix.putNonZero 'a', row, column
 
     #post
-    assert_true sparse_matrix.is_a? Matrix 
-    assert_equal [1, 2, 'a'], @sparse_matrix.values 
-    assert_equal [0, 1, 3], @sparse_matrix.val_row 
-    assert_equal [0, 1, 3], @sparse_matrix.val_col 
+    assert_true sparse_matrix.is_a? Matrix
+    assert_equal [1, 2, 'a'], @sparse_matrix.values
+    assert_equal [0, 1, 3], @sparse_matrix.val_row
+    assert_equal [0, 1, 3], @sparse_matrix.val_col
   end
 
   def test_add_float
     row = 3
     column = 3
-    @sparse_matrix.putNonZero 'a', row, column 
+    @sparse_matrix.putNonZero 'a', row, column
 
     #post
-    assert_true sparse_matrix.is_a? Matrix 
-    assert_equal [1, 2, 'a'], @sparse_matrix.values 
-    assert_equal [0, 1, 3], @sparse_matrix.val_row 
-    assert_equal [0, 1, 3], @sparse_matrix.val_col 
+    assert_true sparse_matrix.is_a? Matrix
+    assert_equal [1, 2, 'a'], @sparse_matrix.values
+    assert_equal [0, 1, 3], @sparse_matrix.val_row
+    assert_equal [0, 1, 3], @sparse_matrix.val_col
   end
 
   def test_overwrite
     row = 1
     column =  1
-    @sparse_matrix.putNonZero 5, row, column 
+    @sparse_matrix.putNonZero 5, row, column
 
     #post
-    assert_true sparse_matrix.is_a? Matrix 
-    assert_equal [1, 5], @sparse_matrix.values 
-    assert_equal [0, 1], @sparse_matrix.val_row 
-    assert_equal [0, 1], @sparse_matrix.val_col 
+    assert_true sparse_matrix.is_a? Matrix
+    assert_equal [1, 5], @sparse_matrix.values
+    assert_equal [0, 1], @sparse_matrix.val_row
+    assert_equal [0, 1], @sparse_matrix.val_col
+  end
+
+  def test_put_insufficient_args
+    begin
+      @sparse_matrix.putNonZero 5, 4, 3, 2
+    rescue Exception => e
+      if e.is_a? InsufficientVectorLength
+        pass "Correct exception raised"
+      else
+        fail "Incorrect excpetion raised"
+      end
+    end
   end
 end
