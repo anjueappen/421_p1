@@ -23,7 +23,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_add.is_a? Integer, "Value is not an integer"
+		assert @value.is_a? Integer, "Value is not an integer"
 		
 		#data tests
 		@actual_matrix = @sparse_matrix.increase_all_values_by(@value)
@@ -42,10 +42,10 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_add.is_a? Float, "Value is not a float"
+		assert @value.is_a? Float, "Value is not a float"
 		
 		#data tests
-		@actual_matrix = @sparse_matrix.increase_all_values_by(value)
+		@actual_matrix = @sparse_matrix.increase_all_values_by(@value)
 		assert_equal @actual_matrix.full(), @expected_matrix, "Matrix values were not increased correctly."
 		
 		#post
@@ -182,7 +182,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_add.is_a? Integer, "Value is not an integer"
+		assert @value.is_a? Integer, "Value is not an integer"
 		
 		#data tests
 		@actual_matrix = @sparse_matrix.increase_all_values_by(@value)
@@ -201,7 +201,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert @value_to_add.is_a? Float, "Value is not a float"
+		assert @value.is_a? Float, "Value is not a float"
 		
 		#data tests
 		@actual_matrix = @sparse_matrix.increase_all_values_by(@value)
@@ -487,6 +487,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert @divisor.real?, "Divisor should be real."
 		assert_not_nil @divisor,  "Divisor should not be nil."
+		assert @divisor.is_a? Integer, "Divisor is not an integer"
 		assert_not_equal(0, @divisor, "divisor cannot be zero")
 		
 		#data tests
@@ -506,6 +507,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert @divisor.real?, "Divisor should be real."
 		assert_not_nil @divisor,  "Divisor should not be nil."
+		assert @divisor.is_a? Float, "Divisor is not a float"
 		assert_not_equal(0, @divisor, "divisor cannot be zero")
 		
 		#data tests
