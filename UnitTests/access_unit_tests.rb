@@ -6,7 +6,7 @@ require 'matrix'
 class AccessUnitTests < Test::Unit::TestCase
   def setup
     @sparse_matrix = SparseMatrix[[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]]
-    @zero_matrix = SparseMatrix.zero(2,2)
+    @zero_matrix = SparseMatrix.zero(2)
     @sm_w_duplicates = SparseMatrix[[1,0], [0,2], [1,0]]
     @empty_matrix = SparseMatrix[[]]
 

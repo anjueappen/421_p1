@@ -20,7 +20,7 @@ class AttributesUnitTests < Test::Unit::TestCase
 		@max_degree_of_sparsity = 0.5	# to be considered a sparse matrix
 		#invariants for all methods
 		@sparse_matrix = SparseMatrix[[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]]
-		@zero_matrix = SparseMatrix.zero(2,2)
+		@zero_matrix = SparseMatrix.zero(2)
 		@identity_matrix = SparseMatrix.identity(2)
 		@symmetric_matrix = SparseMatrix[[1,0,0], [0,0,1], [0,1,0]]
 		@sparse_diag_matrix = SparseMatrix.diagonal(1,2,3,4)

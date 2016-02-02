@@ -1,8 +1,6 @@
 require 'matrix'
-require 'forwardable'
 
 class SparseMatrix 
-	extend Forwardable
 
 =begin
 Do we want attr_readers and writers at this point?
@@ -27,20 +25,23 @@ INITIALIZATION METHODS - may change on what we choose to support
     #compress_store(@full_matrix)
   end
 
-  # methods that will be delegated to Matrix class go here!
-  def_delegators :full_matrix, :square?, :real?,
-  	:row_count, :column_count, :index, :empty?,
-  	:diagonal?, :zero?, :unitary?, :permutation?,
-		:+, :-, :determinant, :inverse
+  def method_missing(method, *args)
+  	# TODO: the call for @full_matrix should be replaced with a function that generates the full matrix from our compressed storage! 
+  	if @full_matrix.respond_to?(method)
+  		@full_matrix.send(method, *args)
+  	else
+  		super
+  	end
+  end
 
   def SparseMatrix.[](*rows)
   	#stub
   	SparseMatrix.new(*rows)	#delegate to initialize
   end
 
-  def SparseMatrix.zero(row,col)
+  def SparseMatrix.zero(size)
   	#stub
-  	@full_matrix = Matrix.zero(row,col)
+  	@full_matrix = Matrix.zero(size)
   	# stub values below, TODO: code actual functionality with compress_store
     @values = []
   	@val_col = []
