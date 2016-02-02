@@ -10,7 +10,7 @@ require 'matrix'
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	#invariant
-	assert !@sparse_matrix.empty?
+	#assert !@sparse_matrix.empty?
 	# original matrix not changed - assert_same?
 	
 	# Addition
@@ -53,7 +53,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 	
-	# this test currently is meant to throw exception
 	def test_addition_numeric_int
 		# setup
 		@sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
@@ -79,7 +78,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 	
-	#this test is currently meant to throw exception
 	def test_addition_numeric_float
 		# setup
 		@sparse_matrix = SparseMatrix[[1.20,2.20,0],[2.40,0,0],[0,0,1.04]]
@@ -347,35 +345,47 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	def test_multiplication_numeric_int
 		#setup
 		@sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
+		@value = 4
 		
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert @value.is_a? Integer, "Value is not an integer"
 		
 		#data tests
-		assert_equal @sparse_matrix*(4).values, [4,12,4,8] 
+		@actual_matrix =  @sparse_matrix*(@value)
+		assert_equal @actual_matrix.values, Matrix[4,12,4,8], "Multiplication by integer - values vector incorrect"
+		assert_equal @actual_matrix.full(), Matrix[[4,0,12],[0,0,4],[0,8,0]], "Multiplication of matrix by integer failed."
 		
 		#post
-		  
+		 # same number of zeroes in new and old matrix
+		 # old matrix did not change
+		 # col and row vectors did not change
 		
 	end
 
 	def test_multiplication_numeric_float
 		#setup
 		@sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
+		@value = 1.5
 		
 		#pre
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert @value.is_a? Float, "Value is not a float"
 		
 		#data tests
-		assert_equal @sparse_matrix*(1.5).values, [1.5,4.5,1.5,3] 
+		@actual_matrix =  @sparse_matrix*(@value)
+		assert_equal @actual_matrix.values, [1.5,4.5,1.5,3], "Multiplication by float - values vector incorrect"
+		assert_equal @actual_matrix.full(), Matrix[[1.5,0,4.5],[0,0,1.5],[0.3,0]], "Multiplication of matrix by float failed."
 		
 		#post
-		
+		# same number of zeroes in new and old matrix
+		# old matrix did not change
+		# col and row vectors did not change
+		 
 	end
 
-	# will return a vector
 	def test_multiplication_vector_int
 		#setup
 		@sparse_matrix1 = SparseMatrix[[1,0,3,4],[0,0,0,2],[1,0,0,1]] #3x4
@@ -389,14 +399,16 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
 		#data tests
-		assert_equal @sparse_matrix1*(sparse_matrix2).values, [9,4,3]
+		@expected_matrix = @sparse_matrix1*(@sparse_matrix2)
+		assert_equal @expected_matrix.values, [9,4,3], "Multiplication by vector(integer) - values vector incorrect "
+		assert_equal @expected_matrix.full(), Matrix[[9],[4],[3]], "Multiplication of matrix by vector(integer) failed."
 		
 		#post
-		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 1
-		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 3
+		# same number of zeroes in new and old matrix
+		# old matrix did not change
+		# col and row vectors did not change
 	end
 
-	# will return a vector
 	def test_multiplication_vector_float
 		#setup
 		@sparse_matrix1 = SparseMatrix[[1.01,0,3.03,4.50],[0,0,0,2.02],[1.01,0,0,1.01]]  #3x4
@@ -410,11 +422,14 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
 		#data tests
-		assert_equal @sparse_matrix1*(sparse_matrix2).values, [5.6101, 2.0604, 2.0503]
+		@expected_matrix = @sparse_matrix1*(@sparse_matrix2)
+		assert_equal @expected_matrix.values, [5.6101, 2.0604, 2.0503], "Multiplication by vector(float) - values vector incorrect"
+		assert_equal @expected_matrix.full(), Matrix[[5.6101],[2.0604],[2.0503]], "Multiplication of matrix by vector(float) failed."
 		
 		#post
-		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 1
-		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 3
+		# same number of zeroes in new and old matrix
+		# old matrix did not change
+		# col and row vectors did not change
 		
 	end
 
@@ -431,11 +446,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
 		# data tests
-		assert_equal @sparse_matrix1*(sparse_matrix2).values,[3]
+		@actual_matrix = @sparse_matrix1*(@sparse_matrix2)
+		assert_equal @actual_matrix.values,[3], "Multiplication by matrix(integer) - values vector incorrect"
+		assert_equal @actual_matrix.full(),Matrix[[3,0],[0,0],[0,0]], "Multiplication of matrix by matrix(integer) failed."
 		
 		#post
-		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 3
-		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 2
+		
 	end
 
 	def test_multiplication_matrix_float
@@ -451,11 +467,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal @sparse_matrix1.column_count, @sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
 		#data tests
-		assert_equal @sparse_matrix1*(sparse_matrix2).values,[3.0603]
+		@actual_matrix = @sparse_matrix1*(@sparse_matrix2)
+		assert_equal @actual_matrix.values,[3.0603], "Multiplication by matrix(float) - values vector incorrect"
+		assert_equal @actual_matrix.full(),Matrix[[3.0603,0],[0,0],[0,0]], "Multiplication of matrix by matrix(float) failed."
 		
 		#post
-		assert_equal @sparse_matrix1*(sparse_matrix2).row_count, 3
-		assert_equal @sparse_matrix1*(sparse_matrix2).column_count, 2
+		
 		
 	end
 
@@ -498,27 +515,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 	
-	# no implementation in matrix class - not valid
-	def test_division_vector_int
-		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
-		
-		#pre
-		
-		#post
-	end
-	# no implementation in matrix class
-	def test_division_vector_float
-		#setup
-		@sparse_matrix1 = SparseMatrix[[],[],[]]
-		@sparse_matrix2 = SparseMatrix[]
-		
-		#pre
-		
-		#post
-	end
-
 	def test_division_matrix_int
 		#setup
 		@sparse_matrix1 = SparseMatrix[[1,2],[4,5],[6,7]]
@@ -562,7 +558,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 
-	
 	# Exponentiation
 	def test_exponentiation_numeric_int
 		#setup
@@ -619,12 +614,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	end
 	
 end
-
-=begin
-need to test @+() and @-() before deciding how to test them.
-
-put equality tests here as well?
-=end
 
 
 =begin

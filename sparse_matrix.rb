@@ -135,24 +135,17 @@ INITIALIZATION METHODS - may change on what we choose to support
   # can't call operators from matrix class at the moment due to storage of sparse matrix
   # could delegate + and - but would need something to convert the matrix to full first
   
-=begin
-  def +()
-  #stub
-  end
-  
-  def-()
-  #stub
-  end
  
-  def *(number)
+  def *(numeric_arg)
   #stub
   end
   
-  def /(matrix)
+  def /(numeric_arg)
   #stub
   end
   
-  def**(number)
+  def**(numeric_arg)
+  #stub
   end
-=end
+
 end
