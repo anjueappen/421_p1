@@ -71,8 +71,8 @@ class AccessUnitTests < Test::Unit::TestCase
     assert_equal nil, @sm_w_duplicates.index(3), "Testing index(n) method for result when n does not exist in the matrix failed."
 
     #post
-    assert_operator @sm_w_duplicates.index(1)[0], :>=. 0, "Indices returned should be positive."
-    assert_operator @sm_w_duplicates.index(1)[1], :>=. 0, "Indices returned should be positive."
+    assert_operator @sm_w_duplicates.index(1)[0], :>=, 0, "Indices returned should be positive."
+    assert_operator @sm_w_duplicates.index(1)[1], :>=, 0, "Indices returned should be positive."
     assert_nil @sm_w_duplicates.index(3), "Result returned should be nil for elements that don't exist in the matrix."
   end
 
