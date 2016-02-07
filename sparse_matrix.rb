@@ -186,17 +186,46 @@ INITIALIZATION METHODS
 	
 	end
  
-	def *(arg)			
+	def *(arg)
+			
+			case(arg)
+			
+			when Numeric
 				if arg.zero?
 					return SparseMatrix.zero(self.row_count, self.column_count) 
 				else
 					new_values = self.values.collect {|value| value*arg}
 					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row)  #only values vector will change
 				end
+			
+			when Vector
+			
+			when Matrix
+			
+			else
+				#try to coerce, but fail? or just raise exception?
+			end
 	end
 
 	def /(numeric_arg)
-		#stub
+			case(arg)
+			
+			when Numeric
+				if arg.zero?
+					# todo raise Exception
+				else
+					new_values = self.values.collect {|value| value/arg}
+					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row)  #only values vector will change
+				end
+			
+			when Vector
+			
+			when Matrix
+			
+			else
+				#try to coerce, but fail? or just raise exception?
+				
+			end
 	end
 
 	def **(numeric_arg)

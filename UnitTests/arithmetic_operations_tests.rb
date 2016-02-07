@@ -425,7 +425,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert (@value.is_a? Integer), "Value is not an integer"
 		
 		#data tests
-		@actual_matrix =  @sparse_matrix*(@value)
+		@actual_matrix =  @sparse_matrix*@value
 		assert_equal @actual_matrix.values, Matrix[4,12,4,8], "Multiplication by integer - values vector incorrect"
 		assert_equal @actual_matrix.full(), Matrix[[4,0,12],[0,0,4],[0,8,0]], "Multiplication of matrix by integer failed."
 		
@@ -436,7 +436,30 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert !@sparse_matrix.empty?
 		
 	end
-
+	# todo - touch up data and invariant parts
+	def test_multiplication_numeric_zero
+		#setup
+		@sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
+		@sparse_clone = @sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		@value = 0
+		
+		#pre
+		assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert (@value.is_a? Integer), "Value is not an integer"
+		
+		#data tests
+		@actual_matrix =  @sparse_matrix*(@value)
+		#assert_equal @actual_matrix.values, Matrix[4,12,4,8], "Multiplication by integer - values vector incorrect"
+		#assert_equal @actual_matrix.full(), Matrix[[4,0,12],[0,0,4],[0,8,0]], "Multiplication of matrix by integer failed."
+		assert_not_nil nil
+		#invariant
+		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert !@sparse_matrix.empty?
+		
+	end
+	
+	
 	def test_multiplication_numeric_float
 		#setup
 		@sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
