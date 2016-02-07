@@ -182,7 +182,13 @@ INITIALIZATION METHODS
 	end
 
 	def increase_all_values_by(number)
-	
+		# multiply number by matrix of ones.
+		# then do matrix addition
+		# create matrix of ones with current dimensions
+		
+		# scalar multiplication
+		
+		# call add
 	
 	end
 =begin 
