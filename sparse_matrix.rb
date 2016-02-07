@@ -2,8 +2,8 @@ require 'matrix'
 
 class SparseMatrix
 
-	attr_reader :full_matrix, :values, :val_row, :val_col, 
-		:row_count, :column_count, :size
+	attr_reader :full_matrix, :values, :val_row, :val_col,
+							:row_count, :column_count, :size
 
 =begin
 INITIALIZATION METHODS
@@ -163,7 +163,7 @@ INITIALIZATION METHODS
 		#handle empty matrices
 		if @values.empty? and @size == 0
 			return Matrix[[]]
-		end 
+		end
 		full_m = Array.new(@row_count) { |m| Array.new(@column_count) { |n| 0 }}
 		row_index = 0
 		if @values.empty?
@@ -171,7 +171,7 @@ INITIALIZATION METHODS
 		end
 		for i in 0..@values.size-1 do
 			row = @val_row[row_index]
-			if i <= row 
+			if i <= row
 				col = @val_col[i]
 				full_m[row][col] = @values[i]
 			end
@@ -182,17 +182,32 @@ INITIALIZATION METHODS
 
 	def increase_all_values_by(number)
 	end
- 
+
 	def *(numeric_arg)
-	#stub
-	end
-	
-	def /(numeric_arg)
-	#stub
-	end
-	
-	def **(numeric_arg)
-	#stub
+		#stub
 	end
 
+	def /(numeric_arg)
+		#stub
+	end
+
+	def **(numeric_arg)
+		#stub
+	end
+
+	def transpose
+		SparseMatrix.new("compressed", @values, @val_row, @val_col)
+	end
+
+	def trace
+		trace = 0
+		size = @val_row.size
+
+		size.times do |i|
+			if @val_col[i] == @val_row[i]
+				trace += @values[i]
+			end
+		end
+		trace
+	end
 end
