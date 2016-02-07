@@ -25,6 +25,10 @@ INITIALIZATION METHODS
         compress_store(Matrix.diagonal(*data))
       elsif matrix_type == "identity"
         compress_store(Matrix.identity(data[1]))
+      elsif matrix_type == "compressed"
+        @values = data[1]
+        @val_col = data[2]
+        @val_row = data[3]
       end
     else
       compress_store(Matrix.rows(data, false))
@@ -45,12 +49,7 @@ INITIALIZATION METHODS
   end
 
   def SparseMatrix.zero(size)
-  	#stub
-  	@full_matrix = Matrix.zero(size)
-  	# stub values below, TODO: code actual functionality with compress_store
-    @values = []
-  	@val_col = []
-  	@val_row = []
+  	SparseMatrix.new("zero", size)
   end
 
   def SparseMatrix.diagonal(*elements)
@@ -80,6 +79,10 @@ INITIALIZATION METHODS
     SparseMatrix.new("columns", *columns)
   end
 
+  def SparseMatrix.compressed_format(values, val_col, val_row)
+    SparseMatrix.new("compressed", values, val_col, val_row)
+  end
+
   def compress_store(matrix)
     # TODO make sure that original dimesions are saved? for column_count and row_count.
 		if not matrix.is_a? Matrix
@@ -88,8 +91,8 @@ INITIALIZATION METHODS
     if matrix.empty?
 			raise Exception.new("Matrix can't be empty")
 		end
-    puts ""
-    puts matrix
+    # puts ""
+    # puts matrix
     for row in 0 ..matrix.row_count-1
 			found_first_non_zero = false  # keep track if first non-zero row element was found. todo - what if row of zeros?
 			for column in 0..matrix.column_count-1

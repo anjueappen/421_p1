@@ -105,12 +105,12 @@ class InitializationUnitTests < Test::Unit::TestCase
 
 
   def test_initialize_columns_floats
-    sparse_matrix = SparseMatrix.columns  [[1.00, 0.00, 1.00], [0.00, 2.01, 0.00]]
+    sparse_matrix = SparseMatrix.columns([[1.00, 0.00, 1.00], [0.00, 2.01, 0.00]])
 
     #post
-    assert_equal  [1.00, 1.00, 2.01], sparse_matrix.values
-    assert_equal  [0, 2, 1], sparse_matrix.val_row
-    assert_equal  [0, 0, 1], sparse_matrix.val_col
+    assert_equal  [1.00, 2.01, 1.00], sparse_matrix.values
+    assert_equal  [0, 1, 2], sparse_matrix.val_row
+    assert_equal  [0, 1, 0], sparse_matrix.val_col
   end
 
   def test_initialize_columns_chars
@@ -132,10 +132,10 @@ class InitializationUnitTests < Test::Unit::TestCase
   end
 
   def test_initialize_diagonal_float
-    sparse_matrix = SparseMatrix.diagonal(-9.01, 8.01, 3,01, 2.01, 1.01)
+    sparse_matrix = SparseMatrix.diagonal(-9.01, 8.01, 3.01, 2.01, 1.01)
 
     #post
-    assert_equal  [-9.01, 8.01, 3,01, 2.01, 1,01], sparse_matrix.values
+    assert_equal  [-9.01, 8.01, 3.01, 2.01, 1.01], sparse_matrix.values
     assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_row
     assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_col
   end
@@ -180,7 +180,7 @@ class InitializationUnitTests < Test::Unit::TestCase
   end
 
   def test_initialize_zero
-    sparse_matrix = SparseMatrix.zero  5
+    sparse_matrix = SparseMatrix.zero(5)
 
     #post
     assert_equal  [], sparse_matrix.values
@@ -189,7 +189,7 @@ class InitializationUnitTests < Test::Unit::TestCase
   end
 
   def test_initialize_zero_float
-    sparse_matrix = SparseMatrix.zero  5.00
+    sparse_matrix = SparseMatrix.zero(5.00)
 
     #post
     assert_equal  [], sparse_matrix.values
@@ -212,30 +212,30 @@ class InitializationUnitTests < Test::Unit::TestCase
 
 
   def test_compressed_format
-    sparse_matrix = SparseMatrix.compressed_format  [4, 1], [0, 2], [0, 0]
+    sparse_matrix = SparseMatrix.compressed_format([4, 1], [0, 0], [0, 2])
 
     #post
     assert_equal  [4, 1], sparse_matrix.values
-    assert_equal  [0, 2], sparse_matrix.val_row
     assert_equal  [0, 0], sparse_matrix.val_col
+    assert_equal  [0, 2], sparse_matrix.val_row
   end
 
 
   def test_compressed_format_chars
-    sparse_matrix = SparseMatrix.compressed_format  ['a', 'b'], [0, 2], [0, 0]
+    sparse_matrix = SparseMatrix.compressed_format(['a', 'b'], [0, 0], [0, 2])
 
     #post
     assert_equal  ['a', 'b'], sparse_matrix.values
-    assert_equal  [0, 2], sparse_matrix.val_row
     assert_equal  [0, 0], sparse_matrix.val_col
+    assert_equal  [0, 2], sparse_matrix.val_row
   end
 
   def test_compressed_format_floats
-    sparse_matrix = SparseMatrix.compressed_format  [5.01, 5.01], [0, 2], [0, 0]
+    sparse_matrix = SparseMatrix.compressed_format([5.01, 5.01], [0, 0], [0, 2])
 
     #post
     assert_equal  [5.01, 5.01], sparse_matrix.values
-    assert_equal  [0, 2], sparse_matrix.val_row
     assert_equal  [0, 0], sparse_matrix.val_col
+    assert_equal  [0, 2], sparse_matrix.val_row
   end
 end
