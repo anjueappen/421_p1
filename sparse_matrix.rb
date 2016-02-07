@@ -27,7 +27,7 @@ INITIALIZATION METHODS
 				compress_store(Matrix.identity(data[1]))
 			elsif matrix_type == "zero"
 				@row_count = data[1]
-				@column_count = data[1]
+				@column_count = data[2]
 				@size = @row_count * @column_count
 			elsif matrix_type == "compressed"
 				@values = data[1]
@@ -56,8 +56,8 @@ INITIALIZATION METHODS
 		SparseMatrix.new(*rows)
 	end
 
-	def SparseMatrix.zero(size)
-		SparseMatrix.new("zero", size)
+	def SparseMatrix.zero(rows, cols=rows)
+		SparseMatrix.new("zero", rows, cols)
 	end
 
 	def SparseMatrix.diagonal(*elements)
@@ -137,9 +137,9 @@ INITIALIZATION METHODS
 		return @values
 	end
 
-	def first_minor(row, col)
-		#stub
-	end
+	# def first_minor(row, col)
+	# 	#stub
+	# end
 
 	def unitary?
 		# all values are 1
