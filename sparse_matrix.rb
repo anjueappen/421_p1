@@ -1,5 +1,6 @@
 require 'matrix'
 
+
 class SparseMatrix
 
 	attr_reader :full_matrix, :values, :val_row, :val_col,
@@ -185,19 +186,13 @@ INITIALIZATION METHODS
 	
 	end
  
-	def *(arg)
-	
-			case(arg)
-			
-			when Numeric
+	def *(arg)			
 				if arg.zero?
-					# return SparseMatrix.compressed_format 
+					return SparseMatrix.zero(self.row_count, self.column_count) 
 				else
-					return SparseMatrix.compressed_format(self.values*arg, self.val_col, self.val_row)  #only values vector will change
+					new_values = self.values.collect {|value| value*arg}
+					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row)  #only values vector will change
 				end
-			else
-			
-			end
 	end
 
 	def /(numeric_arg)
