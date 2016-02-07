@@ -185,7 +185,7 @@ INITIALIZATION METHODS
 	
 	
 	end
- 
+=begin 
 	def *(arg)
 			
 			case(arg)
@@ -228,6 +228,7 @@ INITIALIZATION METHODS
 				
 			end
 	end
+=end
 
 	def **(arg)
 		#stub
