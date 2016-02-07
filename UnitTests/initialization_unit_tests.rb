@@ -118,7 +118,7 @@ class InitializationUnitTests < Test::Unit::TestCase
 
     #post
     assert_equal  ['a'], sparse_matrix.values
-    assert_equal  [0], sparse_matrix.val_row
+    assert_equal  [0, nil], sparse_matrix.val_row
     assert_equal  [0], sparse_matrix.val_col
   end
 
