@@ -189,7 +189,8 @@ INITIALIZATION METHODS
 	def *(arg)
 			
 			case(arg)
-			
+			# todo current error with rounding - rounds down and gets zero values for ints.
+			# seems ok for floats
 			when Numeric
 				if arg.zero?
 					return SparseMatrix.zero(self.row_count, self.column_count) 
@@ -207,7 +208,7 @@ INITIALIZATION METHODS
 			end
 	end
 
-	def /(numeric_arg)
+	def /(arg)
 			case(arg)
 			
 			when Numeric
@@ -228,7 +229,7 @@ INITIALIZATION METHODS
 			end
 	end
 
-	def **(numeric_arg)
+	def **(arg)
 		#stub
 	end
 
