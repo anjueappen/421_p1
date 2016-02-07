@@ -19,12 +19,9 @@ INITIALIZATION METHODS - may change on what we choose to support
 
 	
   def initialize(*rows)
+    puts "Initializing..."
     @full_matrix = Matrix.rows(rows, false)
-    # stub values below, TODO: code actual functionality with compress_store
-    @values = Array.new
-  	@val_col = Array.new
-  	@val_row = Array.new
-    compress_store(@full_matrix)
+    SparseMatrix.compress_store(@full_matrix)
   end
 
   def method_missing(method, *args)
@@ -37,14 +34,7 @@ INITIALIZATION METHODS - may change on what we choose to support
   end
 
   def SparseMatrix.[](*rows)
-  	#stub
-  	#SparseMatrix.new(*rows)	#delegate to initialize
-		@values = Array.new
-  	@val_col = Array.new
-  	@val_row = Array.new
-		@full_matrix = Matrix.rows(rows, false)
-		#self.send(:initialize)[rows]
-		compress_store(@full_matrix)
+  	SparseMatrix.new(*rows)
   end
 
   def SparseMatrix.zero(size)
@@ -102,21 +92,19 @@ INITIALIZATION METHODS - may change on what we choose to support
     if matrix.empty?
 			raise Exception.new("Matrix can't be empty")
 		end
-		#i = 0
-    for row in 0 ..matrix.send(:rows).length
+    for row in 0 ..matrix.row_count-1
 			found_first_non_zero = false  # keep track if first non-zero row element was found. todo - what if row of zeros?
-			for column in 0..matrix.column_count
-        if matrix.send(:rows)[row][column] != 0
-          @values.push(matrix.send(:rows)[row][column]) # add non-zero values
+			for column in 0..matrix.column_count-1
+        element = matrix.send(:element, row, column)
+        puts "Element: ", element
+        if element != 0 and !element.nil?
+          @values.push(element) # add non-zero values
+          puts "Values: [", @values, "]"
 					@val_col.push(column) # add col of each non-zero value														
 					if(!found_first_non_zero)# check if it's the first non-zero value in row
-						@val_row.push(@values.index(matrix.send(:rows)[row][column]))
+						@val_row.push(@values.index(element))
 						found_first_non_zero = true
 					end
-					#@values[i] = matrix.rows[row][column]
-          #@val_row[i] = row
-          #@val_col[i] = column 
-          #i = i+1  
         end
       end
     end
