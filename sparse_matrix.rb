@@ -39,7 +39,6 @@ INITIALIZATION METHODS
 
   def method_missing(method, *args)
   	# TODO: the call for @full_matrix should be replaced with a function that generates the full matrix from our compressed storage! 
-    puts args
   	if @full_matrix.respond_to?(method)
   		@full_matrix.send(method, *args)
   	else
@@ -150,7 +149,20 @@ INITIALIZATION METHODS
   end
 
   def full
-  	#stub
+    # Strategy: Iterate through values array. Check to see if they are the first element of a new row. Add them to the correct row and column.
+    # The current implementation avoids the use of Array.index() method, which only returns the index of the first element it finds in the array, even if there are duplicate elements.
+    # full() returns a Matrix object
+    full_m = Array.new(@row_count) { |m| Array.new(@column_count) { |n| 0 }}
+    row_index = 0
+    for i in 0..@values.size-1 do
+      row = @val_row[row_index]
+      if i <= row 
+        col = @val_col[i]
+        full_m[row][col] = @values[i]
+      end
+      row_index += 1
+    end
+    return Matrix.rows(full_m)
   end
 
   def increase_all_values_by(number)
