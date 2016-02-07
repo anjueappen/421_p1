@@ -2,26 +2,19 @@ require 'matrix'
 
 class SparseMatrix
 
-=begin
-Do we want attr_readers and writers at this point?
-Don't see need for them yet, therefore not adding right now.
-=end
-
-  @values = Array.new
-  @val_row = Array.new
-  @val_col = Array.new
   @max_degree_of_sparsity = 0.5
 
   attr_reader :full_matrix, :values, :val_row, :val_col
-=begin
-INITIALIZATION METHODS - may change on what we choose to support
-=end
 
-	
+=begin
+INITIALIZATION METHODS
+=end
   def initialize(*rows)
-    puts "Initializing..."
     @full_matrix = Matrix.rows(rows, false)
-    SparseMatrix.compress_store(@full_matrix)
+    @values = Array.new
+    @val_row = Array.new
+    @val_col = Array.new
+    compress_store(@full_matrix)
   end
 
   def method_missing(method, *args)
@@ -64,13 +57,11 @@ INITIALIZATION METHODS - may change on what we choose to support
   	@val_row = []
   end
 
-  def rows(rows)
-    #this method will overwrite existing rows
+  def SparseMatrix.rows(rows)
     if not rows.kind_of?(Array) or not rows[0].kind_of?(Array)
       raise Exception.new("Parameter must be Array of Arrays.")
     end
-    @full_matrix = Matrix.rows(rows, false)
-    store(rows)
+    SparseMatrix.new(*rows)
   end
 
   def columns(columns)
@@ -82,10 +73,13 @@ INITIALIZATION METHODS - may change on what we choose to support
     store(@full_matrix.rows)
   end
 
-  def SparseMatrix.compress_store(matrix)
-  	# implemented work around for comment below
-		# MICHELLE'S NOTE: This function throws an error when matrix.rows is called because it's a protected function... not sure why though. maybe it's getting confused with the base Matrix class having a function called rows too?
-    # todo make sure that original dimesions are saved
+  def SparseMatrix.scalar(n, value)
+    @full_matrix = Matrix.send(:scalar, n, value)
+    compress_store(@full_matrix)
+  end
+
+  def compress_store(matrix)
+    # TODO make sure that original dimesions are saved? for column_count and row_count.
 		if not matrix.is_a? Matrix
       raise Exception.new("Parameter must be a Matrix instance")
     end
@@ -96,10 +90,8 @@ INITIALIZATION METHODS - may change on what we choose to support
 			found_first_non_zero = false  # keep track if first non-zero row element was found. todo - what if row of zeros?
 			for column in 0..matrix.column_count-1
         element = matrix.send(:element, row, column)
-        puts "Element: ", element
         if element != 0 and !element.nil?
           @values.push(element) # add non-zero values
-          puts "Values: [", @values, "]"
 					@val_col.push(column) # add col of each non-zero value														
 					if(!found_first_non_zero)# check if it's the first non-zero value in row
 						@val_row.push(@values.index(element))
