@@ -8,7 +8,7 @@ class MatrixOperationTests < Test::Unit::TestCase
     @sparse_matrix = SparseMatrix[[1,0], [0,2]]
 
     #pre
-    assert_true @sparse_matrix.is_a? Matrix
+    assert @sparse_matrix.is_a? Matrix
     assert_equal [1, 2], @sparse_matrix.values
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
