@@ -39,13 +39,9 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
     begin
       @sparse_matrix.det
     rescue Exception => e
-      if e.is_a? ErrDimensionMismatch
-        pass 'Correct exception thrown'
-      else
-        fail "Incorrect exception thrown: #{e}"
-      end
     else
-      fail 'No Exception thrown'
+          assert_true (e.is_a? Matrix::ErrDimensionMismatch), "Incorrect exception thrown: #{e}"
+          fail 'No Exception thrown'
     end
   end
 
@@ -69,17 +65,15 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
 
+
     begin
       @sparse_matrix.det
     rescue Exception => e
-      if e.is_a? NoMethodError
-        pass 'Correct exception thrown'
-      else
-        fail "Incorrect exception thrown: #{e}"
-      end
+      assert_true (e.is_a? NoMethodError), "Incorrect exception thrown: #{e}"
     else
       fail 'No Exception thrown'
     end
+
     #invariant
     assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal ['a', 'b'], @sparse_matrix.values
@@ -97,17 +91,13 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
     assert_equal [], @sparse_matrix.val_col
 
     begin
-      @sparse_matrix.rank
+      @sparse_matrix.det
+    #invariant
     rescue Exception => e
-      if e.is_a? ErrDimensionMismatch
-        pass 'Correct exception thrown'
-      else
-        fail "Incorrect exception thrown: #{e}"
-      end
+      assert_true (e.is_a? Matrix::ErrDimensionMismatch), "Incorrect exception thrown: #{e}"
     else
       fail 'No Exception thrown'
     end
-    #invariant
     assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [], @sparse_matrix.values
     assert_equal [], @sparse_matrix.val_row
@@ -134,17 +124,15 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
 
+
     begin
       @sparse_matrix.rank
     rescue Exception => e
-      if e.is_a? NoMethodError
-        pass 'Correct exception thrown'
-      else
-        fail "Incorrect exception thrown: #{e}"
-      end
+      assert_true (e.is_a? TypeError), "Incorrect exception thrown: #{e}"
     else
       fail 'No Exception thrown'
     end
+
     #invariant
     assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal ['a', 'b'], @sparse_matrix.values
@@ -209,11 +197,7 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
     begin
       @sparse_matrix.trace
     rescue Exception => e
-      if e.is_a? TypeError
-        pass 'Correct exception thrown'
-      else
-        fail "Incorrect exception thrown: #{e}"
-      end
+      assert_true (e.is_a? TypeError), "Incorrect exception thrown: #{e}"
     end
   end
 
