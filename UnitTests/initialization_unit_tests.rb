@@ -74,10 +74,11 @@ class InitializationUnitTests < Test::Unit::TestCase
   end
 
   def test_initialize_scalar_chars
-    sparse_matrix = SparseMatrix.scalar('a', 2)
+    # below test was wrong, argument should be n, value. changed.
+    # sparse_matrix = SparseMatrix.scalar('a', 2)
+    sparse_matrix = SparseMatrix.scalar(3, 'a')
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  ['a', 'a', 'a'], sparse_matrix.values
     assert_equal  [0, 1, 2], sparse_matrix.val_row
     assert_equal  [0, 1, 2], sparse_matrix.val_col
@@ -87,20 +88,19 @@ class InitializationUnitTests < Test::Unit::TestCase
     sparse_matrix = SparseMatrix.scalar  3.00, 2
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  [2, 2, 2], sparse_matrix.values
     assert_equal  [0, 1, 2], sparse_matrix.val_row
     assert_equal  [0, 1, 2], sparse_matrix.val_col
   end
 
   def test_initialize_columns
-    sparse_matrix = SparseMatrix.columns  [[1, 0, 1], [0, 2, 0]]
+    sparse_matrix = SparseMatrix.columns([[1, 0, 1], [0, 2, 0]])
+    # return [[1, 0], [0, 2], [1, 0]]
 
-    #post
-    assert  sparse_matrix.is_a? Matrix
-    assert_equal  [1, 1, 2], sparse_matrix.values
-    assert_equal  [0, 2, 1], sparse_matrix.val_row
-    assert_equal  [0, 0, 1], sparse_matrix.val_col
+    #post #NOTE: these were wrong values originally. fixed
+    assert_equal  [1, 2, 1], sparse_matrix.values
+    assert_equal  [0, 1, 2], sparse_matrix.val_row
+    assert_equal  [0, 1, 0], sparse_matrix.val_col
   end
 
 
@@ -108,7 +108,6 @@ class InitializationUnitTests < Test::Unit::TestCase
     sparse_matrix = SparseMatrix.columns  [[1.00, 0.00, 1.00], [0.00, 2.01, 0.00]]
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  [1.00, 1.00, 2.01], sparse_matrix.values
     assert_equal  [0, 2, 1], sparse_matrix.val_row
     assert_equal  [0, 0, 1], sparse_matrix.val_col
@@ -118,57 +117,51 @@ class InitializationUnitTests < Test::Unit::TestCase
     sparse_matrix = SparseMatrix.columns  [['a', 0], [0, 0]]
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  ['a'], sparse_matrix.values
     assert_equal  [0], sparse_matrix.val_row
     assert_equal  [0], sparse_matrix.val_col
   end
 
   def test_initialize_diagonal
-    sparse_matrix = SparseMatrix.diagonal  [-9, 8, 3, 2, 1]
+    sparse_matrix = SparseMatrix.diagonal(-9, 8, 3, 2, 1)
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  [-9, 8, 3, 2, 1], sparse_matrix.values
     assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_row
     assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_col
   end
 
   def test_initialize_diagonal_float
-    sparse_matrix = SparseMatrix.diagonal  [-9.01, 8.01, 3,01, 2.01, 1,01]
+    sparse_matrix = SparseMatrix.diagonal(-9.01, 8.01, 3,01, 2.01, 1.01)
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  [-9.01, 8.01, 3,01, 2.01, 1,01], sparse_matrix.values
     assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_row
     assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_col
   end
 
   def test_initialize_diagonal_chars
-    sparse_matrix = SparseMatrix.diagonal  ['a', 'b', 'c']
+    sparse_matrix = SparseMatrix.diagonal('a', 'b', 'c')
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  ['a', 'b', 'c'], sparse_matrix.values
     assert_equal  [0, 1, 2], sparse_matrix.val_row
     assert_equal  [0, 1, 2], sparse_matrix.val_col
   end
 
   def test_initialize_identity
-    sparse_matrix = SparseMatrix.identity  5
+    sparse_matrix = SparseMatrix.identity(5)
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  [1, 1, 1, 1, 1], sparse_matrix.values
     assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_row
     assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_col
   end
 
   def test_initialize_identity_float
-    sparse_matrix = SparseMatrix.identity  5.00
+    sparse_matrix = SparseMatrix.identity(5.00)
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  [1, 1, 1, 1, 1], sparse_matrix.values
     assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_row
     assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_col
@@ -190,7 +183,6 @@ class InitializationUnitTests < Test::Unit::TestCase
     sparse_matrix = SparseMatrix.zero  5
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  [], sparse_matrix.values
     assert_equal  [], sparse_matrix.val_row
     assert_equal  [], sparse_matrix.val_col
@@ -200,7 +192,6 @@ class InitializationUnitTests < Test::Unit::TestCase
     sparse_matrix = SparseMatrix.zero  5.00
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  [], sparse_matrix.values
     assert_equal  [], sparse_matrix.val_row
     assert_equal  [], sparse_matrix.val_col
@@ -224,7 +215,6 @@ class InitializationUnitTests < Test::Unit::TestCase
     sparse_matrix = SparseMatrix.compressed_format  [4, 1], [0, 2], [0, 0]
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  [4, 1], sparse_matrix.values
     assert_equal  [0, 2], sparse_matrix.val_row
     assert_equal  [0, 0], sparse_matrix.val_col
@@ -235,7 +225,6 @@ class InitializationUnitTests < Test::Unit::TestCase
     sparse_matrix = SparseMatrix.compressed_format  ['a', 'b'], [0, 2], [0, 0]
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  ['a', 'b'], sparse_matrix.values
     assert_equal  [0, 2], sparse_matrix.val_row
     assert_equal  [0, 0], sparse_matrix.val_col
@@ -245,7 +234,6 @@ class InitializationUnitTests < Test::Unit::TestCase
     sparse_matrix = SparseMatrix.compressed_format  [5.01, 5.01], [0, 2], [0, 0]
 
     #post
-    assert  sparse_matrix.is_a? Matrix
     assert_equal  [5.01, 5.01], sparse_matrix.values
     assert_equal  [0, 2], sparse_matrix.val_row
     assert_equal  [0, 0], sparse_matrix.val_col

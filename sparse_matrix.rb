@@ -9,12 +9,26 @@ class SparseMatrix
 =begin
 INITIALIZATION METHODS
 =end
-  def initialize(*rows)
-    @full_matrix = Matrix.rows(rows, false)
-    @values = Array.new
-    @val_row = Array.new
-    @val_col = Array.new
-    compress_store(@full_matrix)
+  def initialize(*data)
+    @values = []
+    @val_row = []
+    @val_col = []
+    if !data[0].is_a? Array
+      matrix_type = data[0]
+      if matrix_type == "scalar"
+        compress_store(Matrix.scalar(data[1], data[2]))
+      elsif matrix_type == "columns"
+        data.shift()
+        compress_store(Matrix.columns(data))
+      elsif matrix_type == "diagonal"
+        data.shift()
+        compress_store(Matrix.diagonal(*data))
+      elsif matrix_type == "identity"
+        compress_store(Matrix.identity(data[1]))
+      end
+    else
+      compress_store(Matrix.rows(data, false))
+    end
   end
 
   def method_missing(method, *args)
@@ -40,21 +54,15 @@ INITIALIZATION METHODS
   end
 
   def SparseMatrix.diagonal(*elements)
-  	#stub
-  	@full_matrix = Matrix.diagonal(*elements)
-  	# stub values below, TODO: code actual functionality with compress_store
-    @values = []
-  	@val_col = []
-  	@val_row = []
+  	SparseMatrix.new("diagonal", *elements)
   end
 
-  def SparseMatrix.identity(col)
-  	#stub
-  	@full_matrix = Matrix.identity(col)
-  	# stub values below, TODO: code actual functionality with compress_store
-    @values = []
-  	@val_col = []
-  	@val_row = []
+  def SparseMatrix.identity(n)
+  	SparseMatrix.new("identity", n)
+  end
+
+  def SparseMatrix.scalar(n, value)
+    SparseMatrix.new("scalar", n, value)
   end
 
   def SparseMatrix.rows(rows)
@@ -64,18 +72,12 @@ INITIALIZATION METHODS
     SparseMatrix.new(*rows)
   end
 
-  def columns(columns)
+  def SparseMatrix.columns(columns)
     #this method will overwrite existing rows
-    if not rows.kind_of?(Array) or not columns[0].kind_of?(Array)
+    if not columns.kind_of?(Array) or not columns[0].kind_of?(Array)
       raise Exception.new("Parameter must be Array of Arrays.")
     end
-    @full_matrix = Matrix.columns(columns)
-    store(@full_matrix.rows)
-  end
-
-  def SparseMatrix.scalar(n, value)
-    @full_matrix = Matrix.send(:scalar, n, value)
-    compress_store(@full_matrix)
+    SparseMatrix.new("columns", *columns)
   end
 
   def compress_store(matrix)
@@ -86,6 +88,8 @@ INITIALIZATION METHODS
     if matrix.empty?
 			raise Exception.new("Matrix can't be empty")
 		end
+    puts ""
+    puts matrix
     for row in 0 ..matrix.row_count-1
 			found_first_non_zero = false  # keep track if first non-zero row element was found. todo - what if row of zeros?
 			for column in 0..matrix.column_count-1
@@ -94,7 +98,7 @@ INITIALIZATION METHODS
           @values.push(element) # add non-zero values
 					@val_col.push(column) # add col of each non-zero value														
 					if(!found_first_non_zero)# check if it's the first non-zero value in row
-						@val_row.push(@values.index(element))
+						@val_row.push(@values.length-1)
 						found_first_non_zero = true
 					end
         end
