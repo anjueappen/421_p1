@@ -118,7 +118,7 @@ class InitializationUnitTests < Test::Unit::TestCase
 
     #post
     assert_equal  ['a'], sparse_matrix.values
-    assert_equal  [0], sparse_matrix.val_row
+    assert_equal  [0, nil], sparse_matrix.val_row
     assert_equal  [0], sparse_matrix.val_col
   end
 
@@ -233,5 +233,13 @@ class InitializationUnitTests < Test::Unit::TestCase
     assert_equal  [5.01, 5.01], sparse_matrix.values
     assert_equal  [0, 0], sparse_matrix.val_col
     assert_equal  [0, 2], sparse_matrix.val_row
+  end
+
+  def test_compressed_store
+    sm = SparseMatrix[[0,0,0],[1,0,1],[0,0,2]]
+
+    assert_equal [1, 1, 2], sm.values, "Incorrect values stored."
+    assert_equal [0, 2, 2], sm.val_col, "Incorrect val_col stored."
+    assert_equal [nil, 0, 2], sm.val_row, "First row has no non-zero elements so first element should be nil in val_row."
   end
 end

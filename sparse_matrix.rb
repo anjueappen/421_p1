@@ -119,6 +119,9 @@ INITIALIZATION METHODS
 					end
 				end
 			end
+			if (!found_first_non_zero)	# if the row does not have any non-zero values, push nil
+				@val_row.push(nil)
+			end
 		end
 
 		@row_count = matrix.row_count
@@ -126,8 +129,8 @@ INITIALIZATION METHODS
 		@size = @row_count * @column_count
 	end
 
-	def cofactor
-		#stub
+	def to_s
+		return self.full().send(:to_s).sub! "Matrix", "SparseMatrix"
 	end
 
 	def nonzero_count
@@ -165,18 +168,24 @@ INITIALIZATION METHODS
 		if @values.empty? and @size == 0
 			return Matrix[[]]
 		end
+
 		full_m = Array.new(@row_count) { |m| Array.new(@column_count) { |n| 0 }}
-		row_index = 0
+
 		if @values.empty?
 			return Matrix.zero(@row_count)
 		end
+
+		row_index = 1
+		row = 1
 		for i in 0..@values.size-1 do
-			row = @val_row[row_index]
-			if i <= row
-				col = @val_col[i]
+			col = @val_col[i]
+			if i < @val_row[row_index]	 # not starting a new row
+				full_m[row-1][col] = @values[i]
+			else
 				full_m[row][col] = @values[i]
-			end
-			row_index += 1
+				row_index += 1
+				row += 1
+			end	
 		end
 		return Matrix.rows(full_m)
 	end
