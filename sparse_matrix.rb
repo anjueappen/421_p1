@@ -1,6 +1,5 @@
 require 'matrix'
 
-
 class SparseMatrix
 
 	attr_reader :full_matrix, :values, :val_row, :val_col,
@@ -40,7 +39,7 @@ INITIALIZATION METHODS
 		end
 	end
 
-	def method_missing(method, *args, &block) 
+	def method_missing(method, *args, &block)
 		full_m = self.full()
 		if full_m.respond_to?(method)
 			if method.to_s.eql?("collect")
@@ -191,8 +190,8 @@ INITIALIZATION METHODS
 	end
 
 	def increase_all_values_by(number)
-	
-	
+
+
 	end
 =begin 
 	def *(arg)
@@ -257,5 +256,19 @@ INITIALIZATION METHODS
 			end
 		end
 		trace
+	end
+
+	def putNonZero(value, row, column)
+		if value == 0
+			return
+		end
+
+		if @val_row.include? row and @val_col.include? column and @val_row.index(row) == @val_col.index(column)
+			@values[@val_row.index(row)] = value
+		else
+			@values.push(value)
+			@val_row.push(row)
+			@val_col.push(column)
+		end
 	end
 end
