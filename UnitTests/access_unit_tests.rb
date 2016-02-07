@@ -55,7 +55,7 @@ class AccessUnitTests < Test::Unit::TestCase
   def test_collect
     collect_result = @sparse_matrix.collect{|e| e}
 
-    assert_equal collect_result, @sparse_matrix.full(), "These matrices should be equal."
+    assert_equal @sparse_matrix.full(), collect_result, "These matrices should be equal."
   end
 
   def test_index

@@ -39,10 +39,14 @@ INITIALIZATION METHODS
 		end
 	end
 
-	def method_missing(method, *args) 
+	def method_missing(method, *args, &block) 
 		full_m = self.full()
 		if full_m.respond_to?(method)
-			full_m.send(method, *args)
+			if method.to_s.eql?("collect")
+				full_m.send(method, &block)
+			else
+				full_m.send(method, *args)
+			end
 		else
 			super
 		end
