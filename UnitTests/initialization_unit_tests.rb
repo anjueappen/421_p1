@@ -17,7 +17,7 @@ class InitializationUnitTests < Test::Unit::TestCase
   def test_initialize_square_brackets_floats
 
     sparse_matrix = SparseMatrix[[1.00, 0.00], [0.00, 2.00]] #these should be coerced into integers
-																														 # K: currently not going to coerce b/c we allow float matrices
+    # K: currently not going to coerce b/c we allow float matrices
     #post
     assert_equal [1, 2], sparse_matrix.values
     assert_equal [0, 1], sparse_matrix.val_row
@@ -171,11 +171,9 @@ class InitializationUnitTests < Test::Unit::TestCase
     begin
       SparseMatrix.identity  'a'
     rescue Exception => e
-      if e.is_a? TypeError
-        pass  "Error thrown for char"
-      else
-        fail "Wrong exception thrown"
-      end
+      assert_true (e.is_a? TypeError), "Wrong exception thrown #{e}"
+    else
+      fail 'No Exception thrown'
     end
   end
 
@@ -202,11 +200,9 @@ class InitializationUnitTests < Test::Unit::TestCase
     begin
       SparseMatrix.zero  'a'
     rescue Exception => e
-      if e.is_a? TypeError
-        pass  "Error thrown for char"
-      else
-        fail "Wrong exception thrown"
-      end
+      assert_true (e.is_a? TypeError), "Wrong exception thrown #{e}"
+    else
+      fail 'No Exception thrown'
     end
   end
 

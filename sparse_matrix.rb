@@ -1,9 +1,10 @@
 require 'matrix'
 
+
 class SparseMatrix
 
-	attr_reader :full_matrix, :values, :val_row, :val_col, 
-		:row_count, :column_count, :size
+	attr_reader :full_matrix, :values, :val_row, :val_col,
+							:row_count, :column_count, :size
 
 =begin
 INITIALIZATION METHODS
@@ -166,7 +167,7 @@ INITIALIZATION METHODS
 		#handle empty matrices
 		if @values.empty? and @size == 0
 			return Matrix[[]]
-		end 
+		end
 
 		full_m = Array.new(@row_count) { |m| Array.new(@column_count) { |n| 0 }}
 
@@ -190,18 +191,71 @@ INITIALIZATION METHODS
 	end
 
 	def increase_all_values_by(number)
-	end
- 
-	def *(numeric_arg)
-	#stub
-	end
 	
-	def /(numeric_arg)
-	#stub
-	end
 	
-	def **(numeric_arg)
-	#stub
+	end
+=begin 
+	def *(arg)
+			
+			case(arg)
+			# todo current error with rounding - rounds down and gets zero values for ints.
+			# seems ok for floats
+			when Numeric
+				if arg.zero?
+					return SparseMatrix.zero(self.row_count, self.column_count) 
+				else
+					new_values = self.values.collect {|value| value*arg}
+					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row)  #only values vector will change
+				end
+			
+			when Vector
+			
+			when Matrix
+			
+			else
+				#try to coerce, but fail? or just raise exception?
+			end
 	end
 
+	def /(arg)
+			case(arg)
+			
+			when Numeric
+				if arg.zero?
+					# todo raise Exception
+				else
+					new_values = self.values.collect {|value| value/arg}
+					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row)  #only values vector will change
+				end
+			
+			when Vector
+			
+			when Matrix
+			
+			else
+				#try to coerce, but fail? or just raise exception?
+				
+			end
+	end
+=end
+
+	def **(arg)
+		#stub
+	end
+
+	def transpose
+		SparseMatrix.new("compressed", @values, @val_row, @val_col)
+	end
+
+	def trace
+		trace = 0
+		size = @val_row.size
+
+		size.times do |i|
+			if @val_col[i] == @val_row[i]
+				trace += @values[i]
+			end
+		end
+		trace
+	end
 end

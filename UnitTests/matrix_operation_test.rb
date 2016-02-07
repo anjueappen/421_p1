@@ -1,6 +1,9 @@
 require 'test/unit'
+require '../sparse_matrix.rb'
+require 'matrix'
 
-class MatrixOperationTests < Test::Unit::TestCase
+
+class SparseMatrixOperationTests < Test::Unit::TestCase
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
@@ -8,7 +11,7 @@ class MatrixOperationTests < Test::Unit::TestCase
     @sparse_matrix = SparseMatrix[[1,0], [0,2]]
 
     #pre
-    assert @sparse_matrix.is_a? Matrix
+    assert @sparse_matrix.is_a? SparseMatrix
     assert_equal [1, 2], @sparse_matrix.values
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
@@ -27,7 +30,7 @@ class MatrixOperationTests < Test::Unit::TestCase
     @sparse_matrix = SparseMatrix[[1,0]]
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
 
     #pre
     assert_equal [1], @sparse_matrix.values
@@ -37,11 +40,9 @@ class MatrixOperationTests < Test::Unit::TestCase
     begin
       @sparse_matrix.det
     rescue Exception => e
-      if e.is_a? ErrDimensionMismatch
-        pass "Correct exception thrown"
-      else
-        fail "Incorrect exception thrown"
-      end
+    else
+          assert_true (e.is_a? Matrix::ErrDimensionMismatch), "Incorrect exception thrown: #{e}"
+          fail 'No Exception thrown'
     end
   end
 
@@ -49,7 +50,7 @@ class MatrixOperationTests < Test::Unit::TestCase
     assert_equal 2, @sparse_matrix.det
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [1, 2], @sparse_matrix.values
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
@@ -57,50 +58,48 @@ class MatrixOperationTests < Test::Unit::TestCase
 
 
   def test_det_chars
-    @sparse_matrix = Matrix[['a', 0], [0, 'b']]
+    @sparse_matrix = SparseMatrix[['a', 0], [0, 'b']]
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal ['a', 'b'], @sparse_matrix.values
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
 
+
     begin
-      dt = @sparse_matrix.det
+      @sparse_matrix.det
     rescue Exception => e
-      if e.is_a? NoMethodError
-        pass "Correct exception thrown"
-      else
-        fail "Incorrect exception thrown"
-      end
+      assert_true (e.is_a? NoMethodError), "Incorrect exception thrown: #{e}"
+    else
+      fail 'No Exception thrown'
     end
+
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal ['a', 'b'], @sparse_matrix.values
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
   end
 
   def test_det_empty
-    @sparse_matrix = Matrix[[], []]
+    @sparse_matrix = SparseMatrix[[], []]
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [], @sparse_matrix.values
     assert_equal [], @sparse_matrix.val_row
     assert_equal [], @sparse_matrix.val_col
 
     begin
-      rank = @sparse_matrix.rank
-    rescue Exception => e
-      if e.is_a? ErrDimensionMismatch
-        pass "Correct exception thrown"
-      else
-        fail "Incorrect exception thrown"
-      end
-    end
+      @sparse_matrix.det
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    rescue Exception => e
+      assert_true (e.is_a? Matrix::ErrDimensionMismatch), "Incorrect exception thrown: #{e}"
+    else
+      fail 'No Exception thrown'
+    end
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [], @sparse_matrix.values
     assert_equal [], @sparse_matrix.val_row
     assert_equal [], @sparse_matrix.val_col
@@ -111,42 +110,42 @@ class MatrixOperationTests < Test::Unit::TestCase
     assert_equal 2, @sparse_matrix.rank
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [1, 2], @sparse_matrix.values
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
   end
 
   def test_rank_chars
-    @sparse_matrix = Matrix[['a', 0], [0, 'b']]
+    @sparse_matrix = SparseMatrix[['a', 0], [0, 'b']]
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal ['a', 'b'], @sparse_matrix.values
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
 
+
     begin
       @sparse_matrix.rank
     rescue Exception => e
-      if e.is_a? NoMethodError
-        pass "Correct exception thrown"
-      else
-        fail "Incorrect exception thrown"
-      end
+      assert_true (e.is_a? TypeError), "Incorrect exception thrown: #{e}"
+    else
+      fail 'No Exception thrown'
     end
+
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal ['a', 'b'], @sparse_matrix.values
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
   end
 
   def test_rank_empty
-    @sparse_matrix = Matrix[[], []]
+    @sparse_matrix = SparseMatrix[[], []]
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [], @sparse_matrix.values
     assert_equal [], @sparse_matrix.val_row
     assert_equal [], @sparse_matrix.val_col
@@ -159,63 +158,69 @@ class MatrixOperationTests < Test::Unit::TestCase
     transpose = @sparse_matrix.transpose
 
     #post
-    assert_true transpose.is_a? Matrix
-    assert_equal transpose, @sparse_matrix.transpose
+    assert_true transpose.is_a? SparseMatrix
+    assert_equal [1, 2], transpose.values
+    assert_equal [0, 1], transpose.val_row
+    assert_equal [0, 1], transpose.val_col
   end
 
   def test_transpose_chars
-    @sparse_matrix = Matrix[['a', 0], [0, 'b']]
+    @sparse_matrix = SparseMatrix[['a', 0], [0, 'b']]
+
+
 
     transpose = @sparse_matrix.transpose
 
     #post
-    assert_true transpose.is_a? Matrix
-    assert_equal transpose, @sparse_matrix.transpose
+    assert_true transpose.is_a? SparseMatrix
+    assert_equal ['a', 'b'], transpose.values
+    assert_equal [0, 1], transpose.val_row
+    assert_equal [0, 1], transpose.val_col
   end
 
   def test_transpose_empty
-    @sparse_matrix = Matrix[[], []]
+    @sparse_matrix = SparseMatrix[[], []]
 
     transpose = @sparse_matrix.transpose
 
     #post
-    assert_true transpose.is_a? Matrix
-    assert_equal transpose, @sparse_matrix.transpose
+    assert_true transpose.is_a? SparseMatrix
+    assert_equal [], transpose.values
+    assert_equal [], transpose.val_row
+    assert_equal [], transpose.val_col
   end
 
   def test_trace_ints
-    assert_true 3, @sparse_matrix.trace
+    assert_equal 3, @sparse_matrix.trace
   end
 
   def test_trace_chars
     begin
       @sparse_matrix.trace
     rescue Exception => e
-      if e.is_a? TypeError
-        pass "Correct exception thrown"
-      else
-        fail "Incorrect exception thrown"
-      end
+      assert_true (e.is_a? TypeError), "Incorrect exception thrown: #{e}"
     end
   end
 
   def test_trace_empty
-    @sparse_matrix = Matrix[[], []]
+    @sparse_matrix = SparseMatrix[[], []]
 
     #invariant
-    assert_true @sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [], @sparse_matrix.values
     assert_equal [], @sparse_matrix.val_row
     assert_equal [], @sparse_matrix.val_col
 
-    begin
-      @sparse_matrix.trace
-    rescue Exception => e
-      if e.is_a? ErrDimensionMismatch
-        pass "Correct exception thrown"
-      else
-        fail "Incorrect exception thrown"
-      end
-    end
+    trace = @sparse_matrix.trace
+
+    #post
+    assert_equal trace, 0
+
+    #invariant
+    assert_true @sparse_matrix.is_a? SparseMatrix
+    assert_equal [], @sparse_matrix.values
+    assert_equal [], @sparse_matrix.val_row
+    assert_equal [], @sparse_matrix.val_col
+
   end
 end
