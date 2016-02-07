@@ -2,8 +2,8 @@ require 'matrix'
 
 class SparseMatrix
 
-	attr_reader :full_matrix, :values, :val_row, :val_col, 
-		:row_count, :column_count, :size
+	attr_reader :full_matrix, :values, :val_row, :val_col,
+							:row_count, :column_count, :size
 
 =begin
 INITIALIZATION METHODS
@@ -27,7 +27,7 @@ INITIALIZATION METHODS
 				compress_store(Matrix.identity(data[1]))
 			elsif matrix_type == "zero"
 				@row_count = data[1]
-				@column_count = data[1]
+				@column_count = data[2]
 				@size = @row_count * @column_count
 			elsif matrix_type == "compressed"
 				@values = data[1]
@@ -39,10 +39,14 @@ INITIALIZATION METHODS
 		end
 	end
 
-	def method_missing(method, *args) 
+	def method_missing(method, *args, &block) 
 		full_m = self.full()
 		if full_m.respond_to?(method)
-			full_m.send(method, *args)
+			if method.to_s.eql?("collect")
+				full_m.send(method, &block)
+			else
+				full_m.send(method, *args)
+			end
 		else
 			super
 		end
@@ -52,8 +56,8 @@ INITIALIZATION METHODS
 		SparseMatrix.new(*rows)
 	end
 
-	def SparseMatrix.zero(size)
-		SparseMatrix.new("zero", size)
+	def SparseMatrix.zero(rows, cols=rows)
+		SparseMatrix.new("zero", rows, cols)
 	end
 
 	def SparseMatrix.diagonal(*elements)
@@ -133,9 +137,9 @@ INITIALIZATION METHODS
 		return @values
 	end
 
-	def first_minor(row, col)
-		#stub
-	end
+	# def first_minor(row, col)
+	# 	#stub
+	# end
 
 	def unitary?
 		# all values are 1
@@ -159,7 +163,7 @@ INITIALIZATION METHODS
 		#handle empty matrices
 		if @values.empty? and @size == 0
 			return Matrix[[]]
-		end 
+		end
 		full_m = Array.new(@row_count) { |m| Array.new(@column_count) { |n| 0 }}
 		row_index = 0
 		if @values.empty?
@@ -167,7 +171,7 @@ INITIALIZATION METHODS
 		end
 		for i in 0..@values.size-1 do
 			row = @val_row[row_index]
-			if i <= row 
+			if i <= row
 				col = @val_col[i]
 				full_m[row][col] = @values[i]
 			end
@@ -190,19 +194,33 @@ INITIALIZATION METHODS
 					# return SparseMatrix.compressed_format 
 				else
 					return SparseMatrix.compressed_format(self.values*arg, self.val_col, self.val_row)  #only values vector will change
-			
+				end
 			else
 			
 			end
-
 	end
-	
+
 	def /(numeric_arg)
-	#stub
-	end
-	
-	def **(numeric_arg)
-	#stub
+		#stub
 	end
 
+	def **(numeric_arg)
+		#stub
+	end
+
+	def transpose
+		SparseMatrix.new("compressed", @values, @val_row, @val_col)
+	end
+
+	def trace
+		trace = 0
+		size = @val_row.size
+
+		size.times do |i|
+			if @val_col[i] == @val_row[i]
+				trace += @values[i]
+			end
+		end
+		trace
+	end
 end
