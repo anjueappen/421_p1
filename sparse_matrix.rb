@@ -2,9 +2,8 @@ require 'matrix'
 
 class SparseMatrix
 
-  @max_degree_of_sparsity = 0.5
-
-  attr_reader :full_matrix, :values, :val_row, :val_col
+  attr_reader :full_matrix, :values, :val_row, :val_col, 
+    :row_count, :column_count, :size
 
 =begin
 INITIALIZATION METHODS
@@ -13,6 +12,7 @@ INITIALIZATION METHODS
     @values = []
     @val_row = []
     @val_col = []
+    @max_degree_of_sparsity = 0.5
     if !data[0].is_a? Array
       matrix_type = data[0]
       if matrix_type == "scalar"
@@ -25,6 +25,8 @@ INITIALIZATION METHODS
         compress_store(Matrix.diagonal(*data))
       elsif matrix_type == "identity"
         compress_store(Matrix.identity(data[1]))
+      elsif matrix_type == "zero" #TODO take this out when full() is implemented 
+        compress_store(Matrix.zero(data[1]))
       elsif matrix_type == "compressed"
         @values = data[1]
         @val_col = data[2]
@@ -37,6 +39,7 @@ INITIALIZATION METHODS
 
   def method_missing(method, *args)
   	# TODO: the call for @full_matrix should be replaced with a function that generates the full matrix from our compressed storage! 
+    puts args
   	if @full_matrix.respond_to?(method)
   		@full_matrix.send(method, *args)
   	else
@@ -84,12 +87,15 @@ INITIALIZATION METHODS
   end
 
   def compress_store(matrix)
+    #TODO take this out after full() is implemented
+    @full_matrix = matrix
     # TODO make sure that original dimesions are saved? for column_count and row_count.
 		if not matrix.is_a? Matrix
       raise Exception.new("Parameter must be a Matrix instance")
     end
     if matrix.empty?
-			raise Exception.new("Matrix can't be empty")
+      return
+			#raise Exception.new("Matrix can't be empty")
 		end
     # puts ""
     # puts matrix
@@ -107,6 +113,10 @@ INITIALIZATION METHODS
         end
       end
     end
+
+    @row_count = matrix.row_count
+    @column_count = matrix.column_count
+    @size = @row_count * @column_count
   end
 
   def cofactor
@@ -114,23 +124,29 @@ INITIALIZATION METHODS
   end
 
   def nonzero_count
-  	#stub
+  	return @values.size
   end
 
   def nonzeros
-  	#stub
+  	return @values
   end
 
   def first_minor(row, col)
   	#stub
   end
 
+  def unitary?
+    # all values are 1
+    return @values.all? {|x| x == 1}
+  end
+
   def sparse?
-  	#stub
+  	return self.sparsity < @max_degree_of_sparsity
   end
 
   def sparsity
   	#The fraction of non-zero elements over the total number of elements
+    return @values.size.to_f / @size.to_f
   end
 
   def full
@@ -149,7 +165,7 @@ INITIALIZATION METHODS
   #stub
   end
   
-  def**(numeric_arg)
+  def **(numeric_arg)
   #stub
   end
 

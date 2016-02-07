@@ -33,7 +33,7 @@ class AccessUnitTests < Test::Unit::TestCase
 
     #post
     assert !@sparse_matrix.nonzeros().empty?, "Result of nonzeros should not be empty if sparse_matrix is not a zero matrix."
-    assert !@zero_matrix.nonzeros().empty?, "Result of nonzeros should  be empty if sparse_matrix is a zero matrix."
+    assert @zero_matrix.nonzeros().empty?, "Result of nonzeros should  be empty if sparse_matrix is a zero matrix."
   end
 
   def test_row_count

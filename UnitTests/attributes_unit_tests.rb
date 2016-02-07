@@ -39,7 +39,7 @@ class AttributesUnitTests < Test::Unit::TestCase
 	end
 
 	def test_diagonal?
-		assert sparse_diag_matrix.diagonal?, "This should be a diagonal matrix."
+		assert @sparse_diag_matrix.diagonal?, "This should be a diagonal matrix."
 		assert !@sparse_matrix.diagonal?, "This should not be a diagonal matrix."
 	end
 
@@ -56,7 +56,7 @@ class AttributesUnitTests < Test::Unit::TestCase
 
 	def test_permutation?
 		assert @identity_matrix.permutation?, "Identity matrix should be a permutation matrix."
-		assert @sparse_matrix.permutation?, "Should not be a permutation matrix."
+		assert !@sparse_matrix.permutation?, "Should not be a permutation matrix."
 	end
 
 	def test_square?
@@ -64,7 +64,7 @@ class AttributesUnitTests < Test::Unit::TestCase
     nonsquare_sm = SparseMatrix[[1,0,0],[0,1,0]]
 
 		assert @sparse_matrix.square?, "Matrix should be square."
-		assert !nonsquare_sm, "Matrix should not be square."
+		assert !nonsquare_sm.square?, "Matrix should not be square."
 	end
 
 	def test_zero?
@@ -74,12 +74,12 @@ class AttributesUnitTests < Test::Unit::TestCase
 
 	def test_symmetric?
 		assert @symmetric_matrix.symmetric?, "Matrix should be symmetric."
-		assert @sparse_matrix.symmetric?, "Matrix should not be symmetric."
+		assert !@sparse_matrix.symmetric?, "Matrix should not be symmetric."
 	end
 
 	def test_unitary?
 		assert @identity_matrix.unitary?, "Identity matrix should be unitary."
-		assert !@sparse_matrix.unitary, "Sparse matrix should not be unitary."
+		assert !@sparse_matrix.unitary?, "Sparse matrix should not be unitary."
 	end
 
 	def test_sparsity
