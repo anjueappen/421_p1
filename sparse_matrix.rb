@@ -177,10 +177,24 @@ INITIALIZATION METHODS
 	end
 
 	def increase_all_values_by(number)
+	
+	
 	end
  
-	def *(numeric_arg)
-	#stub
+	def *(arg)
+	
+			case(arg)
+			
+			when Numeric
+				if arg.zero?
+					# return SparseMatrix.compressed_format 
+				else
+					return SparseMatrix.compressed_format(self.values*arg, self.val_col, self.val_row)  #only values vector will change
+			
+			else
+			
+			end
+
 	end
 	
 	def /(numeric_arg)

@@ -1,4 +1,7 @@
 require 'test/unit'
+require 'matrix'
+require '../sparse_matrix.rb'
+
 
 class MatrixOperationTests < Test::Unit::TestCase
 
