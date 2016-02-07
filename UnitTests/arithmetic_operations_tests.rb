@@ -416,6 +416,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	def test_multiplication_numeric_int
 		#setup
 		@sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
+
 		@sparse_clone = @sparse_matrix.clone()  # used to check that matrix used in operation was not changed
 		@value = 4
 		
