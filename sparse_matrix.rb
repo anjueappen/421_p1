@@ -1,28 +1,30 @@
 require 'matrix'
 
-class SparseMatrix 
+class SparseMatrix
 
 =begin
 Do we want attr_readers and writers at this point?
 Don't see need for them yet, therefore not adding right now.
 =end
 
-  @values
-  @val_row
-  @val_col
+  @values = Array.new
+  @val_row = Array.new
+  @val_col = Array.new
   @max_degree_of_sparsity = 0.5
 
   attr_reader :full_matrix, :values, :val_row, :val_col
 =begin
 INITIALIZATION METHODS - may change on what we choose to support
 =end
+
+	
   def initialize(*rows)
     @full_matrix = Matrix.rows(rows, false)
     # stub values below, TODO: code actual functionality with compress_store
-    @values = []
-  	@val_col = []
-  	@val_row = []
-    #compress_store(@full_matrix)
+    @values = Array.new
+  	@val_col = Array.new
+  	@val_row = Array.new
+    compress_store(@full_matrix)
   end
 
   def method_missing(method, *args)
@@ -36,7 +38,13 @@ INITIALIZATION METHODS - may change on what we choose to support
 
   def SparseMatrix.[](*rows)
   	#stub
-  	SparseMatrix.new(*rows)	#delegate to initialize
+  	#SparseMatrix.new(*rows)	#delegate to initialize
+		@values = Array.new
+  	@val_col = Array.new
+  	@val_row = Array.new
+		@full_matrix = Matrix.rows(rows, false)
+		#self.send(:initialize)[rows]
+		compress_store(@full_matrix)
   end
 
   def SparseMatrix.zero(size)
@@ -84,19 +92,31 @@ INITIALIZATION METHODS - may change on what we choose to support
     store(@full_matrix.rows)
   end
 
-  def compress_store(matrix)
-  	# MICHELLE'S NOTE: This function throws an error when matrix.rows is called because it's a protected function... not sure why though. maybe it's getting confused with the base Matrix class having a function called rows too?
-    if not matrix.is_a? Matrix
+  def SparseMatrix.compress_store(matrix)
+  	# implemented work around for comment below
+		# MICHELLE'S NOTE: This function throws an error when matrix.rows is called because it's a protected function... not sure why though. maybe it's getting confused with the base Matrix class having a function called rows too?
+    # todo make sure that original dimesions are saved
+		if not matrix.is_a? Matrix
       raise Exception.new("Parameter must be a Matrix instance")
     end
-    i = 0
-    for row in 0 ..matrix.rows.length
-      for column in 0..row.length
-        if matrix.rows[row][column] != 0
-          @values[i] = matrix.rows[row][column]
-          @val_row[i] = row
-          @val_col[i] = column 
-          i = i+1  
+    if matrix.empty?
+			raise Exception.new("Matrix can't be empty")
+		end
+		#i = 0
+    for row in 0 ..matrix.send(:rows).length
+			found_first_non_zero = false  # keep track if first non-zero row element was found. todo - what if row of zeros?
+			for column in 0..matrix.column_count
+        if matrix.send(:rows)[row][column] != 0
+          @values.push(matrix.send(:rows)[row][column]) # add non-zero values
+					@val_col.push(column) # add col of each non-zero value														
+					if(!found_first_non_zero)# check if it's the first non-zero value in row
+						@val_row.push(@values.index(matrix.send(:rows)[row][column]))
+						found_first_non_zero = true
+					end
+					#@values[i] = matrix.rows[row][column]
+          #@val_row[i] = row
+          #@val_col[i] = column 
+          #i = i+1  
         end
       end
     end

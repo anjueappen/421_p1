@@ -11,10 +11,10 @@ class InitializationUnitTests < Test::Unit::TestCase
 
     #post
 
-    assert sparse_matrix.is_a? Matrix
-    assert_equal [1, 2], sparse_matrix.values
-    assert_equal [0, 1], sparse_matrix.val_row
-    assert_equal [0, 1], sparse_matrix.val_col
+    assert (sparse_matrix.is_a? Matrix), "sparse matrix is not a matrix"
+    assert_equal [1, 2], sparse_matrix.values, "values vector incorrect"
+    assert_equal [0, 1], sparse_matrix.val_row, "val_row vector incorrect"
+    assert_equal [0, 1], sparse_matrix.val_col, "val_col vector incorrect"
   end
 
   def test_initialize_square_brackets_floats
