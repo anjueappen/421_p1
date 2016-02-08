@@ -9,13 +9,16 @@ class SparseMatrix
 INITIALIZATION METHODS
 =end
 
-	[:scalar, :columns, :diagonal, :identity, :zero].each do |method|
-		define_singleton_method method  do |args|
-			if Matrix.respond_to? method
-				compress_store(Matrix.send(method, args)) #once this matrix is stored, its thrown away
-			end
-		end
-	end
+	# [:scalar, :columns, :diagonal, :identity, :zero, :[]].each do |method|
+	# 	define_singleton_method method  do |args|
+	# 		if Matrix.respond_to? method
+	# 			sm = SparseMatrix.new()
+	# 			sm.values, sm.val_col, sm.val_row = compress_store(Matrix.send(method, args)) #once this matrix is stored, its thrown away
+	# 			return sm
+
+	# 		end
+	# 	end
+	# end
 
 	def SparseMatrix.compressed_format(values, val_col, val_row, row_count, column_count)
 		@values = values

@@ -9,7 +9,8 @@ class InitializationUnitTests < Test::Unit::TestCase
     sparse_matrix = SparseMatrix[[1,0], [0,2]]
 
     #post
-    assert sparse_matrix.real?, "Real sparse_matrix"
+    assert sparse_matrix.is_a? SparseMatrix
+    # assert sparse_matrix.real?, "Real sparse_matrix"
     assert_equal [1, 2], sparse_matrix.values, "values vector incorrect"
     assert_equal [0, 1], sparse_matrix.val_row, "val_row vector incorrect"
     assert_equal [0, 1], sparse_matrix.val_col, "val_col vector incorrect"
