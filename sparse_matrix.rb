@@ -110,10 +110,18 @@ INITIALIZATION METHODS
 	def first_minor(row, col)
 		full_m = self.full()
 		fm_matrix = full_m.send(:first_minor, row, col)
-		values, val_col, val_row = compress_store(fm_matrix)
-		return SparseMatrix.compressed_format(values, val_col, val_row, fm_matrix.row_count, fm_matrix.column_count)
+		compress_store(fm_matrix)
+		#puts self.values             ## todo not values of new matrix
+		return self # return the sparse matrix
+		# compress_store just sets values
 	end
 
+	def cofactor(row,col)
+		sm_first_minor = self.first_minor(row,col)
+		determinant_sm = sm_first_minor.full().send(:determinant)
+		return determinant_sm *(-1) **(row + col) 
+	end
+	
 	def unitary?
 		# all values are 1
 		return @values.all? {|x| x == 1}
