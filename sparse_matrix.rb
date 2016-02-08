@@ -209,6 +209,8 @@ INITIALIZATION METHODS
 				if arg.zero?
 					return SparseMatrix.zero(self.row_count, self.column_count) 
 				else
+					# todo values used here
+					# todo values used here
 					new_values = self.values.collect {|value| value*arg}
 					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row, self.row_count, self.column_count)  #only values vector will change
 				end
@@ -231,6 +233,7 @@ INITIALIZATION METHODS
 			#todo test negative
 			when Numeric
 					# todo think that ruby numeric class will handle divide by zero
+					# todo values used here
 					new_values = self.values.collect {|value| value/arg.to_f}
 					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row, self.row_count, self.column_count)  #only values vector will change
 			
