@@ -70,6 +70,36 @@ class AccessUnitTests < Test::Unit::TestCase
     assert_nil @sm_w_duplicates.index(3), "Result returned should be nil for elements that don't exist in the matrix."
   end
 
+  def test_first_minor
+    #setup
+    # [ 0 1 0 ]
+    # [ 0 1 0 ]
+    # [ 0 1 0 ]
+    sm = SparseMatrix[[0,1,0], [0,1,0], [0,1,0]]
+    i = 0
+    j = 0
+
+    #pre
+    assert_operator i, :<, sm.row_count, "Row specified must be less than the number of rows in the matrix."
+    assert_operator j, :<, sm.column_count, "Column specified must be less than the number of columns in the matrix."
+    assert_operator i, :>=, 0, "Row specified must be greater than or equal to 0."
+    assert_operator j, :>=, 0, "Column specified must be greater than or equal to 0."
+
+    #data tests
+    new_sm = sm.first_minor(i,j)
+    puts ""
+    puts new_sm.values
+    puts new_sm.val_row
+    puts new_sm.val_col
+    # assert_equal Matrix[[1,0],[1,0]], new_sm.full(), "first_minor() function failed."
+
+    # #post
+    # assert new_sm.is_a? SparseMatrix
+    # assert new_sm.real?
+    # assert_equal sm.row_count - 1, new_sm, "Row count should be decremented by 1."
+    # assert_equal sm.column_count - 1, new_sm, "Column count should be decremented by 1."
+  end
+
   def test_cofactor
     sm = SparseMatrix[[1,0,0,0], [0,2,0,0], [0,0,3,0],[0,0,0,4]]
     #
@@ -80,8 +110,8 @@ class AccessUnitTests < Test::Unit::TestCase
     #pre        
     assert @sparse_matrix.square?, "Matrix must be square to find cofactor."
     
-    cofactor_matrix = @sparse_matrix.cofactor(1,1)
-    assert_equal "", cofactor_matrix, "cofactor() method failed."
+    cofactor_11 = @sparse_matrix.cofactor(1,1)
+    assert_equal 12, cofactor_11, "cofactor() method failed."
 
     #post 
     #size of original matrix must be equal to size of cofactor matrix

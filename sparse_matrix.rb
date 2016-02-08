@@ -16,15 +16,15 @@ INITIALIZATION METHODS
 		if !data[0].is_a? Array
 			matrix_type = data[0]
 			if matrix_type == "scalar"
-				compress_store(Matrix.scalar(data[1], data[2]))
+				@values, @val_col, @val_row = compress_store(Matrix.scalar(data[1], data[2]))
 			elsif matrix_type == "columns"
 				data.shift()
-				compress_store(Matrix.columns(data))
+				@values, @val_col, @val_row = compress_store(Matrix.columns(data))
 			elsif matrix_type == "diagonal"
 				data.shift()
-				compress_store(Matrix.diagonal(*data))
+				@values, @val_col, @val_row = compress_store(Matrix.diagonal(*data))
 			elsif matrix_type == "identity"
-				compress_store(Matrix.identity(data[1]))
+				@values, @val_col, @val_row = compress_store(Matrix.identity(data[1]))
 			elsif matrix_type == "zero"
 				@row_count = data[1]
 				@column_count = data[2]
@@ -37,7 +37,7 @@ INITIALIZATION METHODS
 				@column_count = data[5]
 			end
 		else
-			compress_store(Matrix.rows(data, false))
+			@values, @val_col, @val_row = compress_store(Matrix.rows(data, false))
 		end
 	end
 
@@ -102,32 +102,37 @@ INITIALIZATION METHODS
 			@row_count = 0
 			@column_count = 0
 			@size = 0
-			return
+			return [], [], []
 			# raise Exception.new("Matrix can't be empty")
 		end
 		# puts ""
 		# puts matrix
+		values = []
+		val_col = []
+		val_row = []
 		for row in 0 ..matrix.row_count-1
 			found_first_non_zero = false  # keep track if first non-zero row element was found. todo - what if row of zeros?
 			for column in 0..matrix.column_count-1
 				element = matrix.send(:element, row, column)
 				if element != 0 and !element.nil?
-					@values.push(element) # add non-zero values
-					@val_col.push(column) # add col of each non-zero value														
+					values.push(element) # add non-zero values
+					val_col.push(column) # add col of each non-zero value														
 					if(!found_first_non_zero)# check if it's the first non-zero value in row
-						@val_row.push(@values.length-1)
+						val_row.push(values.length-1)
 						found_first_non_zero = true
 					end
 				end
 			end
 			if (!found_first_non_zero)	# if the row does not have any non-zero values, push nil
-				@val_row.push(nil)
+				val_row.push(nil)
 			end
 		end
 
 		@row_count = matrix.row_count
 		@column_count = matrix.column_count
 		@size = @row_count * @column_count
+
+		return values, val_col, val_row
 	end
 
 	def to_s
@@ -142,9 +147,12 @@ INITIALIZATION METHODS
 		return @values
 	end
 
-	# def first_minor(row, col)
-	# 	#stub
-	# end
+	def first_minor(row, col)
+		full_m = self.full()
+		fm_matrix = full_m.send(:first_minor, row, col)
+		values, val_col, val_row = compress_store(fm_matrix)
+		return SparseMatrix.compressed_format(values, val_col, val_row, fm_matrix.row_count, fm_matrix.column_count)
+	end
 
 	def unitary?
 		# all values are 1

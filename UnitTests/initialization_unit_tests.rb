@@ -209,7 +209,7 @@ class InitializationUnitTests < Test::Unit::TestCase
 
 
   def test_compressed_format
-    sparse_matrix = SparseMatrix.compressed_format([4, 1], [0, 0], [0, 2])
+    sparse_matrix = SparseMatrix.compressed_format([4, 1], [0, 0], [0, 2], 3, 2)
 
     #post
     assert_equal  [4, 1], sparse_matrix.values
@@ -219,7 +219,7 @@ class InitializationUnitTests < Test::Unit::TestCase
 
 
   def test_compressed_format_chars
-    sparse_matrix = SparseMatrix.compressed_format(['a', 'b'], [0, 0], [0, 2])
+    sparse_matrix = SparseMatrix.compressed_format(['a', 'b'], [0, 0], [0, 2], 3, 2)
 
     #post
     assert_equal  ['a', 'b'], sparse_matrix.values
@@ -228,7 +228,7 @@ class InitializationUnitTests < Test::Unit::TestCase
   end
 
   def test_compressed_format_floats
-    sparse_matrix = SparseMatrix.compressed_format([5.01, 5.01], [0, 0], [0, 2])
+    sparse_matrix = SparseMatrix.compressed_format([5.01, 5.01], [0, 0], [0, 2], 3, 2)
 
     #post
     assert_equal  [5.01, 5.01], sparse_matrix.values
