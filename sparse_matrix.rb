@@ -9,13 +9,13 @@ class SparseMatrix
 INITIALIZATION METHODS
 =end
 
-	[:scalar, :columns, :diagonal, :identity, :zero].each do |method|
-		define_singleton_method method  do |args|
-			if Matrix.respond_to? method
-				compress_store(Matrix.send(method, args)) #once this matrix is stored, its thrown away
-			end
-		end
-	end
+	# [:scalar, :columns, :diagonal, :identity, :zero].each do |method|
+	# 	define_singleton_method method  do |args|
+	# 		if Matrix.respond_to? method
+	# 			compress_store(Matrix.send(method, args)) #once this matrix is stored, its thrown away
+	# 		end
+	# 	end
+	# end
 
 	def SparseMatrix.compressed_format(values, val_col, val_row, row_count, column_count)
 		@values = values
@@ -26,22 +26,21 @@ INITIALIZATION METHODS
 	end
 
 	def initialize(*data)
-		@values = []
-		@val_row = []
-		@val_col = []
+		@values = {}
 		@max_degree_of_sparsity = 0.5
+
 		if !data[0].is_a? Array
 			matrix_type = data[0]
 			if matrix_type == 'scalar'
-				@values, @val_col, @val_row = compress_store(Matrix.scalar(data[1], data[2]))
+				compress_store(Matrix.scalar(data[1], data[2]))
 			elsif matrix_type == 'columns'
 				data.shift()
-				@values, @val_col, @val_row = compress_store(Matrix.columns(data))
+				compress_store(Matrix.columns(data))
 			elsif matrix_type == 'diagonal'
 				data.shift()
-				@values, @val_col, @val_row = compress_store(Matrix.diagonal(*data))
+				compress_store(Matrix.diagonal(*data))
 			elsif matrix_type == 'identity'
-				@values, @val_col, @val_row = compress_store(Matrix.identity(data[1]))
+				compress_store(Matrix.identity(data[1]))
 			elsif matrix_type == 'zero'
 				@row_count = data[1]
 				@column_count = data[2]
@@ -54,7 +53,7 @@ INITIALIZATION METHODS
 				@column_count = data[5]
 			end
 		else
-			@values, @val_col, @val_row = compress_store(Matrix.rows(data, false))
+			compress_store(Matrix.rows(data, false))
 		end
 	end
 
@@ -114,41 +113,28 @@ INITIALIZATION METHODS
 		if not matrix.is_a? Matrix
 			raise Exception.new('Parameter must be a Matrix instance')
 		end
+
 		if matrix.empty?
 			@row_count = 0
 			@column_count = 0
 			@size = 0
-			return [], [], []
+			return {} #empty hash
 			# raise Exception.new('Matrix can't be empty')
 		end
-		# puts ''
-		# puts matrix
-		values = []
-		val_col = []
-		val_row = []
-		for row in 0 ..matrix.row_count-1
-			found_first_non_zero = false  # keep track if first non-zero row element was found. todo - what if row of zeros?
-			for column in 0..matrix.column_count-1
-				element = matrix.send(:element, row, column)
-				if element != 0 and !element.nil?
-					values.push(element) # add non-zero values
-					val_col.push(column) # add col of each non-zero value														
-					if(!found_first_non_zero)# check if it's the first non-zero value in row
-						val_row.push(values.length-1)
-						found_first_non_zero = true
-					end
-				end
-			end
-			if (!found_first_non_zero)	# if the row does not have any non-zero values, push nil
-				val_row.push(nil)
+
+		#store in hash
+		matrix.each_with_index do |element, row, column|
+			if element != 0
+				@values[[row, column]] = element
 			end
 		end
+
+		puts @values
 
 		@row_count = matrix.row_count
 		@column_count = matrix.column_count
 		@size = @row_count * @column_count
 
-		return values, val_col, val_row
 	end
 
 	def to_s
@@ -201,37 +187,10 @@ INITIALIZATION METHODS
 			return Matrix.zero(@row_count,@column_count)
 		end
 
-		# M: trying a different approach.
-		# row_index = 0
-		# for i in 0..@values.size-1 do
-		# 	col = @val_col[i]
-		# 	if row_index == @val_row.size 	#we're at the end of the row
-		# 		#may not be at the end of values
-		# 		if i < @values.size-1
-		# 			for i in 
-		# 		end
+		@values.each_pair { |index, element|
+			full_m[index[0]][index[1]] = element
+		}
 
-		# 	elsif @val_row[row_index].nil?	# this is a row with all 0
-		# 		row_index += 1
-		# 	elsif i == @val_row[row_index] #this starts the new row!
-		# 		full_m[@val_row[row_index]][col] = @values[i]
-		# 	else 	#same row, keep going 
-		# 		full_m[@val_row[row_index]][col] = @values[i]
-		# 	end
-		# end
-
-		row_index = 1
-		row = 1
-		for i in 0..@values.size-1 do
-			col = @val_col[i]
-			if @val_row[row_index].nil? or i < @val_row[row_index]	 # not starting a new row
-				full_m[row-1][col] = @values[i]
-			else
-				full_m[row][col] = @values[i]
-				row_index += 1
-				row += 1
-			end	
-		end
 		return Matrix.rows(full_m)
 	end
 

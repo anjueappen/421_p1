@@ -7,17 +7,22 @@ class InitializationUnitTests < Test::Unit::TestCase
   def test_initialize_square_brackets_integers
     #execution
     sparse_matrix = SparseMatrix[[1,0], [0,2]]
+    sm_2 = SparseMatrix[[2,1,0,0],[3,0,0,0],[0,4,4,0]]
+
+    #expected
+    hash_sm = {[0,0] => 1, [1,1] => 2}
+    hash_sm2 = {[0,0] => 2, [0,1] => 1, [1,0] => 3, [2, 1] => 4, 
+      [2,2] => 4}
 
     #post
     assert sparse_matrix.real?, "Real sparse_matrix"
-    assert_equal [1, 2], sparse_matrix.values, "values vector incorrect"
-    assert_equal [0, 1], sparse_matrix.val_row, "val_row vector incorrect"
-    assert_equal [0, 1], sparse_matrix.val_col, "val_col vector incorrect"
+    assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal"
+    assert_equal Matrix[[1,0], [0,2]], sparse_matrix.full(), "Matrices must be equal."
 
-    sm_2 = SparseMatrix[[2,1,0,0],[3,0,0,0],[0,4,4,0]]
-    assert_equal [2, 1, 3, 4, 4], sm_2.values, "values vector incorrect"
-    assert_equal [0, 2, 3], sm_2.val_row, "val_row vector incorrect"
-    assert_equal [0, 1, 0, 1, 2], sm_2.val_col, "val_col vector incorrect"
+    assert sm_2.real?, "Real sparse_matrix"
+    assert hash_sm2.eql?(sm_2.values), "Hashes must be equal"
+    assert_equal Matrix[[2,1,0,0],[3,0,0,0],[0,4,4,0]], sm_2.full(), "Matrices must be equal."
+
   end
 
   def test_initialize_square_brackets_floats
