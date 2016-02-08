@@ -9,9 +9,15 @@ class InitializationUnitTests < Test::Unit::TestCase
     sparse_matrix = SparseMatrix[[1,0], [0,2]]
 
     #post
+    assert sparse_matrix.real?, "Real sparse_matrix"
     assert_equal [1, 2], sparse_matrix.values, "values vector incorrect"
     assert_equal [0, 1], sparse_matrix.val_row, "val_row vector incorrect"
     assert_equal [0, 1], sparse_matrix.val_col, "val_col vector incorrect"
+
+    sm_2 = SparseMatrix[[2,1,0,0],[3,0,0,0],[0,4,4,0]]
+    assert_equal [2, 1, 3, 4, 4], sm_2.values, "values vector incorrect"
+    assert_equal [0, 2, 3], sm_2.val_row, "val_row vector incorrect"
+    assert_equal [0, 1, 0, 1, 2], sm_2.val_col, "val_col vector incorrect"
   end
 
   def test_initialize_square_brackets_floats

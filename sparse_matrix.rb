@@ -94,7 +94,6 @@ INITIALIZATION METHODS
 	end
 
 	def compress_store(matrix)
-		# TODO make sure that original dimesions are saved? for column_count and row_count.
 		if not matrix.is_a? Matrix
 			raise Exception.new("Parameter must be a Matrix instance")
 		end
@@ -170,6 +169,7 @@ INITIALIZATION METHODS
 
 	def full
 		# Strategy: Iterate through values array. Check to see if they are the first element of a new row. Add them to the correct row and column.
+		# Strategy: Initialize an array with zeroes. Go through values, find their row and column.
 		# The current implementation avoids the use of Array.index() method, which only returns the index of the first element it finds in the array, even if there are duplicate elements.
 		# full() returns a Matrix object
 
@@ -184,11 +184,30 @@ INITIALIZATION METHODS
 			return Matrix.zero(@row_count,@column_count)
 		end
 
+		# M: trying a different approach.
+		# row_index = 0
+		# for i in 0..@values.size-1 do
+		# 	col = @val_col[i]
+		# 	if row_index == @val_row.size 	#we're at the end of the row
+		# 		#may not be at the end of values
+		# 		if i < @values.size-1
+		# 			for i in 
+		# 		end
+
+		# 	elsif @val_row[row_index].nil?	# this is a row with all 0
+		# 		row_index += 1
+		# 	elsif i == @val_row[row_index] #this starts the new row!
+		# 		full_m[@val_row[row_index]][col] = @values[i]
+		# 	else 	#same row, keep going 
+		# 		full_m[@val_row[row_index]][col] = @values[i]
+		# 	end
+		# end
+
 		row_index = 1
 		row = 1
 		for i in 0..@values.size-1 do
 			col = @val_col[i]
-			if i < @val_row[row_index]	 # not starting a new row
+			if @val_row[row_index].nil? or i < @val_row[row_index]	 # not starting a new row
 				full_m[row-1][col] = @values[i]
 			else
 				full_m[row][col] = @values[i]

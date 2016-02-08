@@ -129,6 +129,9 @@ class AccessUnitTests < Test::Unit::TestCase
 
     sm = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
     assert_equal Matrix[[1,0,3],[0,0,1],[0,2,0]], sm.full(), "More testing."
+
+    sm2 = SparseMatrix[[1,0,3],[0,0,0],[0,2,0]]
+    assert_equal Matrix[[1,0,3],[0,0,0],[0,2,0]], sm2.full(), "More testing."
   end
 
   def test_full_empty
