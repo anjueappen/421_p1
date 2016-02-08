@@ -204,8 +204,7 @@ INITIALIZATION METHODS
 	def *(arg)
 			
 			case(arg)
-			# todo current error with rounding - rounds down and gets zero values for ints.
-			# seems ok for floats
+
 			when Numeric
 				if arg.zero?
 					return SparseMatrix.zero(self.row_count, self.column_count) 
@@ -225,14 +224,12 @@ INITIALIZATION METHODS
 
 	def /(arg)
 			case(arg)
-			
+			# todo current error with rounding - rounds down and gets zero values for ints.
+			# seems ok for floats
 			when Numeric
-				if arg.zero?
-					# todo raise Exception
-				else
-					new_values = self.values.collect {|value| value/arg}
+					# todo think that ruby numeric class will handle divide by zero
+					new_values = self.values.collect {|value| value/arg.to_f}
 					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row, self.row_count, self.column_count)  #only values vector will change
-				end
 			
 			when Vector
 			
