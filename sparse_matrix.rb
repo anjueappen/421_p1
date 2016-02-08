@@ -201,16 +201,51 @@ INITIALIZATION METHODS
 
 	def increase_all_values_by(number)
 		# multiply number by matrix of ones.
-		# then do matrix addition
-		# create matrix of ones with current dimensions
+		if number.zero?
+			return self
+		end
+		matrix_to_add = Matrix.empty(self.row_count,self.column_count)
+		matrix_to_add = matrix_to_add.collect {|value| number}
+		return self+matrix_to_add
 		
-		# scalar multiplication
-		
-		# call add
 	end
- 
-	def *(arg)
+
+	def -(arg)
+			case(arg)
 			
+			when Numeric
+								
+			when Vector
+			
+			when Matrix
+			
+			when SparseMatrix
+			
+			else
+				#try to coerce, but fail? or just raise exception?
+				
+			end
+	end
+	
+	def +(arg)
+			case(arg)
+			
+			when Numeric
+								
+			when Vector
+			
+			when Matrix
+			
+			when SparseMatrix
+			
+			else
+				#try to coerce, but fail? or just raise exception?
+				
+			end
+	end
+	
+	def *(arg)
+			#todo test negative
 			case(arg)
 
 			when Numeric
@@ -222,8 +257,10 @@ INITIALIZATION METHODS
 				end
 			
 			when Vector
-			
+				
 			when Matrix
+			
+			when SparseMatrix
 			
 			else
 				#try to coerce, but fail? or just raise exception?
@@ -234,6 +271,7 @@ INITIALIZATION METHODS
 			case(arg)
 			# todo current error with rounding - rounds down and gets zero values for ints.
 			# seems ok for floats
+			#todo test negative
 			when Numeric
 					# todo think that ruby numeric class will handle divide by zero
 					new_values = self.values.collect {|value| value/arg.to_f}
@@ -243,6 +281,8 @@ INITIALIZATION METHODS
 			
 			when Matrix
 			
+			when SparseMatrix
+			
 			else
 				#try to coerce, but fail? or just raise exception?
 				
@@ -251,7 +291,11 @@ INITIALIZATION METHODS
 
 
 	def **(arg)
-		#stub
+		#todo test negative
+		if !arg.is_a? Integer
+			# throw exception
+		# call multiplication with self arg number of times
+		end
 	end
 
 	def transpose
