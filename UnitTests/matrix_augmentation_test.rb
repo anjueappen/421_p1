@@ -2,7 +2,7 @@ require 'test/unit'
 require_relative '../sparse_matrix.rb'
 require 'matrix'
 
-class MatrixAugmentationTest < Test::Unit::TestCase
+class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
@@ -10,7 +10,7 @@ class MatrixAugmentationTest < Test::Unit::TestCase
     @sparse_matrix = SparseMatrix[[1,0], [0,2]]
 
     #pre
-    assert_true sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [1, 2], @sparse_matrix.values
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
@@ -30,7 +30,7 @@ class MatrixAugmentationTest < Test::Unit::TestCase
     @sparse_matrix.putNonZero 5, row, column
 
     #post
-    assert_true sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [1, 2, 5], @sparse_matrix.values
     assert_equal [0, 1, 3], @sparse_matrix.val_row
     assert_equal [0, 1, 3], @sparse_matrix.val_col
@@ -42,7 +42,7 @@ class MatrixAugmentationTest < Test::Unit::TestCase
     @sparse_matrix.putNonZero 'a', row, column
 
     #post
-    assert_true sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [1, 2, 'a'], @sparse_matrix.values
     assert_equal [0, 1, 3], @sparse_matrix.val_row
     assert_equal [0, 1, 3], @sparse_matrix.val_col
@@ -54,7 +54,7 @@ class MatrixAugmentationTest < Test::Unit::TestCase
     @sparse_matrix.putNonZero 'a', row, column
 
     #post
-    assert_true sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [1, 2, 'a'], @sparse_matrix.values
     assert_equal [0, 1, 3], @sparse_matrix.val_row
     assert_equal [0, 1, 3], @sparse_matrix.val_col
@@ -66,7 +66,7 @@ class MatrixAugmentationTest < Test::Unit::TestCase
     @sparse_matrix.putNonZero 5, row, column
 
     #post
-    assert_true sparse_matrix.is_a? Matrix
+    assert_true @sparse_matrix.is_a? SparseMatrix
     assert_equal [1, 5], @sparse_matrix.values
     assert_equal [0, 1], @sparse_matrix.val_row
     assert_equal [0, 1], @sparse_matrix.val_col
@@ -76,11 +76,9 @@ class MatrixAugmentationTest < Test::Unit::TestCase
     begin
       @sparse_matrix.putNonZero 5, 4, 3, 2
     rescue Exception => e
-      if e.is_a? InsufficientVectorLength
-        pass "Correct exception raised"
-      else
-        fail "Incorrect excpetion raised"
-      end
+      assert_true (e.is_a? ArgumentError), "Incorrect exception raised #{e}"
+    else
+      fail 'No Exception thrown'
     end
   end
 end

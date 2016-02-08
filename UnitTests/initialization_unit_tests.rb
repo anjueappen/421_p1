@@ -111,6 +111,7 @@ class InitializationUnitTests < Test::Unit::TestCase
     assert_equal  [1.00, 2.01, 1.00], sparse_matrix.values
     assert_equal  [0, 1, 2], sparse_matrix.val_row
     assert_equal  [0, 1, 0], sparse_matrix.val_col
+		
   end
 
   def test_initialize_columns_chars

@@ -463,7 +463,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 	
-	
 	def test_multiplication_numeric_float
 		#setup
 		@sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
@@ -478,7 +477,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#data tests
 		@actual_matrix =  @sparse_matrix*(@value)
 		assert_equal @actual_matrix.values, [1.5,4.5,1.5,3], "Multiplication by float - values vector incorrect"
-		assert_in_delta @actual_matrix.full(), Matrix[[1.5,0.0,4.5],[0.0,0.0,1.5],[0.0,0.3,0.0]], 0.01, "Multiplication of matrix by float failed."
+		assert_in_delta @actual_matrix.full(), Matrix[[1.50,0.00,4.50],[0.00,0.00,1.50],[0.00,0.30,0.00]], 0.01, "Multiplication of matrix by float failed."
 		
 		#post
 		
