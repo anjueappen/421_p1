@@ -15,7 +15,8 @@ INITIALIZATION METHODS
 
 		method = data[0]
 		data.shift()
-		compress_store(Matrix.send(method, *data))
+		@values, @row_count, @column_count = compress_store(Matrix.send(method, *data))
+		@size = @row_count * @column_count
 
 	end
 
@@ -72,31 +73,26 @@ INITIALIZATION METHODS
 	end
 
 	def compress_store(matrix)
+		# returns values hash, row_count and column_count
+		# storage of these values must be done manually in initialize if you want to do stuff with it.
 		if not matrix.is_a? Matrix
 			raise Exception.new('Parameter must be a Matrix instance')
 		end
 
 		if matrix.empty?
-			@row_count = 0
-			@column_count = 0
-			@size = 0
-			return {} #empty hash
-			# raise Exception.new('Matrix can't be empty')
+			return {}, 0, 0 #empty hash
 		end
 
+		values = {}
 		#store in hash
 		matrix.each_with_index do |element, row, column|
 			if element != 0
-				@values[[row, column]] = element
+				values[[row, column]] = element
 			end
 		end
 
-		puts @values
-
-		@row_count = matrix.row_count
-		@column_count = matrix.column_count
-		@size = @row_count * @column_count
-
+		puts values
+		return values, matrix.row_count, matrix.column_count
 	end
 
 	def to_s
@@ -133,9 +129,6 @@ INITIALIZATION METHODS
 	end
 
 	def full
-		# Strategy: Iterate through values array. Check to see if they are the first element of a new row. Add them to the correct row and column.
-		# Strategy: Initialize an array with zeroes. Go through values, find their row and column.
-		# The current implementation avoids the use of Array.index() method, which only returns the index of the first element it finds in the array, even if there are duplicate elements.
 		# full() returns a Matrix object
 
 		#handle empty matrices

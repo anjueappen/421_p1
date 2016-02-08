@@ -344,36 +344,57 @@ class InitializationUnitTests < Test::Unit::TestCase
 
     #pre
     list.each { |i|
-      assert i.is_a?(String), "All elements must be floats."
+      assert i.is_a?(String), "All elements must be strings."
     }
 
     #data tests
-    assert_equal Matrix[[-9.01, 0, 0, 0, 0], [0, 8.01, 0, 0, 0], [0, 0, 3.01, 0, 0], [0, 0, 0, 2.01, 0], [0, 0, 0, 0, 1.01]], diag_sm.full(), "Matrices must be the same."
+    assert_equal Matrix[['a',0,0], [0,'b',0],[0,0,'c']], diag_sm.full(), "Matrices must be the same."
     assert hash_diag.eql?(diag_sm.values), "Hashes must be the same."
 
     #post
     assert diag_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
-    assert diag_sm.real?, "Real sparse_matrix"
     assert !diag_sm.values.empty?, "Hash cannot be empty."
     assert !diag_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_identity
-    sparse_matrix = SparseMatrix.identity(5)
+    #setup
+    n = 3
+    identity_sm = SparseMatrix.identity(n)
+    hash_identity = {[0,0]=>1, [1,1]=>1, [2,2]=>1}
+
+    #pre
+    assert n.is_a?(Integer), "N size of matrix must be an integer"
+
+    #data tests
+    assert_equal Matrix[[1, 0, 0], [0, 1, 0], [0, 0, 1]], identity_sm.full(), "Matrices must be the same."
+    assert hash_identity.eql?(identity_sm.values), "Hashes must be the same."
 
     #post
-    assert_equal  [1, 1, 1, 1, 1], sparse_matrix.values
-    assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_row
-    assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_col
+    assert identity_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert identity_sm.real?, "Real sparse_matrix"
+    assert !identity_sm.values.empty?, "Hash cannot be empty."
+    assert !identity_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_identity_float
-    sparse_matrix = SparseMatrix.identity(5.00)
+    #setup
+    n = 3.03
+    identity_sm = SparseMatrix.identity(n)
+    hash_identity = {[0,0]=>1, [1,1]=>1, [2,2]=>1}
+
+    #pre
+    assert n.is_a?(Float), "N size of matrix can be a float, will be coerced into integer."
+
+    #data tests
+    assert_equal Matrix[[1, 0, 0], [0, 1, 0], [0, 0, 1]], identity_sm.full(), "Matrices must be the same."
+    assert hash_identity.eql?(identity_sm.values), "Hashes must be the same."
 
     #post
-    assert_equal  [1, 1, 1, 1, 1], sparse_matrix.values
-    assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_row
-    assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_col
+    assert identity_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert identity_sm.real?, "Real sparse_matrix"
+    assert !identity_sm.values.empty?, "Hash cannot be empty."
+    assert !identity_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_identity_char
@@ -387,21 +408,39 @@ class InitializationUnitTests < Test::Unit::TestCase
   end
 
   def test_initialize_zero
-    sparse_matrix = SparseMatrix.zero(5)
+    n = 3
+    zero_sm = SparseMatrix.zero(n)
+    hash_zero = {}
+
+    #pre
+    assert n.is_a?(Integer), "N size of matrix must be an integer"
+
+    #data tests
+    assert_equal Matrix[[0, 0, 0], [0, 0, 0], [0, 0, 0]], zero_sm.full(), "Matrices must be the same."
+    assert hash_zero.eql?(zero_sm.values), "Hashes must be the same."
 
     #post
-    assert_equal  [], sparse_matrix.values
-    assert_equal  [], sparse_matrix.val_row
-    assert_equal  [], sparse_matrix.val_col
+    assert zero_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert zero_sm.real?, "Real sparse_matrix"
+    assert zero_sm.values.empty?, "Hash is empty for a zero matrix."
   end
 
   def test_initialize_zero_float
-    sparse_matrix = SparseMatrix.zero(5.00)
+    n = 3.02
+    zero_sm = SparseMatrix.zero(n)
+    hash_zero = {}
+
+    #pre
+    assert n.is_a?(Float), "N size of matrix can be a float, will be coerced into an integer."
+
+    #data tests
+    assert_equal Matrix.zero(3.02), zero_sm.full(), "Matrices must be the same."
+    assert hash_zero.eql?(zero_sm.values), "Hashes must be the same."
 
     #post
-    assert_equal  [], sparse_matrix.values
-    assert_equal  [], sparse_matrix.val_row
-    assert_equal  [], sparse_matrix.val_col
+    assert zero_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert zero_sm.real?, "Real sparse_matrix"
+    assert zero_sm.values.empty?, "Hash is empty for a zero matrix."
   end
 
 
