@@ -657,7 +657,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#post
 		
-		
 		#invariant
 		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert_equal @sparse_clone.val_row, @actual_matrix.val_row, "fail. val_row changed"
@@ -666,7 +665,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 
-	def test_divison_numeric_float
+	def test_division_numeric_float
 		#setup
 		@sparse_matrix = SparseMatrix[[2.50,1.20,0,0],[3.05,0,0,0],[0,4.50,4.40,0]]
 		@sparse_clone = @sparse_matrix.clone()  # used to check that matrix used in operation was not changed
@@ -682,13 +681,24 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#data tests
 		@result_matrix =  @sparse_matrix/(@divisor)
-		assert_in_delta @result_matrix.values, Matrix[1,0.48,1.22,1.80,1.76], 0.01, "Values vector incorrect after float divsion"
-		assert_in_delta @result_matrix.full(), Matrix[[1,0.48,0,0],[1.22,0,0,0],[0,1.80,1.76,0]], 0.01, "Float divsion incorrect"
+		@expected_values = [1,0.48,1.22,1.80,1.76]
+		for i in 0.. @result_matrix.values.length-1
+			assert_in_delta @result_matrix.values[i],@expected_values[i], 0.01, "Values array incorrect after float divsion"
+		end
+		
+		@expected_matrix = Matrix[[1,0.48,0,0],[1.22,0,0,0],[0,1.80,1.76,0]]
+		for i in 0..sparse_clone.row_count-1
+			for j in 0..sparse_clone.column_count-1
+				assert_in_delta @result_matrix.full().row(i)[j], @expected_matrix.row(i)[j], 0.01, "Float divsion incorrect"
+			end
+		end
 		
 		#post
 		
 		#invariant
 		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
+		assert_equal @sparse_clone.val_row, @actual_matrix.val_row, "fail. val_row changed"
+		assert_equal @sparse_clone.val_col, @actual_matrix.val_col, "fail. val_col changed"
 		assert !@sparse_matrix.empty?
 		
 	end
