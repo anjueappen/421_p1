@@ -8,6 +8,23 @@ class SparseMatrix
 =begin
 INITIALIZATION METHODS
 =end
+
+	[:scalar, :columns, :diagonal, :identity, :zero].each do |method|
+		define_singleton_method method  do |args|
+			if Matrix.respond_to? method
+				compress_store(Matrix.send(method, args)) #once this matrix is stored, its thrown away
+			end
+		end
+	end
+
+	def SparseMatrix.compressed_format(values, val_col, val_row, row_count, column_count)
+		@values = values
+		@val_col = val_col
+		@val_row = val_row
+		@row_count = row_count
+		@column_count = column_count
+	end
+
 	def initialize(*data)
 		@values = []
 		@val_row = []
