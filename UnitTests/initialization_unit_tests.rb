@@ -5,160 +5,357 @@ class InitializationUnitTests < Test::Unit::TestCase
 
 
   def test_initialize_square_brackets_integers
-    #execution
-    sparse_matrix = SparseMatrix[[1,0], [0,2]]
-    sm_2 = SparseMatrix[[2,1,0,0],[3,0,0,0],[0,4,4,0]]
+    # setup
+    a = 1
+    b = 2
+    c = 3
+    d = 4
 
-    #expected
-    hash_sm = {[0,0] => 1, [1,1] => 2}
-    hash_sm2 = {[0,0] => 2, [0,1] => 1, [1,0] => 3, [2, 1] => 4, 
+    simple_sm = SparseMatrix[[a,0], [0,b]]
+    duplicates_sm = SparseMatrix[[a,a,0,0],[c,0,0,0],[0,d,d,0]]
+    zero_sm = SparseMatrix[[0,0],[0,0]]
+
+    #expected hashes
+    hash_simple = {[0,0] => 1, [1,1] => 2}
+    hash_duplicates = {[0,0] => 1, [0,1] => 1, [1,0] => 3, [2, 1] => 4, 
       [2,2] => 4}
+    hash_zero = {}
+
+    #pre
+    assert a.is_a?(Integer), "Elements in matrix must be integers."
+    assert b.is_a?(Integer), "Elements in matrix must be integers."
+    assert c.is_a?(Integer), "Elements in matrix must be integers."
+    assert d.is_a?(Integer), "Elements in matrix must be integers."
+
+    # data tests
+    assert_equal Matrix[[1,0], [0,2]], simple_sm.full(), "Matrices must be equal."
+    assert_equal Matrix[[1,1,0,0],[3,0,0,0],[0,4,4,0]], duplicates_sm.full(), "Matrices must be equal."
+    assert_equal Matrix[[0,0],[0,0]], zero_sm.full(), "Matrices must be equal."
+
+    # Compare expected vs actual result of hashes and Matrix representations
+    assert hash_simple.eql?(simple_sm.values), "Hashes must be equal."
+    assert hash_duplicates.eql?(duplicates_sm.values), "Hashes must be equal"
+    assert hash_zero.eql?(zero_sm.values), "Nothing stored."
 
     #post
-    assert sparse_matrix.real?, "Real sparse_matrix"
-    assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal"
-    assert_equal Matrix[[1,0], [0,2]], sparse_matrix.full(), "Matrices must be equal."
+    # Must be sparse matrix classes
+    assert simple_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert duplicates_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert zero_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
 
-    assert sm_2.real?, "Real sparse_matrix"
-    assert hash_sm2.eql?(sm_2.values), "Hashes must be equal"
-    assert_equal Matrix[[2,1,0,0],[3,0,0,0],[0,4,4,0]], sm_2.full(), "Matrices must be equal."
+    # Must be real
+    assert simple_sm.real?, "Real sparse_matrix"
+    assert duplicates_sm.real?, "Real sparse_matrix"
+    assert zero_sm.real?, "Real sparse_matrix"
+
+    # Hahes cannot be empty for non-zero sparse matrices
+    assert !simple_sm.values.empty?, "Hash cannot be empty."
+    assert !duplicates_sm.values.empty?, "Hash cannot be empty."
+    assert zero_sm.values.empty?, "Hash should be empty for a zero matrix."
+
+    # Hashes should only store non-zero values
+    assert !simple_sm.values.has_value?(0), "Hash only stores non-zero elements."
+    assert !duplicates_sm.values.has_value?(0), "Hash only stores non-zero elements."
 
   end
 
   def test_initialize_square_brackets_floats
+    #setup
+    a = 1.00
+    b = 2.00
 
-    sparse_matrix = SparseMatrix[[1.00, 0.00], [0.00, 2.00]] #these should be coerced into integers
-    # K: currently not going to coerce b/c we allow float matrices
+    #pre
+    assert a.is_a?(Float), "Testing initializing using floats."
+    assert b.is_a?(Float), "Testing initializing using floats."
+
+    float_sm = SparseMatrix[[a, 0.00], [0.00, b]]
+    #expected hash
+    hash_float = {[0,0] => 1.00, [1,1] => 2.00}
+
+    #data
+    assert_equal Matrix[[1,0], [0,2]], float_sm.full(), "Matrices must be equal."
+    assert hash_float.eql?(float_sm.values), "Hashes must be equal."
+
     #post
-    assert_equal [1, 2], sparse_matrix.values
-    assert_equal [0, 1], sparse_matrix.val_row
-    assert_equal [0, 1], sparse_matrix.val_col
+    assert float_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert float_sm.real?, "Real sparse_matrix"
+    assert !float_sm.values.empty?, "Hash cannot be empty."
+    assert !float_sm.values.has_value?(0), "Hash only stores non-zero elements."
+
   end
 
   def test_initialize_square_brackets_chars
+    #setup
+    a = 'a'
+    b = 'b'
+    char_sm = SparseMatrix[[a, 0], [b, 0]] #these should be allowed to iniitalize
+    hash_char = {[0,0] => 'a', [1,0] => 'b'}   #expected
 
-    sparse_matrix = SparseMatrix[['a', 0], ['c', 0]] #these should be allowed to iniitalize
+    #pre
+    assert a.is_a?(String), "Character element allowed."
+    assert b.is_a?(String), "Character element allowed."
+
+    #data
+    assert_equal Matrix[['a',0], ['b',0]], char_sm.full(), "Matrices must be equal."
+    assert hash_char.eql?(char_sm.values), "Hashes must be equal."
 
     #post
-    assert_equal ['a', 'c'], sparse_matrix.values
-    assert_equal [0, 1], sparse_matrix.val_row
-    assert_equal [0, 0], sparse_matrix.val_col
+    assert char_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert !char_sm.values.empty?, "Hash cannot be empty."
+    assert !char_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_val_row
+    #setup
     rows = [[1,0], [0,2]]
-    sparse_matrix = SparseMatrix.rows(rows)
+    rows_sm = SparseMatrix.rows(rows)
+    hash_rows = {[0,0] => 1, [1,1] => 2}
+
+    #pre : only looking generally at the rows argument, elements in the array are tested in the test_initialize_square_brackets tests.
+    assert rows.is_a?(Array), "Argument must be an array of arrays."
+
+    #data tests
+    assert_equal Matrix[[1,0], [0,2]], rows_sm.full(), "Matrices must be equal."
+    assert hash_rows.eql?(rows_sm.values), "Hashes must be equal."
 
     #post
-    assert_equal [1, 2], sparse_matrix.values
-    assert_equal [0, 1], sparse_matrix.val_row
-    assert_equal [0, 1], sparse_matrix.val_col
+    assert rows_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert rows_sm.real?, "Real sparse_matrix"
+    assert !rows_sm.values.empty?, "Hash cannot be empty."
+    assert !rows_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_val_row_floats
     rows = [[1.00,0], [0,2.00]]
-    sparse_matrix = SparseMatrix.rows(rows)
+    rows_sm = SparseMatrix.rows(rows)
+    hash_rows = {[0,0] => 1.00, [1,1] => 2.00}
+
+
+    #pre : only looking generally at the rows argument, elements in the array are tested in the test_initialize_square_brackets tests.
+    assert rows.is_a?(Array), "Argument must be an array of arrays."
+
+    #data tests
+    assert_equal Matrix[[1.00,0], [0,2.00]], rows_sm.full(), "Matrices must be equal."
+    assert hash_rows.eql?(rows_sm.values), "Hashes must be equal."
 
     #post
-    assert_equal [1, 2], sparse_matrix.values
-    assert_equal [0, 1], sparse_matrix.val_row
-    assert_equal [0, 1], sparse_matrix.val_col
+    assert rows_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert rows_sm.real?, "Real sparse_matrix"
+    assert !rows_sm.values.empty?, "Hash cannot be empty."
+    assert !rows_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_val_row_chars
-    rows = [['d',0], [0,'a']]
-    sparse_matrix = SparseMatrix.rows(rows)
+    rows = [['a',0], [0,'b']]
+    chars_sm = SparseMatrix.rows(rows)
+    hash_chars = {[0,0] => 'a', [1,1] => 'b'}
+
+
+    #pre : only looking generally at the rows argument, elements in the array are tested in the test_initialize_square_brackets tests.
+    assert rows.is_a?(Array), "Argument must be an array of arrays."
+
+    #data tests
+    assert_equal Matrix[['a',0], [0,'b']], chars_sm.full(), "Matrices must be equal."
+    assert hash_chars.eql?(chars_sm.values), "Hashes must be equal."
 
     #post
-    assert_equal ['d', 'a'], sparse_matrix.values
-    assert_equal  [0, 1], sparse_matrix.val_row
-    assert_equal  [0, 1], sparse_matrix.val_col
+    assert chars_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert !chars_sm.values.empty?, "Hash cannot be empty."
+    assert !chars_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_scalar
-    sparse_matrix = SparseMatrix.scalar(3, 2)
+    #setup
+    n = 3
+    v = 2
+    scalar_sm = SparseMatrix.scalar(n, v)
+    hash_scalar = {[0,0] => 2, [1,1] => 2, [2,2] => 2} #expected
+
+    #pre
+    assert n.is_a?(Integer), "n-size of matrix must be an integer."
+    assert_operator n, :>, 0, "Size must be greater than 0."
+    assert v.is_a?(Integer), "Value inserted into matrix must be an integer."
+
+    #data tests
+    assert_equal Matrix[[2, 0, 0], [0, 2, 0], [0, 0, 2]], scalar_sm.full(), "Matrices must be equal."
+    assert hash_scalar.eql?(scalar_sm.values), "Hashes must be equal."
 
     #post
-    assert_equal  [2, 2, 2], sparse_matrix.values
-    assert_equal  [0, 1, 2], sparse_matrix.val_row
-    assert_equal  [0, 1, 2], sparse_matrix.val_col
+    assert scalar_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert scalar_sm.real?, "Real sparse_matrix"
+    assert !scalar_sm.values.empty?, "Hash cannot be empty."
+    assert !scalar_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_scalar_chars
-    # below test was wrong, argument should be n, value. changed.
-    # sparse_matrix = SparseMatrix.scalar('a', 2)
-    sparse_matrix = SparseMatrix.scalar(3, 'a')
+   #setup
+    n = 3
+    v = 'a'
+    char_sm = SparseMatrix.scalar(n, v)
+    hash_char = {[0,0] => 'a', [1,1] => 'a', [2,2] => 'a'} #expected
+
+    #pre
+    assert n.is_a?(Integer), "n-size of matrix must be an integer."
+    assert_operator n, :>, 0, "Size must be greater than 0."
+    assert v.is_a?(String), "Value inserted into matrix can be a character."
+
+    #data tests
+    assert_equal Matrix[['a', 0, 0], [0, 'a', 0], [0, 0, 'a']], char_sm.full(), "Matrices must be equal."
+    assert hash_char.eql?(char_sm.values), "Hashes must be equal."
 
     #post
-    assert_equal  ['a', 'a', 'a'], sparse_matrix.values
-    assert_equal  [0, 1, 2], sparse_matrix.val_row
-    assert_equal  [0, 1, 2], sparse_matrix.val_col
+    assert char_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert !char_sm.values.empty?, "Hash cannot be empty."
+    assert !char_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_scalar_float
-    sparse_matrix = SparseMatrix.scalar  3.00, 2
+    #setup
+    n = 3
+    v = 2.00
+    scalar_sm = SparseMatrix.scalar(n, v)
+    hash_scalar = {[0,0] => 2.00, [1,1] => 2.00, [2,2] => 2.00} #expected
+
+    #pre
+    assert n.is_a?(Integer), "n-size of matrix must be an integer."
+    assert_operator n, :>, 0, "Size must be greater than 0."
+    assert v.is_a?(Float), "Value inserted into matrix can be an float."
+
+    #data tests
+    assert_equal Matrix[[2, 0, 0], [0, 2, 0], [0, 0, 2]], scalar_sm.full(), "Matrices must be equal."
+    assert hash_scalar.eql?(scalar_sm.values), "Hashes must be equal."
 
     #post
-    assert_equal  [2, 2, 2], sparse_matrix.values
-    assert_equal  [0, 1, 2], sparse_matrix.val_row
-    assert_equal  [0, 1, 2], sparse_matrix.val_col
+    assert scalar_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert scalar_sm.real?, "Real sparse_matrix"
+    assert !scalar_sm.values.empty?, "Hash cannot be empty."
+    assert !scalar_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_columns
-    sparse_matrix = SparseMatrix.columns([[1, 0, 1], [0, 2, 0]])
-    # return [[1, 0], [0, 2], [1, 0]]
+    #setup
+    columns = [[1, 0, 1], [0, 2, 0]]
+    col_sm = SparseMatrix.columns(columns)
+    hash_col = {[0,0] => 1, [1,1] => 2, [2,0] => 1}
 
-    #post #NOTE: these were wrong values originally. fixed
-    assert_equal  [1, 2, 1], sparse_matrix.values
-    assert_equal  [0, 1, 2], sparse_matrix.val_row
-    assert_equal  [0, 1, 0], sparse_matrix.val_col
+    #pre    
+    assert columns.is_a?(Array), "Argument must be an array of arrays."
+
+    #data tests
+    assert_equal Matrix[[1,0], [0,2], [1,0]], col_sm.full(), "Matrices must be equal."
+    assert hash_col.eql?(col_sm.values), "Hashes must be equal."
+
+    #post
+    assert col_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert col_sm.real?, "Real sparse_matrix"
+    assert !col_sm.values.empty?, "Hash cannot be empty."
+    assert !col_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
 
   def test_initialize_columns_floats
-    sparse_matrix = SparseMatrix.columns([[1.00, 0.00, 1.00], [0.00, 2.01, 0.00]])
+    #setup
+    columns = [[1.00, 0, 1.00], [0, 2.00, 0]]
+    col_sm = SparseMatrix.columns(columns)
+    hash_col = {[0,0] => 1.00, [1,1] => 2.00, [2,0] => 1.00}
+
+    #pre    
+    assert columns.is_a?(Array), "Argument must be an array of arrays."
+
+    #data tests
+    assert_equal Matrix[[1.00,0], [0,2.00], [1.00,0]], col_sm.full(), "Matrices must be equal."
+    assert hash_col.eql?(col_sm.values), "Hashes must be equal."
 
     #post
-    assert_equal  [1.00, 2.01, 1.00], sparse_matrix.values
-    assert_equal  [0, 1, 2], sparse_matrix.val_row
-    assert_equal  [0, 1, 0], sparse_matrix.val_col
-		
+    assert col_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert col_sm.real?, "Real sparse_matrix"
+    assert !col_sm.values.empty?, "Hash cannot be empty."
+    assert !col_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_columns_chars
-    sparse_matrix = SparseMatrix.columns  [['a', 0], [0, 0]]
+    #setup
+    columns = [['a', 0, 'a'], [0, 'b', 0]]
+    col_sm = SparseMatrix.columns(columns)
+    hash_col = {[0,0] => 'a', [1,1] => 'b', [2,0] => 'a'}
+
+    #pre    
+    assert columns.is_a?(Array), "Argument must be an array of arrays."
+
+    #data tests
+    assert_equal Matrix[['a',0], [0,'b'], ['a',0]], col_sm.full(), "Matrices must be equal."
+    assert hash_col.eql?(col_sm.values), "Hashes must be equal."
 
     #post
-    assert_equal  ['a'], sparse_matrix.values
-    assert_equal  [0, nil], sparse_matrix.val_row
-    assert_equal  [0], sparse_matrix.val_col
+    assert col_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert !col_sm.values.empty?, "Hash cannot be empty."
+    assert !col_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_diagonal
-    sparse_matrix = SparseMatrix.diagonal(-9, 8, 3, 2, 1)
+    #setup
+    list = -9, 8, 3, 2, 1
+    diag_sm = SparseMatrix.diagonal(*list)
+    hash_diag = {[0, 0]=>-9, [1, 1]=>8, [2, 2]=>3, [3, 3]=>2, [4, 4]=>1}
+
+    #pre
+    list.each { |i|
+      assert i.is_a?(Integer), "All elements must be integers."
+    }
+
+    #data tests
+    assert_equal Matrix[[-9, 0, 0, 0, 0], [0, 8, 0, 0, 0], [0, 0, 3, 0, 0], [0, 0, 0, 2, 0], [0, 0, 0, 0, 1]], diag_sm.full(), "Matrices must be the same."
+    assert hash_diag.eql?(diag_sm.values), "Hashes must be the same."
 
     #post
-    assert_equal  [-9, 8, 3, 2, 1], sparse_matrix.values
-    assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_row
-    assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_col
+    assert diag_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert diag_sm.real?, "Real sparse_matrix"
+    assert !diag_sm.values.empty?, "Hash cannot be empty."
+    assert !diag_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_diagonal_float
-    sparse_matrix = SparseMatrix.diagonal(-9.01, 8.01, 3.01, 2.01, 1.01)
+    #setup
+    list = -9.01, 8.01, 3.01, 2.01, 1.01
+    diag_sm = SparseMatrix.diagonal(*list)
+    hash_diag = {[0, 0]=>-9.01, [1, 1]=>8.01, [2, 2]=>3.01, [3, 3]=>2.01, [4, 4]=>1.01}
+
+    #pre
+    list.each { |i|
+      assert i.is_a?(Float), "All elements must be floats."
+    }
+
+    #data tests
+    assert_equal Matrix[[-9.01, 0, 0, 0, 0], [0, 8.01, 0, 0, 0], [0, 0, 3.01, 0, 0], [0, 0, 0, 2.01, 0], [0, 0, 0, 0, 1.01]], diag_sm.full(), "Matrices must be the same."
+    assert hash_diag.eql?(diag_sm.values), "Hashes must be the same."
 
     #post
-    assert_equal  [-9.01, 8.01, 3.01, 2.01, 1.01], sparse_matrix.values
-    assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_row
-    assert_equal  [0, 1, 2, 3, 4], sparse_matrix.val_col
+    assert diag_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert diag_sm.real?, "Real sparse_matrix"
+    assert !diag_sm.values.empty?, "Hash cannot be empty."
+    assert !diag_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_diagonal_chars
-    sparse_matrix = SparseMatrix.diagonal('a', 'b', 'c')
+    #setup
+    list = 'a', 'b', 'c'
+    diag_sm = SparseMatrix.diagonal(*list)
+    hash_diag = {[0, 0]=>'a', [1, 1]=>'b', [2, 2]=>'c'}
+
+    #pre
+    list.each { |i|
+      assert i.is_a?(String), "All elements must be floats."
+    }
+
+    #data tests
+    assert_equal Matrix[[-9.01, 0, 0, 0, 0], [0, 8.01, 0, 0, 0], [0, 0, 3.01, 0, 0], [0, 0, 0, 2.01, 0], [0, 0, 0, 0, 1.01]], diag_sm.full(), "Matrices must be the same."
+    assert hash_diag.eql?(diag_sm.values), "Hashes must be the same."
 
     #post
-    assert_equal  ['a', 'b', 'c'], sparse_matrix.values
-    assert_equal  [0, 1, 2], sparse_matrix.val_row
-    assert_equal  [0, 1, 2], sparse_matrix.val_col
+    assert diag_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert diag_sm.real?, "Real sparse_matrix"
+    assert !diag_sm.values.empty?, "Hash cannot be empty."
+    assert !diag_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_initialize_identity

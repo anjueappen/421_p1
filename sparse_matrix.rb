@@ -9,52 +9,14 @@ class SparseMatrix
 INITIALIZATION METHODS
 =end
 
-	# [:scalar, :columns, :diagonal, :identity, :zero].each do |method|
-	# 	define_singleton_method method  do |args|
-	# 		if Matrix.respond_to? method
-	# 			compress_store(Matrix.send(method, args)) #once this matrix is stored, its thrown away
-	# 		end
-	# 	end
-	# end
-
-	def SparseMatrix.compressed_format(values, val_col, val_row, row_count, column_count)
-		@values = values
-		@val_col = val_col
-		@val_row = val_row
-		@row_count = row_count
-		@column_count = column_count
-	end
-
 	def initialize(*data)
 		@values = {}
 		@max_degree_of_sparsity = 0.5
 
-		if !data[0].is_a? Array
-			matrix_type = data[0]
-			if matrix_type == 'scalar'
-				compress_store(Matrix.scalar(data[1], data[2]))
-			elsif matrix_type == 'columns'
-				data.shift()
-				compress_store(Matrix.columns(data))
-			elsif matrix_type == 'diagonal'
-				data.shift()
-				compress_store(Matrix.diagonal(*data))
-			elsif matrix_type == 'identity'
-				compress_store(Matrix.identity(data[1]))
-			elsif matrix_type == 'zero'
-				@row_count = data[1]
-				@column_count = data[2]
-				@size = @row_count * @column_count
-			elsif matrix_type == 'compressed'
-				@values = data[1]
-				@val_col = data[2]
-				@val_row = data[3]
-				@row_count = data[4]
-				@column_count = data[5]
-			end
-		else
-			compress_store(Matrix.rows(data, false))
-		end
+		method = data[0]
+		data.shift()
+		compress_store(Matrix.send(method, *data))
+
 	end
 
 	def method_missing(method, *args, &block)
@@ -71,30 +33,30 @@ INITIALIZATION METHODS
 	end
 
 	def SparseMatrix.[](*rows)
-		SparseMatrix.new(*rows)
+		SparseMatrix.new(:[], *rows)
 	end
 
 	def SparseMatrix.zero(rows, cols=rows)
-		SparseMatrix.new('zero', rows, cols)
+		SparseMatrix.new(:zero, rows, cols)
 	end
 
 	def SparseMatrix.diagonal(*elements)
-		SparseMatrix.new('diagonal', *elements)
+		SparseMatrix.new(:diagonal, *elements)
 	end
 
 	def SparseMatrix.identity(n)
-		SparseMatrix.new('identity', n)
+		SparseMatrix.new(:identity, n)
 	end
 
 	def SparseMatrix.scalar(n, value)
-		SparseMatrix.new('scalar', n, value)
+		SparseMatrix.new(:scalar, n, value)
 	end
 
 	def SparseMatrix.rows(rows)
 		if not rows.kind_of?(Array) or not rows[0].kind_of?(Array)
 			raise Exception.new('Parameter must be Array of Arrays.')
 		end
-		SparseMatrix.new(*rows)
+		SparseMatrix.new(:rows, *rows)
 	end
 
 	def SparseMatrix.columns(columns)
@@ -102,11 +64,11 @@ INITIALIZATION METHODS
 		if not columns.kind_of?(Array) or not columns[0].kind_of?(Array)
 			raise Exception.new('Parameter must be Array of Arrays.')
 		end
-		SparseMatrix.new('columns', *columns)
+		SparseMatrix.new(:columns, *columns)
 	end
 	
-	def SparseMatrix.compressed_format(values, val_col, val_row, row_count, column_count)
-		SparseMatrix.new('compressed', values, val_col, val_row, row_count, column_count)
+	def SparseMatrix.compressed_format(values, row_count, column_count)
+		SparseMatrix.new('compressed', values, row_count, column_count)
 	end
 
 	def compress_store(matrix)
