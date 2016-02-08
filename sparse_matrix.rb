@@ -32,21 +32,21 @@ INITIALIZATION METHODS
 		@max_degree_of_sparsity = 0.5
 		if !data[0].is_a? Array
 			matrix_type = data[0]
-			if matrix_type == "scalar"
+			if matrix_type == 'scalar'
 				@values, @val_col, @val_row = compress_store(Matrix.scalar(data[1], data[2]))
-			elsif matrix_type == "columns"
+			elsif matrix_type == 'columns'
 				data.shift()
 				@values, @val_col, @val_row = compress_store(Matrix.columns(data))
-			elsif matrix_type == "diagonal"
+			elsif matrix_type == 'diagonal'
 				data.shift()
 				@values, @val_col, @val_row = compress_store(Matrix.diagonal(*data))
-			elsif matrix_type == "identity"
+			elsif matrix_type == 'identity'
 				@values, @val_col, @val_row = compress_store(Matrix.identity(data[1]))
-			elsif matrix_type == "zero"
+			elsif matrix_type == 'zero'
 				@row_count = data[1]
 				@column_count = data[2]
 				@size = @row_count * @column_count
-			elsif matrix_type == "compressed"
+			elsif matrix_type == 'compressed'
 				@values = data[1]
 				@val_col = data[2]
 				@val_row = data[3]
@@ -61,7 +61,7 @@ INITIALIZATION METHODS
 	def method_missing(method, *args, &block)
 		full_m = self.full()
 		if full_m.respond_to?(method)
-			if method.to_s.eql?("collect")
+			if method.to_s.eql?('collect')
 				full_m.send(method, &block)
 			else
 				full_m.send(method, *args)
@@ -76,24 +76,24 @@ INITIALIZATION METHODS
 	end
 
 	def SparseMatrix.zero(rows, cols=rows)
-		SparseMatrix.new("zero", rows, cols)
+		SparseMatrix.new('zero', rows, cols)
 	end
 
 	def SparseMatrix.diagonal(*elements)
-		SparseMatrix.new("diagonal", *elements)
+		SparseMatrix.new('diagonal', *elements)
 	end
 
 	def SparseMatrix.identity(n)
-		SparseMatrix.new("identity", n)
+		SparseMatrix.new('identity', n)
 	end
 
 	def SparseMatrix.scalar(n, value)
-		SparseMatrix.new("scalar", n, value)
+		SparseMatrix.new('scalar', n, value)
 	end
 
 	def SparseMatrix.rows(rows)
 		if not rows.kind_of?(Array) or not rows[0].kind_of?(Array)
-			raise Exception.new("Parameter must be Array of Arrays.")
+			raise Exception.new('Parameter must be Array of Arrays.')
 		end
 		SparseMatrix.new(*rows)
 	end
@@ -101,28 +101,28 @@ INITIALIZATION METHODS
 	def SparseMatrix.columns(columns)
 		#this method will overwrite existing rows
 		if not columns.kind_of?(Array) or not columns[0].kind_of?(Array)
-			raise Exception.new("Parameter must be Array of Arrays.")
+			raise Exception.new('Parameter must be Array of Arrays.')
 		end
-		SparseMatrix.new("columns", *columns)
+		SparseMatrix.new('columns', *columns)
 	end
 	
 	def SparseMatrix.compressed_format(values, val_col, val_row, row_count, column_count)
-		SparseMatrix.new("compressed", values, val_col, val_row, row_count, column_count)
+		SparseMatrix.new('compressed', values, val_col, val_row, row_count, column_count)
 	end
 
 	def compress_store(matrix)
 		# TODO make sure that original dimesions are saved? for column_count and row_count.
 		if not matrix.is_a? Matrix
-			raise Exception.new("Parameter must be a Matrix instance")
+			raise Exception.new('Parameter must be a Matrix instance')
 		end
 		if matrix.empty?
 			@row_count = 0
 			@column_count = 0
 			@size = 0
 			return [], [], []
-			# raise Exception.new("Matrix can't be empty")
+			# raise Exception.new('Matrix can't be empty')
 		end
-		# puts ""
+		# puts ''
 		# puts matrix
 		values = []
 		val_col = []
@@ -153,7 +153,7 @@ INITIALIZATION METHODS
 	end
 
 	def to_s
-		return self.full().send(:to_s).sub! "Matrix", "SparseMatrix"
+		return self.full().send(:to_s).sub! 'Matrix', 'SparseMatrix'
 	end
 
 	def nonzero_count
@@ -316,7 +316,7 @@ INITIALIZATION METHODS
 	end
 
 	def transpose
-		SparseMatrix.new("compressed", @values, @val_row, @val_col)
+		SparseMatrix.new('compressed', @values, @val_row, @val_col)
 	end
 
 	def trace

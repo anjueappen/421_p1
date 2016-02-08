@@ -1,59 +1,40 @@
-require 'forwardable'
+require 'matrix'
 
-class LazyMatrixFactory < Forwardable
+class LazyMatrixFactory
 
-  def initialize(matrix)
-    @matrix = matrix
+  [:scalar, :columns, :diagonal, :identity, :zero].each do |method|
+    define_singleton_method method  do |args|
+      if Matrix.respond_to? method
+        LazyMatrixFactory.compress_store(Matrix.send(method, args)) #once this matrix is stored, its thrown away
+      end
+    end
   end
 
-  def full #an abstract method for sub class overriding
-    fail "Lazy Matrix must implement full!"
-  end
-  #def_delegators --finish with method to delegate
 
-  @values
-  @val_row
-  @val_col
-
-  @row_count
-  @col_count
-
-  @max_degree_of_sparsity = 0.5
-
-  attr_reader :full_matrix, :values, :val_row, :val_col
-
-  def initialize(*rows)
-    @full_matrix = Matrix.rows(rows, false)
-
-    # stub values below, TODO: code actual functionality with compress_store
-    @values = []
-    @val_col = []
-    @val_row = []
-
-    @row_count = rows.size
-    @col_count = rows[0].size if @row_count > 0 else 0
-    #compress_store(@full_matrix)
-  end
-
-  def method_missing(method, *args)
-    full_matrix = full
-    if full_matrix.respond_to?(method)
-      full_matrix.send(method, *args)
+  def method_missing(method, *args, &block)
+    full_m = self.full()
+    if full_m.respond_to?(method)
+      if method.to_s.eql?("collect")
+        full_m.send(method, &block)
+      else
+        full_m.send(method, *args)
+      end
     else
       super
     end
   end
 
-  def initialize(matrix)
-    @matrix = matrix
+  def initialize(*rows)
+    @values, @val_col, @val_row = compress_store(Matrix.rows(rows))
   end
 
+  #some "abstract" methods below
   def full
-    full_m = Array.new(@row_count) { |m| Array.new(@col_count) { |n| 0 }}
-    @val_row.each do |i|
-      @val_col.each do |j|
-        full_m[i][j] = @values[@val_row.find_index(i)] if @val_row.find_index(i) != nil
-      end
-    end
+    raise Exception.new('Method must be implemented by Lazy Matrix Factory subclasses.')
   end
+
+  def LazyMatrixFactory.compress_store(matrix)
+    raise Exception.new('Method must be implemented by Lazy Matrix Factory subclasses.')
+  end
+
 end
