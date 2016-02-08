@@ -34,6 +34,8 @@ INITIALIZATION METHODS
 				@values = data[1]
 				@val_col = data[2]
 				@val_row = data[3]
+				@row_count = data[4]
+				@column_count = data[5]
 			end
 		else
 			compress_store(Matrix.rows(data, false))
@@ -87,9 +89,9 @@ INITIALIZATION METHODS
 		end
 		SparseMatrix.new("columns", *columns)
 	end
-
-	def SparseMatrix.compressed_format(values, val_col, val_row)
-		SparseMatrix.new("compressed", values, val_col, val_row)
+	
+	def SparseMatrix.compressed_format(values, val_col, val_row, row_count, column_count)
+		SparseMatrix.new("compressed", values, val_col, val_row, row_count, column_count)
 	end
 
 	def compress_store(matrix)
@@ -169,7 +171,7 @@ INITIALIZATION METHODS
 			return Matrix[[]]
 		end
 
-		full_m = Array.new(@row_count) { |m| Array.new(@column_count) { |n| 0 }}
+		full_m = Array.new(@row_count) { |m| Array.new(@column_count) { |n| 0 }}  # throwing error 'no implicit conversion from nil to integer'
 
 		if @values.empty?
 			return Matrix.zero(@row_count)
@@ -200,7 +202,7 @@ INITIALIZATION METHODS
 		# call add
 	
 	end
-=begin 
+ 
 	def *(arg)
 			
 			case(arg)
@@ -211,7 +213,7 @@ INITIALIZATION METHODS
 					return SparseMatrix.zero(self.row_count, self.column_count) 
 				else
 					new_values = self.values.collect {|value| value*arg}
-					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row)  #only values vector will change
+					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row, self.row_count, self.column_count)  #only values vector will change
 				end
 			
 			when Vector
@@ -231,7 +233,7 @@ INITIALIZATION METHODS
 					# todo raise Exception
 				else
 					new_values = self.values.collect {|value| value/arg}
-					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row)  #only values vector will change
+					return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row, self.row_count, self.column_count)  #only values vector will change
 				end
 			
 			when Vector
@@ -243,7 +245,7 @@ INITIALIZATION METHODS
 				
 			end
 	end
-=end
+
 
 	def **(arg)
 		#stub

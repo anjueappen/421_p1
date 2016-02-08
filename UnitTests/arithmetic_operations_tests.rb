@@ -26,7 +26,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -50,7 +50,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 	end
 	
@@ -225,7 +225,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 
 	end
@@ -248,7 +248,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 				
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -427,13 +427,16 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#data tests
 		@actual_matrix =  @sparse_matrix*@value
-		assert_equal @actual_matrix.values, Matrix[4,12,4,8], "Multiplication by integer - values vector incorrect"
+		assert_equal @actual_matrix.column_count, 3, "incorrect column count"
+		assert_equal @actual_matrix.row_count, 3 , "incorrect row count"
+		assert_equal @actual_matrix.values, [4,12,4,8], "Multiplication by integer - values vector incorrect"
 		assert_equal @actual_matrix.full(), Matrix[[4,0,12],[0,0,4],[0,8,0]], "Multiplication of matrix by integer failed."
 		
 		#post
-		
+
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert (@actual_matrix.is_a? SparseMatrix), "failed. resulting matrix is not of class SparseMatrix"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -455,7 +458,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#assert_equal @actual_matrix.full(), Matrix[[4,0,12],[0,0,4],[0,8,0]], "Multiplication of matrix by integer failed."
 		assert_not_nil nil
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -475,12 +478,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#data tests
 		@actual_matrix =  @sparse_matrix*(@value)
 		assert_equal @actual_matrix.values, [1.5,4.5,1.5,3], "Multiplication by float - values vector incorrect"
-		assert_in_delta @actual_matrix.full(), Matrix[[1.5,0,4.5],[0,0,1.5],[0.3,0]], 0.01, "Multiplication of matrix by float failed."
+		assert_in_delta @actual_matrix.full(), Matrix[[1.5,0.0,4.5],[0.0,0.0,1.5],[0.0,0.3,0.0]], 0.01, "Multiplication of matrix by float failed."
 		
 		#post
 		
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		 
 	end
@@ -620,7 +623,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert @divisor.real?, "Divisor should be real."
-		assert_not_nil @divisor,  "Divisor should not be nil."
+		#assert_not_nil @divisor,  "Divisor should not be nil."  # can't do comparision
 		assert (@divisor.is_a? Integer), "Divisor is not an integer"
 		assert_not_equal(0, @divisor, "divisor cannot be zero")
 		
@@ -632,7 +635,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -647,7 +650,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert @divisor.real?, "Divisor should be real."
-		assert_not_nil @divisor,  "Divisor should not be nil."
+		#assert_not_nil @divisor,  "Divisor should not be nil."  # can't do comparision
 		assert (@divisor.is_a? Float), "Divisor is not a float"
 		assert_not_equal(0, @divisor, "divisor cannot be zero")
 		
@@ -659,7 +662,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -750,7 +753,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -774,7 +777,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -798,7 +801,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		
 	end
@@ -821,7 +824,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		
 		#invariant
-		assert_equal @sparse_clone, @sparse_matrix, "Original matrix was altered"
+		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		
 	end
