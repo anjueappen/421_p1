@@ -440,7 +440,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert !@sparse_matrix.empty?
 		
 	end
-	# todo - touch up data and invariant parts
+	
 	def test_multiplication_numeric_zero
 		#setup
 		@sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
@@ -454,10 +454,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#data tests
 		@actual_matrix =  @sparse_matrix*(@value)
-		#assert_equal @actual_matrix.values, Matrix[4,12,4,8], "Multiplication by integer - values vector incorrect"
-		#assert_equal @actual_matrix.full(), Matrix[[4,0,12],[0,0,4],[0,8,0]], "Multiplication of matrix by integer failed."
-		assert_not_nil nil
+		assert_equal @actual_matrix.values,[], "Multiplication by integer - values array incorrect"
+		assert_equal @actual_matrix.val_row,[], "Multiplication by integer - val_row array incorrect"
+		assert_equal @actual_matrix.val_col,[], "Multiplication by integer - val_col array incorrect"
+		
 		#invariant
+		assert_equal @actual_matrix.full(), Matrix.zero(@sparse_matrix.row_count,@sparse_matrix.column_count), "Multiplication of matrix by 0 failed."
 		assert_equal @sparse_clone.full(), @sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		

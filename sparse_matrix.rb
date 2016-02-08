@@ -173,7 +173,7 @@ INITIALIZATION METHODS
 		full_m = Array.new(@row_count) { |m| Array.new(@column_count) { |n| 0 }}  # throwing error 'no implicit conversion from nil to integer'
 
 		if @values.empty?
-			return Matrix.zero(@row_count)
+			return Matrix.zero(@row_count,@column_count)
 		end
 
 		row_index = 1
