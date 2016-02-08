@@ -3,7 +3,7 @@ require 'minitest/unit'
 require '../sparse_matrix.rb'
 require 'matrix'
 
-
+# todo assert in all posts that resulting matrix is a sparse matrix
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	# Addition

@@ -3,25 +3,34 @@ require 'test/unit'
 require '../sparse_matrix.rb'
 require 'matrix'
 
+# post condition to add
+# assert !sm.values.has_value?(0), "Hash only stores non-zero elements."
+
 class AccessUnitTests < Test::Unit::TestCase
   def setup
     @sparse_matrix = SparseMatrix[[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]]
-		@zero_matrix = SparseMatrix.zero(2)
-    @sm_w_duplicates = SparseMatrix[[1,0], [0,2], [1,0]]
-    @empty_matrix = SparseMatrix[[]]
-
-		# expected
 		hash_sm = {[0,0]=>1, [1,1]=>2, [2,0]=>3,[3,3]=>4}
+		
+		@zero_matrix = SparseMatrix.zero(2)
+    
+		@sm_w_duplicates = SparseMatrix[[1,0], [0,2], [1,0]]
+    hash_sm_w_duplicates = {[0,0]=>1, [1,1]=>2, [2,0]=>1}
+		
+		@empty_matrix = SparseMatrix[[]]
+		
 		# todo check zero implementation after change to hash
-		hash_sm_w_duplicates = {[0,0]=>1, [1,1]=>2, [2,0]=>1}
 		
     #pre
     assert @sparse_matrix.real?, "SparseMatrix should be real."
-    #assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert @sm_w_duplicates.real?, "SparseMatrix should be real."
+		#assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
     #assert_not_nil @sparse_matrix.val_col, "SparseMatrix val_col stored should not be nil"
     #assert_not_nil @sparse_matrix.val_row, "SparseMatrix val_col stored should not be nil"
-		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal"
+		assert hash_sm.eql?(@sparse_matrix.values), "Hashes must be equal"
+		assert hash_sm_w_duplicates.eql?(@sm_w_duplicates.values), "Hashes must be equal"
 		
+		assert (@zero_matrix.values.empty?), "zero sparse matrix does not have empty value hash"
+		assert (@empty_matrix.values.empty?), "empty sparse matrix does not have empty value hash"
 	end
 
   def test_non_zero_count
