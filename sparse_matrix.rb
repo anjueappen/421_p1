@@ -151,17 +151,9 @@ INITIALIZATION METHODS
 
 	def first_minor(row, col)
 		full_m = self.full()
-		puts "full passed in"
-		puts full_m
-		puts ""
 		fm_matrix = full_m.send(:first_minor, row, col)
-		puts ""
-		puts "matrix after first_minor"
-		puts fm_matrix
-		puts ""
 		compress_store(fm_matrix)
-		puts "in first minor"
-		puts self.values             ## todo not values of new matrix
+		#puts self.values             ## todo not values of new matrix
 		return self # return the sparse matrix
 		# compress_store just sets values
 	end

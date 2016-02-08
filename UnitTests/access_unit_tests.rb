@@ -125,7 +125,8 @@ class AccessUnitTests < Test::Unit::TestCase
     #
     #
 		
-		# cofactor is delegated to matrix
+		# todo Kirsten come back here
+		# cofactor should be delegated to matrix
     #pre        
     assert @sparse_matrix.square?, "Matrix must be square to find cofactor."
     assert @sparse_matrix.real?, "SparseMatrix should be real."
