@@ -18,8 +18,6 @@ class AccessUnitTests < Test::Unit::TestCase
 		
 		@empty_matrix = SparseMatrix[[]]
 		
-		# todo check zero implementation after change to hash
-		
     #pre
     assert @sparse_matrix.real?, "SparseMatrix should be real."
 		assert @sm_w_duplicates.real?, "SparseMatrix should be real."
@@ -45,7 +43,8 @@ class AccessUnitTests < Test::Unit::TestCase
 
   def test_nonzeros
     assert_not_equal 0, @sparse_matrix.values.size, "SparseMatrix values stored should contain elements."
-    assert_equal [1,2,3,4], @sparse_matrix.nonzeros(), "nonzeros() method failed."
+    expected_hash = {[0,0]=>1, [1,1]=>2, [2,0]=>3,[3,3]=>4}
+		assert_equal expected_hash, @sparse_matrix.nonzeros(), "nonzeros() method failed."
     assert_equal 0, @zero_matrix.values.size, "SparseMatrix values stored should not contain elements for a zero matrix."
 
     #post
@@ -104,10 +103,12 @@ class AccessUnitTests < Test::Unit::TestCase
     #data tests
     new_sm = sm.first_minor(i,j)
     puts ""
-    puts new_sm.values
-    puts new_sm.val_row
-    puts new_sm.val_col
-    # assert_equal Matrix[[1,0],[1,0]], new_sm.full(), "first_minor() function failed."
+    # todo delete. no longer used
+		#puts new_sm.values
+    #puts new_sm.val_row
+    #puts new_sm.val_col
+    
+		# assert_equal Matrix[[1,0],[1,0]], new_sm.full(), "first_minor() function failed."
 
     # #post
     # assert new_sm.is_a? SparseMatrix
@@ -118,17 +119,22 @@ class AccessUnitTests < Test::Unit::TestCase
 
   def test_cofactor
     sm = SparseMatrix[[1,0,0,0], [0,2,0,0], [0,0,3,0],[0,0,0,4]]
+    sm_hash = {[0,0]=>1, [1,1]=>2, [2,2]=>3, [3,3]=>4}
+		#
     #
     #
     #
-    #
-
+		
+		# cofactor is delegated to matrix
     #pre        
     assert @sparse_matrix.square?, "Matrix must be square to find cofactor."
-    
+    assert @sparse_matrix.real?, "SparseMatrix should be real."
+		assert !@sparse_matrix.empty?, "Can't find cofactor of empty matrix. Not defined."
+		assert sm_hash.eql?(sm.values), "Hashes must be equal"
     cofactor_11 = @sparse_matrix.cofactor(1,1)
     assert_equal 12, cofactor_11, "cofactor() method failed."
-
+		# expecting 12, getting 0
+		
     #post 
     #size of original matrix must be equal to size of cofactor matrix
     assert_equal @sparse_matrix.column_count, cofactor_matrix.column_count, "Column counts of both matrices must be equal."
