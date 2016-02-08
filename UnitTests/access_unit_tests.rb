@@ -6,16 +6,23 @@ require 'matrix'
 class AccessUnitTests < Test::Unit::TestCase
   def setup
     @sparse_matrix = SparseMatrix[[1,0,0,0], [0,2,0,0], [3,0,0,0], [0,0,0,4]]
-    @zero_matrix = SparseMatrix.zero(2)
+		@zero_matrix = SparseMatrix.zero(2)
     @sm_w_duplicates = SparseMatrix[[1,0], [0,2], [1,0]]
     @empty_matrix = SparseMatrix[[]]
 
+		# expected
+		hash_sm = {[0,0]=>1, [1,1]=>2, [2,0]=>3,[3,3]=>4}
+		# todo check zero implementation after change to hash
+		hash_sm_w_duplicates = {[0,0]=>1, [1,1]=>2, [2,0]=>1}
+		
     #pre
     assert @sparse_matrix.real?, "SparseMatrix should be real."
-    assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
-    assert_not_nil @sparse_matrix.val_col, "SparseMatrix val_col stored should not be nil"
-    assert_not_nil @sparse_matrix.val_row, "SparseMatrix val_col stored should not be nil"
-  end
+    #assert_not_nil @sparse_matrix.values, "SparseMatrix values stored should not be nil."
+    #assert_not_nil @sparse_matrix.val_col, "SparseMatrix val_col stored should not be nil"
+    #assert_not_nil @sparse_matrix.val_row, "SparseMatrix val_col stored should not be nil"
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal"
+		
+	end
 
   def test_non_zero_count
     assert_equal 4, @sparse_matrix.nonzero_count(), "nonzero_count() method on a sparse matrix failed."
