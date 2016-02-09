@@ -282,6 +282,13 @@ class SparseMatrix
 				if @column_count != arg.row_count
 					raise Exception.new('ErrDimensionMismatch')	
 				end
+				if self.real? and arg.real?
+					full_matrix_self = self.full()
+					result_matrix = full_matrix_self.send(:*,arg)
+					new_values, new_row_count, new_column_count = compress_store(result_matrix)
+					return SparseMatrix.new("compressed", new_values, new_row_count, new_column_count)
+				end
+				
 				
       when SparseMatrix
 				if @column_count != arg.row_count
