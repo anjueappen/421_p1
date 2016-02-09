@@ -643,10 +643,10 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert (@value.is_a? Integer), "Value is not an integer"
+		assert (value.is_a? Integer), "Value is not an integer"
 		
 		#data tests
-		 actual_matrix =   sparse_matrix*@value
+		 actual_matrix =   sparse_matrix*value
 		assert_equal  actual_matrix.column_count, 3, "incorrect column count"
 		assert_equal  actual_matrix.row_count, 3 , "incorrect row count"
 		assert_equal  actual_matrix.values, [4,12,4,8], "Multiplication by integer - values vector incorrect"
@@ -694,34 +694,34 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
 		
+		expected_matrix = Matrix[[1.5,0,4.5],[0,0,1.5],[0,3,0]]
+		hash_expected = {[0,0]=>1.5,[0,2]=>4.5,[1,2]=>1.5,[2,1]=>3}
+		
 		value = 1.5
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert (value.is_a? Float), "Value is not a float"
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 		#data tests
-		actual_matrix =   sparse_matrix*(@value)
-		values_reference = [1.5,4.5,1.5,3]
-		for i in 0..@actual_matrix.values.length-1
-			assert_in_delta  actual_matrix.values[i],  values_reference[i], 0.01, "Multiplication by float - values vector incorrect"
-		end
-		
-		 expected_matrix = Matrix[[1.5,0,4.5],[0,0,1.5],[0,3,0]]
-		for i in 0..@sparse_clone.row_count-1
-			for j in 0..@sparse_clone.column_count-1
-				assert_in_delta  actual_matrix.full().row(i)[j],  expected_matrix.row(i)[j], 0.01,  "Multiplication of matrix by float failed."
+		result_matrix =   sparse_matrix*(value)
+		for i in 0..result_matrix.row_count-1
+			for j in 0..result_matrix.column_count-1
+				assert_in_delta  result_matrix.full().row(i)[j],  expected_matrix.row(i)[j], 0.01,  "Multiplication of matrix by float failed."
 			end
 		end
 		
 		#post
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		assert hash_expected.eql?(actual_matrix.values), "Hashes must be equal"
 		
 		#invariant
-		assert_equal  sparse_clone.full(),  sparse_matrix.full(), "Original matrix was altered."
-		assert_equal  sparse_clone.val_row,  actual_matrix.val_row, "fail. val_row changed"
-		assert_equal  sparse_clone.val_col,  actual_matrix.val_col, "fail. val_col changed"
-		assert !@sparse_matrix.empty?
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		 
 	end
 
