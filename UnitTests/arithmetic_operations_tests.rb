@@ -742,7 +742,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
 		sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
-			
+		
+		expected_matrix = Matrix[[9],[4],[3]]
 		hash_expected = {[0,0]=>9,[1,0]=>4,[2,0]=>3}
 			
 		#pre
@@ -830,6 +831,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
 		sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
 		
+		expected_matrix = Matrix[[3,0],[0,0],[0,0]]
 		hash_expected = {[0,0]=>3}
 		
 		#pre

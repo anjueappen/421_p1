@@ -118,7 +118,6 @@ class SparseMatrix
   end
 
   def unitary?
-    # all values are 1
     return self.full.send(:unitary?)
   end
 
@@ -153,13 +152,7 @@ class SparseMatrix
   end
 
   def increase_all_values_by(number)
-    # multiply number by matrix of ones.
-    if number.zero?
-      return self
-    end
-    matrix_to_add = Matrix.empty(self.row_count,self.column_count)
-    matrix_to_add = matrix_to_add.collect {|value| number}
-    return self+matrix_to_add
+    
 
   end
 
@@ -203,22 +196,35 @@ class SparseMatrix
 
       when Numeric
         if arg.zero?
-          return SparseMatrix.zero(self.row_count, self.column_count)
+          return SparseMatrix.zero(@row_count, @column_count)
         else
           #new_values = values.each_value {|value| value*arg}
 					new_values = {}
 					@values.each_pair { |key, value|
 						new_values[[key[0], key[1]]] = value*arg
 					}
-          return SparseMatrix.new("compressed", new_values, self.row_count, self.column_count)   #only values vector will change
+          return SparseMatrix.new("compressed", new_values, @row_count, @column_count)   #only values vector will change
         end
 
       when Vector
-
+				Matrix.Raise ErrDimensionMismatch if @column_count != arg.row_count
+				raise Exception.new('ErrDimensionMismatch')
+				
       when Matrix
-
+				raise Exception.new('ErrDimensionMismatch')	
+				 
       when SparseMatrix
-
+				if @column_count != arg.row_count
+					raise Exception.new('ErrDimensionMismatch')
+				end
+				if self.real? and arg.real?
+					full_matrix_self = self.full() 
+					full_matrix_arg = arg.full()
+					result_matrix = full_matrix_self.send(:*,full_matrix_arg)
+					new_values, new_row_count, new_column_count = compress_store(result_matrix)
+					return SparseMatrix.new("compressed", new_values, new_row_count, new_column_count)
+				end
+				
       else
         #try to coerce, but fail? or just raise exception?
     end
@@ -231,14 +237,21 @@ class SparseMatrix
       #todo test negative
       when Numeric
         # todo think that ruby numeric class will handle divide by zero
-        # todo values used here
-        new_values = self.values.collect {|value| value/arg.to_f}
-				return SparseMatrix.new("compressed", new_values, self.row_count, self.column_count)   #only values vector will change
-      
+=begin				
+				new_values = {}
+					@values.each_pair { |key, value|
+						new_values[[key[0], key[1]]] = value/arg.to_f
+					}
+          return SparseMatrix.new("compressed", new_values, @row_count, @column_count)   #only values vector will change
+=end      
 			when Vector
-
+				Matrix.Raise ErrDimensionMismatch if column_count != arg.row_count
+				 #raise Exception.new('ErrDimensionMismatch')	
       when Matrix
-
+			#if column_count != arg.row_count
+				#raise Exception.new('ErrDimensionMismatch')	
+				Matrix.Raise ErrDimensionMismatch if column_count != arg.row_count
+					
       when SparseMatrix
 
       else
