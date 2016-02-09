@@ -259,8 +259,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
 		sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
 		
-		expected_matrix = Matrix[[-1.08,1.16,3.14],[0,0,3.04],[3.08,0,0],[0,3.24,0]]
-		hash_expected = {[0,0]=>-1.08, [0,1]=>1.16, [0,2]=>3.14, [1,2]=>3.04, [2,0]=>3.08, [3,1]=>3.24}
+		expected_matrix = Matrix[[-1.08,1.16,3.14],[0.0,0.0,3.04],[3.08,0.0,0.0],[0.0,3.22,0.0]]
+		hash_expected = {[0,0]=>-1.08, [0,1]=>1.16, [0,2]=>3.14, [1,2]=>3.04, [2,0]=>3.08, [3,1]=>3.22}
 		
 		#pre
 		assert_equal  sparse_matrix1.row_count,  sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
@@ -276,14 +276,14 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		result_matrix =  sparse_matrix1+(sparse_matrix2)
 		for row in 0..result_matrix.row_count-1
 			for col in 0..result_matrix.column_count-1
-				assert_in_delta  result_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
+				assert_in_delta expected_matrix.row(row)[col], result_matrix.full().row(row)[col], 0.01, "Matrix values were not increased correctly."
 			end
 		end
 		
 		#post
-		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
-		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
-		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
+		assert_equal hash_sm1, sparse_matrix1.values, "Hashes must be equal."
+		assert_equal hash_sm2, sparse_matrix2.values, "Hashes must be equal."
+		assert_equal hash_expected, result_matrix.values, "Hashes must equal."
 		
 		#invariant
 		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
@@ -816,8 +816,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
 		
-		expected_matrix = Matrix[[1.5,0,4.5],[0,0,1.5],[0,3,0]]
-		hash_expected = {[0,0]=>1.5,[0,2]=>4.5,[1,2]=>1.5,[2,1]=>3}
+		expected_matrix = Matrix[[1.5,0.0,4.5],[0.0,0.0,1.5],[0.0,3,0.0]]
+		hash_expected = {[0,0]=>1.5,[0,2]=>4.5,[1,2]=>1.5,[2,1]=>3.0}
 		
 		value = 1.5
 		
@@ -839,8 +839,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		end
 		
 		#post
-		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
-		assert hash_expected.eql?(actual_matrix.values), "Hashes must be equal"
+		assert_equal hash_expected, result_matrix.values, "Hashes must be equal"
 		
 		#invariant
 		checkMatrixAssertions(sparse_matrix, sparse_clone)
