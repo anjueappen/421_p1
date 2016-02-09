@@ -586,11 +586,17 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_subtraction_matrix_float
 		#setup
-		 sparse_matrix1 = SparseMatrix[[1.08,0,3.14],[0,0,1.00],[2.06,0,0],[0,2.14,0]]
-		 sparse_matrix2 = SparseMatrix[[0,1.16,0],[0,0,2.04],[1.02,0,0],[0,1.08,0]]
-		 sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
-		 sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
-		 expected = Matrix[[1.08,-1.16,3.14],[0,0,-1.04],[1.04,0,0],[0,1.06,0]]
+		sparse_matrix1 = SparseMatrix[[1.08,0,3.14],[0,0,1.00],[2.06,0,0],[0,2.14,0]]
+		hash_sm1 = {[0,0]=>1.08, [0,2]=>3.14, [1,2]=>1.00, [2,0]=>2.06, [3,1]=>2.14}
+		
+		sparse_matrix2 = SparseMatrix[[0,1.16,0],[0,0,2.04],[1.02,0,0],[0,1.08,0]]
+		hash_sm2 = {[0,1]=>1.16,[1,2]=>2.04,[2,0]=>1.02,[3,1]=>1.08}
+		
+		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
+		 
+		expected = Matrix[[1.08,-1.16,3.14],[0,0,-1.04],[1.04,0,0],[0,1.06,0]]
+		hash_expected = {[0,0]=>1.08, [0,1]=>-1,.16 [0,2]=>3.14, [1,2]=>-1.04, [2,0]=>1.04, [3,1]=>1.06}
 		
 		#pre
 		assert  sparse_matrix1.real?, "SparseMatrix should be real."
@@ -599,18 +605,29 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_not_nil  sparse_matrix2.values, "SparseMatrix values stored should not be nil."
 		assert_equal  sparse_matrix1.row_count,  sparse_matrix2.row_count, "Incompatible dimension (row) for matrix subtraction"
 		assert_equal  sparse_matrix1.column_count,  sparse_matrix2.column_count, "Incompatible dimension (column) for matrix subtraction"
-		
-		#data tests
-		 actual_matrix =  sparse_matrix1-(@sparse_matrix2)
-		assert_in_delta  actual_matrix.full(),  expected_matrix, 0.01, "Float matrix subtraction not working correctly"
-		
-		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
 		
 		#invariant
-		assert_equal  sparse_clone1,  sparse_matrix1, "Original matrix was altered"
-		assert !@sparse_matrix1.empty?
-		assert_equal  sparse_clone2,  sparse_matrix2, "Original matrix was altered"
-		assert !@sparse_matrix2.empty?
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
+		
+		#data tests
+		result_matrix =  sparse_matrix1-(sparse_matrix2)
+		for row in 0..result_matrix.row_count-1
+			for col in 0..result_matrix.column_count-1
+				assert_in_delta  result_matrix.full().rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+			end
+		end
+		
+		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
+		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
 		
 	end
 
