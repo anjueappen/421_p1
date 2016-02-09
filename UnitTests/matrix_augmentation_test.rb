@@ -28,8 +28,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #pre
     assert_equal Matrix[[1,0], [0,2]], sm.full(), "Matrices must be equal."
-    assert_equal 2, sm.row_count
-    assert_equal 2, sm.column_count
+    assert_equal 2, sm.row_count, "Incorrect Row Count"
+    assert_equal 2, sm.column_count, "Incorrect Column Count"
 
     #invariant
     checkHashAssertions(hash, Integer)
@@ -40,8 +40,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #post
     assert_equal Matrix[[1,0, 0], [0,2, 0], [0, 0, 5]], sm.full(), "Matrices must be equal."
-    assert_equal 3, sm.row_count
-    assert_equal 3, sm.column_count
+    assert_equal 3, sm.row_count, "Incorrect Row Count"
+    assert_equal 3, sm.column_count, "Incorrect Column Count"
 
     #invariant
     checkHashAssertions(hash, Integer)
@@ -55,8 +55,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #pre
     assert_equal Matrix[['a', 0], [0, 'b']], sm.full(), "Matrices must be equal."
-    assert_equal 2, sm.row_count
-    assert_equal 2, sm.column_count
+    assert_equal 2, sm.row_count, "Incorrect Row Count"
+    assert_equal 2, sm.column_count, "Incorrect Column Count"
 
     #invariant
     checkHashAssertions(hash, String)
@@ -67,8 +67,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #post
     assert_equal Matrix[['a',0, 0], [0,'b', 0], [0, 0, 'c']], sm.full(), "Matrices must be equal."
-    assert_equal 3, sm.row_count
-    assert_equal 3, sm.column_count
+    assert_equal 3, sm.row_count, "Incorrect Row Count"
+    assert_equal 3, sm.column_count, "Incorrect Column Count"
 
     #invariant
     checkHashAssertions(hash, String)
@@ -82,8 +82,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #pre
     assert_equal Matrix[[1.01, 0], [0, 2.01]], sm.full(), "Matrices must be equal."
-    assert_equal 2, sm.row_count
-    assert_equal 2, sm.column_count
+    assert_equal 2, sm.row_count, "Incorrect Row Count"
+    assert_equal 2, sm.column_count, "Incorrect Column Count"
 
     #invariant
     checkHashAssertions(hash, Float)
@@ -96,8 +96,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
     sm.full()
     Matrix[[1.01,0, 0], [0,2.01, 0], [0, 0, 3.01]]
     assert_equal Matrix[[1.01,0, 0], [0,2.01, 0], [0, 0, 3.01]], sm.full(), "Matrices must be equal."
-    assert_equal 3, sm.row_count
-    assert_equal 3, sm.column_count
+    assert_equal 3, sm.row_count, "Incorrect Row Count"
+    assert_equal 3, sm.column_count, "Incorrect Column Count"
 
     #invariant
     checkHashAssertions(hash, Float)
@@ -123,8 +123,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #post
     assert_equal Matrix[[5,0], [0,2]], sm.full(), "Matrices must be equal."
-    assert_equal 2, sm.row_count
-    assert_equal 2, sm.column_count
+    assert_equal 2, sm.row_count, "Incorrect Row Count"
+    assert_equal 2, sm.column_count, "Incorrect Column Count"
 
     #invariant
     checkHashAssertions(hash, Integer)
@@ -142,6 +142,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
     #invariant
     checkHashAssertions(hash, Integer)
     checkMatrixAssertions(sm)
+    assert_equal 2, sm.row_count, "Incorrect Row Count"
+    assert_equal 2, sm.column_count, "Incorrect Column Count"
 
     begin
       sm.putNonZero 5, 4, 'a'
@@ -153,8 +155,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #post
     assert_equal Matrix[[1,0], [0,2]], sm.full(), "Matrices must be equal."
-    assert_equal 2, sm.row_count
-    assert_equal 2, sm.column_count
+    assert_equal 2, sm.row_count, "Incorrect Row Count"
+    assert_equal 2, sm.column_count, "Incorrect Column Count"
 
     #invariant
     checkHashAssertions(hash, Integer)
@@ -172,6 +174,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
     #invariant
     checkHashAssertions(hash, Integer)
     checkMatrixAssertions(sm)
+    assert_equal 2, sm.row_count, "Incorrect Row Count"
+    assert_equal 2, sm.column_count, "Incorrect Column Count"
 
     begin
       sm.putNonZero 5, 4, 'a'
@@ -183,8 +187,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #post
     assert_equal Matrix[[1,0], [0,2]], sm.full(), "Matrices must be equal."
-    assert_equal 2, sm.row_count
-    assert_equal 2, sm.column_count
+    assert_equal 2, sm.row_count, "Incorrect Row Count"
+    assert_equal 2, sm.column_count, "Incorrect Column Count"
 
     #invariant
     checkHashAssertions(hash, Integer)
@@ -213,8 +217,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #post
     assert_equal Matrix[[1,0], [0,2]], sm.full(), "Matrices must be equal."
-    assert_equal 2, sm.row_count
-    assert_equal 2, sm.column_count
+    assert_equal 2, sm.row_count, "Incorrect Row Count"
+    assert_equal 2, sm.column_count, "Incorrect Column Count"
 
     #invariant
     checkHashAssertions(hash, Integer)
