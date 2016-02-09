@@ -140,7 +140,6 @@ class TriDiagonalTests < Test::Unit::TestCase
 
   end
 
-
   def test_full
     #data
     assert_equal Matrix[[6, 5, 0], [3, 8, 6], [0, 2, 7]], @tm.full(), "Incorrect Matrix conversion from Tridiagonal Matrix."
@@ -155,6 +154,22 @@ class TriDiagonalTests < Test::Unit::TestCase
 
     #data
     assert_equal Matrix.empty(0), @tm.full(), "Incorrect Matrix conversion from Tridiagonal Matrix."
+
+    #invariant
+    checkTriMatrixAssertions @tm
+  end
+
+  def test_full_chars
+    @tm = TridiagonalMatrix.diagonals(['a', 'b'], ['c', 'd', 'e'], ['f', 'g'])
+
+    #pre
+    assert_equal 3, @tm.n
+    assert_equal ['c', 'd', 'e'], @tm.mid_diagonal
+    assert_equal ['a', 'b'], @tm.upper_diagonal
+    assert_equal ['f', 'g'], @tm.lower_diagonal
+
+    #data
+    assert_equal Matrix[['c', 'a', 0], ['f', 'd', 'b'], [0, 'g', 'e']], @tm.full(), "Incorrect Matrix conversion from Tridiagonal Matrix."
 
     #invariant
     checkTriMatrixAssertions @tm
@@ -183,6 +198,5 @@ class TriDiagonalTests < Test::Unit::TestCase
       @tm = TridiagonalMatrix.identity(5)
     end
   end
-  #tests to add: full, compress_store, for normal emxpty, zero, diagonal
-  #test to ensure other matrix initializations aren't allowed .zero... and so on
+
 end
