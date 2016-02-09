@@ -1147,7 +1147,11 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#post
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
-		assert hash_expected.eql?(result_matrix.values), "Hashes must be equal"
+		hash_expected.each_pair { |key, value|
+			if result_matrix.values.has_key?([key[0], key[1]])
+				assert_in_delta hash_expected[[key[0], key[1]]] , result_matrix.values[[key[0], key[1]]], 0.01, "Hashes must equal."
+			end
+		}
 		
 		#invariant
 		checkMatrixAssertions(sparse_matrix, sparse_clone)
@@ -1170,7 +1174,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert  divisor.real?, "Divisor should be real."
-		#assert_not_nil  divisor,  "Divisor should not be nil."  # can't do comparision
 		assert (divisor.is_a? Float), "Divisor is not a float"
 		assert_not_equal(0,  divisor, "divisor cannot be zero")
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
@@ -1188,8 +1191,11 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#post
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
-		assert hash_expected.eql?(result_matrix.values), "Hashes must be equal"
-		
+		hash_expected.each_pair { |key, value|
+			if result_matrix.values.has_key?([key[0], key[1]])
+				assert_in_delta hash_expected[[key[0], key[1]]] , result_matrix.values[[key[0], key[1]]], 0.01, "Hashes must equal."
+			end
+		}
 		#invariant
 		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
@@ -1235,7 +1241,11 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
 		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
-		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
+		hash_expected.each_pair { |key, value|
+			if result_matrix.values.has_key?([key[0], key[1]])
+				assert_in_delta hash_expected[[key[0], key[1]]] , result_matrix.values[[key[0], key[1]]], 0.01, "Hashes must equal."
+			end
+		}
 		assert_equal  expected_matrix.row_count,  sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
 		assert_equal  expected_matrix.column_count,  sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
 
@@ -1284,7 +1294,11 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
 		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
-		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
+		hash_expected.each_pair { |key, value|
+			if result_matrix.values.has_key?([key[0], key[1]])
+				assert_in_delta hash_expected[[key[0], key[1]]] , result_matrix.values[[key[0], key[1]]], 0.01, "Hashes must equal."
+			end
+		}
 		assert_equal  expected_matrix.row_count,  sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
 		assert_equal  expected_matrix.column_count,  sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
 
@@ -1332,7 +1346,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
 		assert_equal  expected_matrix.row_count,  sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
 		assert_equal  expected_matrix.column_count,  matrix.column_count, "Matrix multiplication dimension error (column)"
-
+		hash_expected.each_pair { |key, value|
+			if result_matrix.values.has_key?([key[0], key[1]])
+				assert_in_delta hash_expected[[key[0], key[1]]] , result_matrix.values[[key[0], key[1]]], 0.01, "Hashes must equal."
+			end
+		}
+		
 		#invariant
 		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
 		
@@ -1373,7 +1392,11 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#post
 		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
-		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
+		hash_expected.each_pair { |key, value|
+			if result_matrix.values.has_key?([key[0], key[1]])
+				assert_in_delta hash_expected[[key[0], key[1]]] , result_matrix.values[[key[0], key[1]]], 0.01, "Hashes must equal."
+			end
+		}
 		assert_equal  expected_matrix.row_count,  sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
 		assert_equal  expected_matrix.column_count,  matrix.column_count, "Matrix multiplication dimension error (column)"
 
