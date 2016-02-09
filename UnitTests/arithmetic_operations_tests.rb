@@ -666,6 +666,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	def test_multiplication_numeric_zero
 		#setup
 		sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
+		hash_sm = {[0,0]=>1,[0,2]=>3,[1,2]=>1,[2,1]=>2}
+		
 		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
 		value = 0
 		
@@ -673,17 +675,21 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert (value.is_a? Integer), "Value is not an integer"
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+				
+		#invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 		#data tests
-		 actual_matrix =   sparse_matrix*(value)
-		assert_equal  actual_matrix.values,[], "Multiplication by integer - values array incorrect"
-		assert_equal  actual_matrix.val_row,[], "Multiplication by integer - val_row array incorrect"
-		assert_equal  actual_matrix.val_col,[], "Multiplication by integer - val_col array incorrect"
+		result_matrix =   sparse_matrix*(value)
+		
+		#post
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		assert (actual_matrix.values.empty?), "hash not empty"
+		assert_equal  result_matrix.full(), Matrix.zero(sparse_matrix.row_count,sparse_matrix.column_count), "Multiplication of matrix by 0 failed."
 		
 		#invariant
-		assert_equal  actual_matrix.full(), Matrix.zero(sparse_matrix.row_count,sparse_matrix.column_count), "Multiplication of matrix by 0 failed."
-		assert_equal  sparse_clone.full(),  sparse_matrix.full(), "Original matrix was altered."
-		assert !@sparse_matrix.empty?
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 	end
 	
