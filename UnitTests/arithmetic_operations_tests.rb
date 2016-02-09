@@ -702,7 +702,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
 		
 		expected_matrix = Matrix[[1.5,0,4.5],[0,0,1.5],[0,3,0]]
-		hash_expected = {[0,0]=>1.5,[0,2]=>4.5,[1,2]=>1.5,[2,1]=>3}
+		hash_expected = {[0,0]=>1.5,[0,2]=>4.5,[1,2]=>1.5,[2,1]=>3.0}
 		
 		value = 1.5
 		
@@ -725,7 +725,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#post
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
-		assert hash_expected.eql?(actual_matrix.values), "Hashes must be equal"
+		assert hash_expected.eql?(result_matrix.values), "Hashes must be equal"
 		
 		#invariant
 		checkMatrixAssertions(sparse_matrix, sparse_clone)
