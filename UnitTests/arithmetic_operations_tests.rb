@@ -789,10 +789,16 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_multiplication_matrix_int
 		#setup
-		 sparse_matrix1 = SparseMatrix[[0,0,1,0],[0,2,0,2],[0,1,0,2]]  #3x4
-		 sparse_matrix2 = SparseMatrix[[0,1],[0,0],[3,0],[0,0]]  #4x2
-		 sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
-		 sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
+		sparse_matrix1 = SparseMatrix[[0,0,1,0],[0,2,0,2],[0,1,0,2]]  #3x4
+		hash_sm1 = {[0,2]=>1,[1,1]=>2,[1,3]=>2,[2,1]=>1,[2,3]=>2}
+		
+		sparse_matrix2 = SparseMatrix[[0,1],[0,0],[3,0],[0,0]]  #4x2
+		hash_sm2 = {[0,1]=>1,[2,0]=>3}
+		
+		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
+		
+		hash_expected = {[0,0]=>3}
 		
 		#pre
 		assert  sparse_matrix1.real?, "SparseMatrix should be real."
@@ -800,21 +806,27 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert  sparse_matrix2.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix2.values, "SparseMatrix values stored should not be nil."
 		assert_equal  sparse_matrix1.column_count,  sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
-		
-		# data tests
-		 actual_matrix =  sparse_matrix1*(@sparse_matrix2)
-		assert_equal  actual_matrix.values,[3], "Multiplication by matrix(integer) - values vector incorrect"
-		assert_equal  actual_matrix.full(),Matrix[[3,0],[0,0],[0,0]], "Multiplication of matrix by matrix(integer) failed."
-		
-		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
 		
 		#invariant
-		assert_equal  sparse_clone1,  sparse_matrix1, "Original matrix was altered"
-		assert !@sparse_matrix1.empty?
-		assert_equal  sparse_clone2,  sparse_matrix2, "Original matrix was altered"
-		assert !@sparse_matrix2.empty?
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
+		
+		# data tests
+		result_matrix =  sparse_matrix1*(sparse_matrix2)
+		assert_equal  result_matrix.full(),Matrix[[3,0],[0,0],[0,0]], "Multiplication of matrix by matrix(integer) failed."
+		
+		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
+		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
 		assert_equal  expected_matrix.row_count,  sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
 		assert_equal  expected_matrix.column_count,  sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
+
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
 	
 	end
 
