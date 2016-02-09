@@ -291,7 +291,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 	end
 
-def test_add_sparse_and_matrix_int
+	def test_add_sparse_and_matrix_int
 		#setup
 		sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0],[0,1,0]]
 		hash_sm1 = {[0,0]=>1,[0,2]=>3, [1,2]=>1, [2,0]=>2, [3,1]=>1} 
@@ -333,8 +333,8 @@ def test_add_sparse_and_matrix_int
 		
 		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
 		
-		expected_matrix = Matrix[[-1.08,1.16,3.14],[0,0,3.04],[3.08,0,0],[0,3.24,0]]
-		hash_expected = {[0,0]=>-1.08, [0,1]=>1.16, [0,2]=>3.14, [1,2]=>3.04, [2,0]=>3.08, [3,1]=>3.24}
+		expected_matrix = Matrix[[-1.08,1.16,3.14],[0.00,0.00,3.04],[3.08,0.00,0.00],[0.00,3.22,0.00]]
+		hash_expected = {[0,0]=>-1.08, [0,1]=>1.16, [0,2]=>3.14, [1,2]=>3.04, [2,0]=>3.08, [3,1]=>3.22}
 		
 		#pre
 		assert_equal  sparse_matrix1.row_count,  matrix.row_count, "Incompatible dimension (row) for matrix addition"
@@ -348,7 +348,7 @@ def test_add_sparse_and_matrix_int
 		result_matrix =  sparse_matrix1+(matrix)
 		for row in 0..result_matrix.row_count-1
 			for col in 0..result_matrix.column_count-1
-				assert_in_delta  result_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
+				assert_in_delta  expected_matrix.row(row)[col], result_matrix.full().row(row)[col], 0.01, "Matrix values were not increased correctly."
 			end
 		end
 		
@@ -1225,7 +1225,7 @@ def test_add_sparse_and_matrix_int
 		
 		#post
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
-		assert hash_expected.eql?(actual_matrix.values), "Hashes must be equal"
+		assert_equal hash_expected, actual_matrix.values, "Hashes must be equal"
 		
 		# invariant
 		checkMatrixAssertions(sparse_matrix, sparse_clone)
@@ -1239,6 +1239,7 @@ def test_add_sparse_and_matrix_int
 		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
 		
 		expected_matrix = Matrix[[0.5,0],[0,1]]
+		hash_expected = {[0,0]=>0.5,[1,1]=>1}
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
@@ -1260,7 +1261,7 @@ def test_add_sparse_and_matrix_int
 		
 		#post
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
-		assert hash_expected.eql?(result_matrix.values), "Hashes must be equal"
+		assert_equal hash_expected, result_matrix.values, "Hashes must be equal"
 		
 		# invariant
 		checkMatrixAssertions(sparse_matrix, sparse_clone)
