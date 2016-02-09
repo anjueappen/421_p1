@@ -634,10 +634,11 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	# Multiplication
 	def test_multiplication_numeric_int
 		#setup
-		 sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
+		sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
 
-		 sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
-		 value = 4
+		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		
+		value = 4
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
@@ -1063,24 +1064,36 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	def test_matrix_inverse
 		#setup
-		 sparse_matrix = SparseMatrix[[2,0],[0,1]]
-		 sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		sparse_matrix = SparseMatrix[[2,0],[0,1]]
+		hash_sm = {[0,0]=>2,[1,1]=>1}
+		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		
+		expected_matrix = Matrix[[0.5,0],[0,1]]
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert sparse_matrix.square?, "Matrix is not square"
 		assert !sparse_matrix.singular?, "Cannot take inverse - matrix is singular"
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		
+		# invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 		#data tests
-		 result_matrix =  sparse_matrix.inverse
-		assert_in_delta  result_matrix, Matrix[[0.5,0],[0,1]], 0.01, "Matrix inversion failed"
+		result_matrix =  sparse_matrix.inverse
+		for i in 0..result_matrix.row_count-1
+			for j in 0..result_matrix.column_count-1
+				assert_in_delta  result_matrix.full().row(i)[j], expected_matrix.row(i)[j], 0.01, "Matrix inversion failed"
+			end
+		end
 		
 		#post
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		assert hash_expected.eql?(result_matrix.values), "Hashes must be equal"
 		
-		#invariant
-		assert_equal  sparse_clone.full(),  sparse_matrix.full(), "Original matrix was altered."
-		assert !@sparse_matrix.empty?
+		# invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 	end
 	
