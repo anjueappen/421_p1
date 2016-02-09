@@ -689,9 +689,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	def test_multiplication_numeric_float
 		#setup
-		 sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
-		 sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
-		 value = 1.5
+		sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
+		hash_sm = {[0,0]=>1,[0,2]=>3,[1,2]=>1,[2,1]=>2}
+		
+		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		
+		value = 1.5
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
@@ -699,8 +702,8 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert (value.is_a? Float), "Value is not a float"
 		
 		#data tests
-		 actual_matrix =   sparse_matrix*(@value)
-		 values_reference = [1.5,4.5,1.5,3]
+		actual_matrix =   sparse_matrix*(@value)
+		values_reference = [1.5,4.5,1.5,3]
 		for i in 0..@actual_matrix.values.length-1
 			assert_in_delta  actual_matrix.values[i],  values_reference[i], 0.01, "Multiplication by float - values vector incorrect"
 		end
@@ -849,77 +852,83 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	# Division
 	def test_division_numeric_int
 		#setup
-		 sparse_matrix = SparseMatrix[[2,1,0,0],[3,0,0,0],[0,4,4,0]]
-		 sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
-		 divisor = 2
+		sparse_matrix = SparseMatrix[[2,1,0,0],[3,0,0,0],[0,4,4,0]]
+		hash_sm = {[0,0]=>2, [0,1]=>1, [1,0]=>3, [2,1]=>4, [2,2]=>4}
+		
+		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		
+		expected_matrix = Matrix[[1,0.5,0,0],[1.5,0,0,0],[0,2,2,0]]
+		hash_expected = {[0,0]=>1,[0,1]=>0.5,[1,0]=>1.5,[2,1]=>2,[2,2]=>2}
+		
+		divisor = 2
 		
 		#pre
-		#assert  sparse_matrix.real?, "SparseMatrix should be real."
-		#assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		#assert  divisor.real?, "Divisor should be real."
-		#assert_not_nil  divisor,  "Divisor should not be nil."  # can't do comparision
-		#assert (@divisor.is_a? Integer), "Divisor is not an integer"
-		#assert_not_equal 0,  divisor, "divisor cannot be zero"
+		assert  sparse_matrix.real?, "SparseMatrix should be real."
+		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
+		assert  divisor.real?, "Divisor should be real."
+		assert_not_nil  divisor,  "Divisor should not be nil."  # can't do comparision
+		assert (divisor.is_a? Integer), "Divisor is not an integer"
+		assert_not_equal 0,  divisor, "divisor cannot be zero"
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 		#data tests
-		 result_matrix =  sparse_matrix/@divisor
-		 expected_values = [1,0.5,1.5,2,2]
-		for value in 0..@result_matrix.values.length-1
-			assert_in_delta  result_matrix.values[value],  expected_values[value], 0.01, "incorrect values array"
-		end
-		
-		 expected_matrix = Matrix[[1,0.5,0,0],[1.5,0,0,0],[0,2,2,0]]
-		for i in 0..@sparse_clone.row_count-1
-			for j in 0..@sparse_clone.column_count-1
-				assert_in_delta  result_matrix.full().row(i)[j],  expected_matrix.row(i)[j], 0.01, "Integer divsion incorrect"
+		result_matrix =  sparse_matrix/divisor
+		for i in 0..result_matrix.row_count-1
+			for j in 0..result_matrix.column_count-1
+				assert_in_delta  result_matrix.full().row(i)[j],  expected_matrix.row(i)[j], 0.01, "Float divsion incorrect"
 			end
 		end
 		
 		#post
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		assert hash_expected.eql?(result_matrix.values), "Hashes must be equal"
 		
 		#invariant
-		assert_equal  sparse_clone.full(),  sparse_matrix.full(), "Original matrix was altered."
-		assert_equal  sparse_clone.val_row,  actual_matrix.val_row, "fail. val_row changed"
-		assert_equal  sparse_clone.val_col,  actual_matrix.val_col, "fail. val_col changed"
-		assert !@sparse_matrix.empty?
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 	end
 
 	def test_division_numeric_float
 		#setup
-		 sparse_matrix = SparseMatrix[[2.50,1.20,0,0],[3.05,0,0,0],[0,4.50,4.40,0]]
-		 sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
-		 divisor = 2.50
+		sparse_matrix = SparseMatrix[[2.50,1.20,0,0],[3.05,0,0,0],[0,4.50,4.40,0]]
+		hash_sm = {[0,0]=>2.50,[0,1]=>1.20,[1,0]=>3.05,[2,1]=>4.50,[2,2]=>4.40}
+		
+		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		
+		expected_matrix = Matrix[[1,0.48,0,0],[1.22,0,0,0],[0,1.80,1.76,0]]
+		hash_expected = {[0,0]=>1,[0,1]=>0.48,[1,0]=>1.22,[2,1]=>1.80,[2,2]=>1.76}
+		
+		divisor = 2.50
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert  divisor.real?, "Divisor should be real."
 		#assert_not_nil  divisor,  "Divisor should not be nil."  # can't do comparision
-		assert (@divisor.is_a? Float), "Divisor is not a float"
+		assert (divisor.is_a? Float), "Divisor is not a float"
 		assert_not_equal(0,  divisor, "divisor cannot be zero")
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 		#data tests
-		 result_matrix =   sparse_matrix/(@divisor)
-		 expected_values = [1,0.48,1.22,1.80,1.76]
-		for i in 0..  result_matrix.values.length-1
-			assert_in_delta  result_matrix.values[i],@expected_values[i], 0.01, "Values array incorrect after float divsion"
-		end
-		
-		 expected_matrix = Matrix[[1,0.48,0,0],[1.22,0,0,0],[0,1.80,1.76,0]]
-		for i in 0..sparse_clone.row_count-1
-			for j in 0..sparse_clone.column_count-1
+		result_matrix =   sparse_matrix/(divisor)
+		for i in 0..result_matrix.row_count-1
+			for j in 0..result_matrix.column_count-1
 				assert_in_delta  result_matrix.full().row(i)[j],  expected_matrix.row(i)[j], 0.01, "Float divsion incorrect"
 			end
 		end
 		
 		#post
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		assert hash_expected.eql?(result_matrix.values), "Hashes must be equal"
 		
 		#invariant
-		assert_equal  sparse_clone.full(),  sparse_matrix.full(), "Original matrix was altered."
-		assert_equal  sparse_clone.val_row,  actual_matrix.val_row, "fail. val_row changed"
-		assert_equal  sparse_clone.val_col,  actual_matrix.val_col, "fail. val_col changed"
-		assert !@sparse_matrix.empty?
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 	end
 	

@@ -120,7 +120,6 @@ class SparseMatrix
   def unitary?
     # all values are 1
     return self.full.send(:unitary?)
-    #return @values.all? {|x| x == 1}  # todo delete?
   end
 
   def sparse?
