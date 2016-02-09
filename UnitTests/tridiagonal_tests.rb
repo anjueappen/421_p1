@@ -160,7 +160,29 @@ class TriDiagonalTests < Test::Unit::TestCase
     checkTriMatrixAssertions @tm
   end
 
+  def test_attempt_zero_init
+    assert_raise do
+      @tm = TridiagonalMatrix.zero(0)
+    end
+  end
 
+  def test_attempt_diagonal_init
+      assert_raise do
+        @tm = TridiagonalMatrix.diagonal([1, 1])
+      end
+  end
+
+  def test_attempt_scalar_init
+    assert_raise do
+      @tm = TridiagonalMatrix.scalar(0, 0)
+    end
+  end
+
+  def test_attempt_identity_init
+    assert_raise do
+      @tm = TridiagonalMatrix.identity(5)
+    end
+  end
   #tests to add: full, compress_store, for normal emxpty, zero, diagonal
   #test to ensure other matrix initializations aren't allowed .zero... and so on
 end

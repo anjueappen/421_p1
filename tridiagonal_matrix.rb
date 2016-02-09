@@ -1,5 +1,5 @@
 require_relative './sparse_matrix.rb'
-
+#class NotImplementedError < StandardError; end
 class TridiagonalMatrix < SparseMatrix
 
   attr_reader :upper_diagonal, :mid_diagonal, :lower_diagonal, :n
@@ -24,31 +24,13 @@ class TridiagonalMatrix < SparseMatrix
     end
   end
 
-  #equivalent to compressed_store()
-  def TridiagonalMatrix.diagonals(upper_d, mid_d, lower_d)
-    TridiagonalMatrix.new(:diagonals, upper_d, mid_d, lower_d)
-  end
-
-
   def TridiagonalMatrix.[](*rows)
     TridiagonalMatrix.new(:[], *rows)
   end
 
-  
-  def TridiagonalMatrix.zero(rows, cols=rows)
-    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
-  end
-
-  def TridiagonalMatrix.diagonal(*elements)
-    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
-  end
-
-  def TridiagonalMatrix.identity(n)
-    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
-  end
-
-  def TridiagonalMatrix.scalar(n, value)
-    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
+  #equivalent to compressed_store()
+  def TridiagonalMatrix.diagonals(upper_d, mid_d, lower_d)
+    TridiagonalMatrix.new(:diagonals, upper_d, mid_d, lower_d)
   end
 
   def TridiagonalMatrix.rows(rows)
@@ -66,6 +48,12 @@ class TridiagonalMatrix < SparseMatrix
     TridiagonalMatrix.new(:columns, columns)
   end
 
+  [:scalar, :diagonal, :zero, :identity].each do |unsupported_method|
+    define_singleton_method unsupported_method do |args|
+      raise Exception.new('Non-tridiagonal init methods not supported in Tridiagonal Matrix class')
+    end
+  end
+
   def full
     full_m = Array.new(@n) { |k| Array.new(@n) { |l| 0 }}
     @n.times do |i|
@@ -79,7 +67,6 @@ class TridiagonalMatrix < SparseMatrix
     end
     Matrix.rows(full_m)
   end
-
 
   def compress_store(matrix)
     # returns values hash, row_count and column_count
@@ -121,7 +108,6 @@ class TridiagonalMatrix < SparseMatrix
     @lower_diagonal.push(lower)
     @n = @n+1
   end
-
 
   def method_missing(method, *args, &block)
     sparse_m = self.full()
