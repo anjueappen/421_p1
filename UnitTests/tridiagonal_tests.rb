@@ -1,48 +1,48 @@
 require 'test/unit'
+require '../tridiagonal_matrix.rb'
 
 class TriDiagonalTests < Test::Unit::TestCase
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
+
+  def checkTriMatrixAssertions(tm)
+    assert tm.is_a?(TridiagonalMatrix), "#{tm.class} must be a Tridiagonal matrix."
+    assert !tm.values.empty?, "Hash cannot be empty."
+    assert_true @tm.is_tridiagonal?
+    assert !tm.mid_diagonal.has_value?(0), "Diagonal only stores non-zero elements."
+    assert !tm.upper_diagonal.has_value?(0), "Diagonal only stores non-zero elements."
+    assert !tm.lower_diagonal.has_value?(0), "Diagonal only stores non-zero elements."
+  end
+
   def setup
-    @sparse_matrix = TriDiagonalMatrix[[6, 5, 0], [3, 8, 6], [0, 2, 7]]
-
-    #pre
-    assert_equal 3, @sparse_matrix.row_count
-    assert_equal 3, @sparse_matrix.col_count
-    assert_equal [6, 5, 3, 8, 6, 2, 7], @sparse_matrix.values
-    assert_equal [0, 0, 2, 2, 2, 3, 3], @sparse_matrix.val_row
-    assert_equal [0, 1, 0, 1, 2, 1, 2], @sparse_matrix.val_col
-
-    #invariant
-    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
-    assert_true @sparse_matrix.is_tridiagonal?
-
+    @tm = TridiagonalMatrix[[6, 5, 0], [3, 8, 6], [0, 2, 7]]
   end
 
-  # Called after every test method runs. Can be used to tear
-  # down fixture information.
-
-  def teardown
-    # Do nothing
-  end
 
   def test_init_diagonal
-    @sparse_matrix = TriDiagonalMatrix.diagonal([5,6], [6, 8, 7], [3, 2])
+    #pre
+    assert_equal 3, @tm.n
+    assert_equal [6, 8, 7], @tm.mid_diagonal
+    assert_equal [3, 2], @tm.lower_diagonal
+    assert_equal [5, 6], @tm.upper_diagonal
+
+    #invariant
+    checkTriMatrixAssertions @tm
+
+    #data
+    @tm = TriDiagonalMatrix.diagonals([5, 6], [6, 8, 7], [3, 2])
 
     #post
-    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
-    assert_true @sparse_matrix.is_tridiagonal?
-    assert_equal 3, @sparse_matrix.row_count
-    assert_equal 3, @sparse_matrix.col_count
-    assert_equal [6, 5, 3, 8, 6, 2, 7], @sparse_matrix.values
-    assert_equal [0, 0, 1, 1, 1, 2, 2], @sparse_matrix.val_row
-    assert_equal [0, 1, 0, 1, 2, 1, 2], @sparse_matrix.val_col
+    assert_equal 3, @tm.n
+    assert_equal [6, 8, 7], @tm.mid_diagonal
+    assert_equal [3, 2], @tm.lower_diagonal
+    assert_equal [5, 6], @tm.upper_diagonal
   end
 
   def test_init_diagonal_improper_lengths
     begin
-      @sparse_matrix = SparseMatrix.diagonal([5, 6, 5], [6, 8, 7], [3, 2])
+      @tm = TridiagonalMatrix.diagonals([5, 6, 5], [6, 8, 7], [3, 2])
     rescue Exception => e
       if e.is_a? ImproperDiagonalsError
         pass
@@ -53,74 +53,59 @@ class TriDiagonalTests < Test::Unit::TestCase
   end
 
   def test_init_diagonal_chars
-    @sparse_matrix = SparseMatrix.diagonal(['a', 'b'], ['c', 'd', 'e'], ['f', 'g'])
+    @tm = TridiagonalMatrix.diagonals(['a', 'b'], ['c', 'd', 'e'], ['f', 'g'])
 
     #post
-    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
-    assert_true @sparse_matrix.is_tridiagonal?
-    assert_equal 3, @sparse_matrix.row_count
-    assert_equal 3, @sparse_matrix.col_count
-    assert_equal ['c', 'a', 'f', 'd', 'b', 'g', '3'], @sparse_matrix.values
-    assert_equal [0, 0, 1, 1, 1, 2, 2], @sparse_matrix.val_row
-    assert_equal [0, 1, 0, 1, 2, 1, 2], @sparse_matrix.val_col
+    assert_equal 3, @tm.n
+    assert_equal ['a', 'd', 'g'], @tm.mid_diagonal
+    assert_equal ['b', 'e'], @tm.lower_diagonal
+    assert_equal ['c', 'f'], @tm.upper_diagonal
   end
 
 
   def test_extend_diagonal_integers
-    @sparse_matrix.extend_diagonal(2, 3, 4)
-
-    #invariant
-    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
-    assert_true @sparse_matrix.is_tridiagonal?
+    @tm.extend_diagonal(2, 3, 4)
 
     #post
-    assert_equal 4, @sparse_matrix.row_count
-    assert_equal 4, @sparse_matrix.col_count
-    assert_equal [6, 5, 3, 8, 6, 2, 7, 2, 3, 4], @sparse_matrix.values
-    assert_equal [0, 0, 2, 2, 2, 3, 3, 2, 3, 3], @sparse_matrix.val_row
-    assert_equal [0, 1, 0, 1, 2, 1, 2, 3, 3, 2], @sparse_matrix.val_col
+    assert_equal 4, @tm.n
+    assert_equal [6, 8, 7, 2], @tm.mid_diagonal
+    assert_equal [3, 2, 3], @tm.lower_diagonal
+    assert_equal [5, 6, 4], @tm.upper_diagonal
   end
 
 
   def test_extend_diagonal_floats
-    @sparse_matrix.extend_diagonal(2.01, 3.01, 4.01)
-
-    #invariant
-    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
-    assert_true @sparse_matrix.is_tridiagonal?
+    @tm.extend_diagonal(2.01, 3.01, 4.01)
 
     #post
-    assert_equal 4, @sparse_matrix.row_count
-    assert_equal 4, @sparse_matrix.col_count
-    assert_equal [6, 5, 3, 8, 6, 2, 7, 2.01, 3.01, 4.01], @sparse_matrix.values
-    assert_equal [0, 0, 2, 2, 2, 3, 3, 2, 3, 3], @sparse_matrix.val_row
-    assert_equal [0, 1, 0, 1, 2, 1, 2, 3, 3, 2], @sparse_matrix.val_col
+    assert_equal 4, @tm.n
+    assert_equal [6, 8, 7, 2.01], @tm.mid_diagonal
+    assert_equal [3, 2, 3.01], @tm.lower_diagonal
+    assert_equal [5, 6, 4.01], @tm.upper_diagonal
   end
 
   def test_extend_diagonal_chars
-    @sparse_matrix.extend_diagonal('a', 'b', 'c')
-
-    #invariant
-    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
-    assert_true @sparse_matrix.is_tridiagonal?
+    @tm.extend_diagonal('a', 'b', 'c')
 
     #post
-    assert_equal 4, @sparse_matrix.row_count
-    assert_equal 4, @sparse_matrix.col_count
-    assert_equal [6, 5, 3, 8, 6, 2, 7, 'a', 'b', 'c'], @sparse_matrix.values
-    assert_equal [0, 0, 2, 2, 2, 3, 3, 2, 3, 3], @sparse_matrix.val_row
-    assert_equal [0, 1, 0, 1, 2, 1, 2, 3, 3, 2], @sparse_matrix.val_col
+    assert_equal 4, @tm.n
+    assert_equal [6, 8, 7, 'a'], @tm.mid_diagonal
+    assert_equal [3, 2, 'b'], @tm.lower_diagonal
+    assert_equal [5, 6, 'c'], @tm.upper_diagonal
+
+    #invariant
+    checkTriMatrixAssertions(@tm)
 
   end
 
   def test_thomas_algorithm
-    x = @sparse_matrix.solve_thomas([4, 4, 3])
+    x = @tm.solve_thomas([4, 4, 3])
 
     #invariant
-    assert_true @sparse_matrix.is_a? TriDiagonalMatrix
-    assert_true @sparse_matrix.is_tridiagonal?
-    assert_equal 3, @sparse_matrix.row_count
-    assert_equal 3, @sparse_matrix.col_count
+    assert_true @tm.is_a? TridiagonalMatrix
+    assert_true @tm.is_tridiagonal?
+    assert_equal 3, @tm.row_count
+    assert_equal 3, @tm.col_count
 
     #post
     assert_equal [42/53, -8/53, 25/53], x
@@ -128,7 +113,7 @@ class TriDiagonalTests < Test::Unit::TestCase
 
   def test_thomas_algorithm_insufficient_length
     begin
-      @sparse_matrix.solve_thomas([1])
+      @tm.solve_thomas([1])
     rescue Exception => e
       if e.is_a? InsufficientVectorLength
         pass "Correct exception raised"
@@ -139,9 +124,9 @@ class TriDiagonalTests < Test::Unit::TestCase
   end
 
   def test_isTridiagonal_2x2
-    @sparse_matrix = TriDiagonalMatrix[[1, 2], [3, 4]]
-    assert_false @sparse_matrix.is_tridiagonal?
-    assert_false @sparse_matrix.is_sparse?
+    @tm = TridiagonalMatrix[[1, 2], [3, 4]]
+    assert_false @tm.is_tridiagonal?
+    assert_false @tm.is_sparse?
 
   end
 end
