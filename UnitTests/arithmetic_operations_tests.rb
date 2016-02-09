@@ -28,14 +28,14 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	# Addition
 	def test_increase_all_values_by_int 
 		# setup
-		 sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
-		 hash_sm = {[0,0]=>1, [0,1]=>2, [1,0]=>2, [2,2]=>1}
-		 sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		hash_sm = {[0,0]=>1, [0,1]=>2, [1,0]=>2, [2,2]=>1}
+		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
 		 
-		 expected_matrix = Matrix[[5,6,4],[6,4,4],[4,4,5]]
-		 hash_expected = {[0,0]=>5, [0,1]=>6, [0,2]=>4, [1,0]=>6, [1,1]=>4, [1,2]=>4, [2,0]=>4, [2,1]=>4, [2,2]=>5}
+		expected_matrix = Matrix[[5,6,4],[6,4,4],[4,4,5]]
+		hash_expected = {[0,0]=>5, [0,1]=>6, [0,2]=>4, [1,0]=>6, [1,1]=>4, [1,2]=>4, [2,0]=>4, [2,1]=>4, [2,2]=>5}
 		 
-		 value = 4
+		value = 4
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
@@ -61,14 +61,14 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_increase_all_values_by_float
 		#setup
-		 sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
-		 hash_sm = {[0,0]=>1, [0,1]=>2, [1,0]=>2, [2,2]=>1}
-		 sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		hash_sm = {[0,0]=>1, [0,1]=>2, [1,0]=>2, [2,2]=>1}
+		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
 		 
-		 expected_matrix = Matrix[[5.45,6.45,4.45],[6.45,4.45,4.45],[4.45,4.45,5.45]]
-		 hash_expected = {[0,0]=>5.45,[0,1]=>6.45,[0,2]=>4.45,[1,0]=>6.45,[1,1]=>4.45,[1,2]=>4.45,[2,0]=>4.45,[2,1]=>4.45,[2,2]=>5.45}
+		expected_matrix = Matrix[[5.45,6.45,4.45],[6.45,4.45,4.45],[4.45,4.45,5.45]]
+		hash_expected = {[0,0]=>5.45,[0,1]=>6.45,[0,2]=>4.45,[1,0]=>6.45,[1,1]=>4.45,[1,2]=>4.45,[2,0]=>4.45,[2,1]=>4.45,[2,2]=>5.45}
 		 
-		 value = 4.55
+		value = 4.55
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
@@ -81,7 +81,11 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#data tests
 		actual_matrix =  sparse_matrix.increase_all_values_by(@value)
-		assert_in_delta  actual_matrix.full(),  expected_matrix, 0.01, "Matrix values were not increased correctly."
+		for row in 0..actual_matrix.row_count-1
+			for col in 0..actual_matrix.column_count-1
+				assert_in_delta  actual_matrix.full.rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+			end
+		end
 		
 		#post
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
