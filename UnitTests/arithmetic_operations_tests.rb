@@ -925,10 +925,17 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	def test_division_matrix_int
 		#setup
-		 sparse_matrix1 = SparseMatrix[[1,0],[4,0],[0,7]]
-		 sparse_matrix2 = SparseMatrix[[2,0],[0,9]]
-		 sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
-		 sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
+		sparse_matrix1 = SparseMatrix[[1,0],[4,0],[0,7]]
+		hash_sm1 = {[0,0]=>1, [1,0]=>4, [2,1]=>7}
+		
+		sparse_matrix2 = SparseMatrix[[2,0],[0,9]]
+		hash_sm2 = {[0,0]=>2,[1,1]=>9}
+		
+		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
+		
+		expected_matrix = Matrix[[0.5,0],[2,0],[0,0.77778]]
+		hash_expected = {[0,0]=>0.5, [1,0]=>2, [2,1]=>0.77778}
 		
 		#pre
 		assert  sparse_matrix1.real?, "SparseMatrix should be real."
@@ -938,18 +945,29 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert sparse_matrix2.square?, "Cannot didvide - divisor matrix is not square"
 		assert !sparse_matrix2.singular?, "Cannot divide - divisor matrix is singular"
 		assert_equal sparse_matrix1.column_count, sparse_matrix2.row_count, "Incompatible dimensions for matrix division"
-		
-		#data tests
-		 result_matrix =  sparse_matrix1/(@sparse_matrix2)
-		assert_in_delta  result_matrix.full(), Matrix[[0.5,0],[2,0],[0,0.77778]], 0.01, "Integer matrix division failed"
-		
-		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
 		
 		#invariant
-		assert_equal  sparse_clone1,  sparse_matrix1, "Original matrix was altered"
-		assert !@sparse_matrix1.empty?
-		assert_equal  sparse_clone2,  sparse_matrix2, "Original matrix was altered"
-		assert !@sparse_matrix2.empty?
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
+		
+		#data tests
+		result_matrix =  sparse_matrix1/(sparse_matrix2)
+		for row in 0..result_matrix.row_count-1
+			for col in 0..result_matrix.column_count-1
+				assert_in_delta  result_matrix.full().rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+			end
+		end
+		
+		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
+		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
 		assert_equal  expected_matrix.row_count,  sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
 		assert_equal  expected_matrix.column_count,  sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
 
@@ -957,10 +975,16 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_division_matrix_float
 		#setup
-		 sparse_matrix1 = SparseMatrix[[1.10,0],[4.50,0],[0,0]]
-		 sparse_matrix2 = SparseMatrix[[2.10,0],[0,9.10]]
-		 sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
-		 sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
+		sparse_matrix1 = SparseMatrix[[1.10,0],[4.50,0],[0,0]]
+		hash_sm1 = {[0,0]=>1.10, [1,0]=>4.50}
+		
+		sparse_matrix2 = SparseMatrix[[2.10,0],[0,9.10]]
+		hash_sm2 = {[0,0]=>2.10,[1,1]=>9.10}
+		
+		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
+		expected_matrix = Matrix[[0.5238,0],[2.1429,0],[0,0]]
+		hash_expected = {[0,0]=>0.5238,[1,0]=>2.1429}
 		
 		#pre
 		assert  sparse_matrix1.real?, "SparseMatrix should be real."
@@ -970,22 +994,31 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert sparse_matrix2.square?, "Cannot didvide - divisor matrix is not square"
 		assert !sparse_matrix2.singular?, "Cannot divide - divisor matrix is singular"
 		assert_equal sparse_matrix1.column_count, sparse_matrix2.row_count, "Incompatible dimensions for matrix division"
-		
-		
-		#data tests
-		 result_matrix =  sparse_matrix1/(@sparse_matrix2)
-		assert_in_delta  result_matrix.full(), Matrix[[0.5238,0],[2.1429,0],[0,0]], 0.01, "Float matrix division failed"
-		
-		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
 		
 		#invariant
-		assert_equal  sparse_clone1,  sparse_matrix1, "Original matrix was altered"
-		assert !@sparse_matrix1.empty?
-		assert_equal  sparse_clone2,  sparse_matrix2, "Original matrix was altered"
-		assert !@sparse_matrix2.empty?
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
+		
+		#data tests
+		result_matrix =  sparse_matrix1/(sparse_matrix2)
+		for row in 0..result_matrix.row_count-1
+			for col in 0..result_matrix.column_count-1
+				assert_in_delta  result_matrix.full().rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+			end
+		end
+		
+		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
+		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
 		assert_equal  expected_matrix.row_count,  sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
 		assert_equal  expected_matrix.column_count,  sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
-
 		
 	end
 
