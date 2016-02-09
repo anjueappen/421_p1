@@ -1356,7 +1356,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert  matrix.real?, "Matrix should be real."
 		assert_not_nil  matrix, "Matrix values stored should not be nil."
 		assert matrix.square?, "Cannot didvide - divisor matrix is not square"
-		assert matrix.singular?, "Cannot divide - divisor matrix is singular"
+		assert !matrix.singular?, "Cannot divide - divisor matrix is singular"
 		assert_equal sparse_matrix1.column_count, matrix.row_count, "Incompatible dimensions for matrix division"
 		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
 		
