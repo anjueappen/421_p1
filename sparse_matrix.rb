@@ -276,15 +276,10 @@ INITIALIZATION METHODS
 
 	def putNonZero(value, row, column)
 		if value == 0
-			return
+			raise Exception.new('Value must be non-zero')
+    elsif !row.is_a?Integer or !column.is_a?Integer
+      raise ArgumentError
 		end
-
-		if @val_row.include? row and @val_col.include? column and @val_row.index(row) == @val_col.index(column)
-			@values[@val_row.index(row)] = value
-		else
-			@values.push(value)
-			@val_row.push(row)
-			@val_col.push(column)
-		end
+    @values[[row, column]] = value
 	end
 end
