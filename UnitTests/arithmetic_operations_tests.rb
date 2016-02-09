@@ -62,24 +62,34 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	def test_increase_all_values_by_float
 		#setup
 		 sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		 hash_sm = {[0,0]=>1, [0,1]=>2, [1,0]=>2, [2,2]=>1}
 		 sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		 
 		 expected_matrix = Matrix[[5.45,6.45,4.45],[6.45,4.45,4.45],[4.45,4.45,5.45]]
+		 hash_expected = {[0,0]=>5.45,[0,1]=>6.45,[0,2]=>4.45,[1,0]=>6.45,[1,1]=>4.45,[1,2]=>4.45,[2,0]=>4.45,[2,1]=>4.45,[2,2]=>5.45}
+		 
 		 value = 4.55
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert (@value.is_a? Float), "Value is not a float"
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 		#data tests
-		 actual_matrix =  sparse_matrix.increase_all_values_by(@value)
+		actual_matrix =  sparse_matrix.increase_all_values_by(@value)
 		assert_in_delta  actual_matrix.full(),  expected_matrix, 0.01, "Matrix values were not increased correctly."
 		
 		#post
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		assert hash_expected.eql?(actual_matrix.values), "Hashes must be equal"
 		
 		#invariant
-		assert_equal  sparse_clone.full(),  sparse_matrix.full(), "Original matrix was altered."
-		assert !@sparse_matrix.empty?
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
+		
 	end
 	
 	def test_addition_numeric_int
