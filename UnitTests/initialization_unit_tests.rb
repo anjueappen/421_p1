@@ -81,7 +81,6 @@ class InitializationUnitTests < Test::Unit::TestCase
     assert float_sm.real?, "Real sparse_matrix"
     assert !float_sm.values.empty?, "Hash cannot be empty."
     assert !float_sm.values.has_value?(0), "Hash only stores non-zero elements."
-
   end
 
   def test_initialize_square_brackets_chars
@@ -456,38 +455,113 @@ class InitializationUnitTests < Test::Unit::TestCase
 
 
   def test_compressed_format
-    sparse_matrix = SparseMatrix.compressed_format([4, 1], [0, 0], [0, 2], 3, 2)
+    #setup
+    hash_simple = {[0,0] => 1, [1,1] => 2}
+    hash_duplicates = {[0,0] => 1, [0,1] => 1, [1,0] => 3, [2, 1] => 4, 
+      [2,2] => 4}
+    hash_zero = {}
+
+    simple_sm = SparseMatrix.compressed_format(hash_simple,2,2)
+    duplicates_sm = SparseMatrix.compressed_format(hash_duplicates,3,4)
+    zero_sm = SparseMatrix.compressed_format(hash_zero,2,2)
+
+    #pre
+    hash_simple.each_pair { |key, value|
+      assert key.is_a?(Array), "Key must be an array."
+      assert (key[0].is_a?(Integer) and key[1].is_a?(Integer)), "Keys must be integers."
+      assert_operator key[0], :>=, 0, "Keys must be positive."
+      assert_operator key[1], :>=, 0, "Keys must be positive."
+      assert value.is_a?(Integer), "Values must be integers."
+    }
+    assert !hash_simple.has_value?(0), "Only non-zero elements can be stored."
+
+    hash_duplicates.each_pair { |key, value|
+      assert key.is_a?(Array), "Key must be an array."
+      assert (key[0].is_a?(Integer) and key[1].is_a?(Integer)), "Keys must be integers."
+      assert_operator key[0], :>=, 0, "Keys must be positive."
+      assert_operator key[1], :>=, 0, "Keys must be positive."
+      assert value.is_a?(Integer), "Values must be integers."
+    }
+    assert !hash_duplicates.has_value?(0), "Only non-zero elements can be stored."
+
+
+    # data tests
+    assert_equal Matrix[[1,0], [0,2]], simple_sm.full(), "Matrices must be equal."
+    assert_equal Matrix[[1,1,0,0],[3,0,0,0],[0,4,4,0]], duplicates_sm.full(), "Matrices must be equal." 
+    assert_equal Matrix[[0,0],[0,0]], zero_sm.full(), "Matrices must be equal."
+
+    # Compare expected vs actual result of hashes and Matrix representations
+    assert hash_simple.eql?(simple_sm.values), "Hashes must be equal."
+    assert hash_duplicates.eql?(duplicates_sm.values), "Hashes must be equal"
+    assert hash_zero.eql?(zero_sm.values), "Nothing stored."
 
     #post
-    assert_equal  [4, 1], sparse_matrix.values
-    assert_equal  [0, 0], sparse_matrix.val_col
-    assert_equal  [0, 2], sparse_matrix.val_row
+    # Must be sparse matrix classes
+    assert simple_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert duplicates_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert zero_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+
+    # Must be real
+    assert simple_sm.real?, "Real sparse_matrix"
+    assert duplicates_sm.real?, "Real sparse_matrix"
+    assert zero_sm.real?, "Real sparse_matrix"
+
+    # Hahes cannot be empty for non-zero sparse matrices
+    assert !simple_sm.values.empty?, "Hash cannot be empty."
+    assert !duplicates_sm.values.empty?, "Hash cannot be empty."
+    assert zero_sm.values.empty?, "Hash should be empty for a zero matrix."
+
   end
 
 
   def test_compressed_format_chars
-    sparse_matrix = SparseMatrix.compressed_format(['a', 'b'], [0, 0], [0, 2], 3, 2)
+    #setup
+    hash_char = {[0,0] => 'a', [1,0] => 'b'}  
+    char_sm = SparseMatrix.compressed_format(hash_char,2,2) #these should be allowed to iniitalize
+
+    #pre
+    hash_char.each_pair { |key, value|
+      assert key.is_a?(Array), "Key must be an array."
+      assert (key[0].is_a?(Integer) and key[1].is_a?(Integer)), "Keys must be integers."
+      assert_operator key[0], :>=, 0, "Keys must be positive."
+      assert_operator key[1], :>=, 0, "Keys must be positive."
+      assert value.is_a?(String), "Values can be strings."
+    }
+
+    #data
+    assert_equal Matrix[['a',0], ['b',0]], char_sm.full(), "Matrices must be equal."
+    assert hash_char.eql?(char_sm.values), "Hashes must be equal."
 
     #post
-    assert_equal  ['a', 'b'], sparse_matrix.values
-    assert_equal  [0, 0], sparse_matrix.val_col
-    assert_equal  [0, 2], sparse_matrix.val_row
+    assert char_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert !char_sm.values.empty?, "Hash cannot be empty."
+    assert !char_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
   def test_compressed_format_floats
-    sparse_matrix = SparseMatrix.compressed_format([5.01, 5.01], [0, 0], [0, 2], 3, 2)
+    #setup
+    hash_float = {[0,0] => 1.00, [1,1] => 2.00}
+    float_sm = SparseMatrix.compressed_format(hash_float, 2, 2)
+
+    #pre
+    hash_float.each_pair { |key, value|
+      assert key.is_a?(Array), "Key must be an array."
+      assert (key[0].is_a?(Integer) and key[1].is_a?(Integer)), "Keys must be integers."
+      assert_operator key[0], :>=, 0, "Keys must be positive."
+      assert_operator key[1], :>=, 0, "Keys must be positive."
+      assert value.is_a?(Float), "Values can be floats."
+    }
+    assert !hash_float.has_value?(0), "Only non-zero elements can be stored."
+
+    #data
+    assert_equal Matrix[[1,0], [0,2]], float_sm.full(), "Matrices must be equal."
+    assert hash_float.eql?(float_sm.values), "Hashes must be equal."
 
     #post
-    assert_equal  [5.01, 5.01], sparse_matrix.values
-    assert_equal  [0, 0], sparse_matrix.val_col
-    assert_equal  [0, 2], sparse_matrix.val_row
+    assert float_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert float_sm.real?, "Real sparse_matrix"
+    assert !float_sm.values.empty?, "Hash cannot be empty."
+    assert !float_sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
 
-  def test_compressed_store
-    sm = SparseMatrix[[0,0,0],[1,0,1],[0,0,2]]
-
-    assert_equal [1, 1, 2], sm.values, "Incorrect values stored."
-    assert_equal [0, 2, 2], sm.val_col, "Incorrect val_col stored."
-    assert_equal [nil, 0, 2], sm.val_row, "First row has no non-zero elements so first element should be nil in val_row."
-  end
 end

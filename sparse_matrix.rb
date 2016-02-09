@@ -15,6 +15,12 @@ INITIALIZATION METHODS
 
 		method = data[0]
 		data.shift()
+
+		if method.is_a?(String)
+			@values, @row_count, @column_count = data
+			return 
+		end
+
 		@values, @row_count, @column_count = compress_store(Matrix.send(method, *data))
 		@size = @row_count * @column_count
 
@@ -57,7 +63,7 @@ INITIALIZATION METHODS
 		if not rows.kind_of?(Array) or not rows[0].kind_of?(Array)
 			raise Exception.new('Parameter must be Array of Arrays.')
 		end
-		SparseMatrix.new(:rows, *rows)
+		SparseMatrix.new(:rows, rows)
 	end
 
 	def SparseMatrix.columns(columns)
@@ -65,7 +71,7 @@ INITIALIZATION METHODS
 		if not columns.kind_of?(Array) or not columns[0].kind_of?(Array)
 			raise Exception.new('Parameter must be Array of Arrays.')
 		end
-		SparseMatrix.new(:columns, *columns)
+		SparseMatrix.new(:columns, columns)
 	end
 	
 	def SparseMatrix.compressed_format(values, row_count, column_count)
