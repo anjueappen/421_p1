@@ -1283,7 +1283,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#post
 		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
 		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
-		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
+		assert_equal hash_expected, result_matrix.values, "Hashes must equal."
 		assert_equal  expected_matrix.row_count,  sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
 		assert_equal  expected_matrix.column_count,  sparse_matrix2.column_count, "Matrix multiplication dimension error (column)"
 

@@ -101,7 +101,6 @@ class SparseMatrix
       end
     end
 
-    puts values
     return values, matrix.row_count, matrix.column_count
   end
 
@@ -123,10 +122,6 @@ class SparseMatrix
 
   def nonzeros
     return @values
-  end
-
-  def unitary?
-    return self.full.send(:unitary?)
   end
 
   def sparse?
@@ -352,16 +347,6 @@ class SparseMatrix
     end
   end
 
-
-  # def **(arg)
-  #   case arg
-  #   	when Integer
-    		
-  #   	when Numeric
-  #   end
-
-  # end
-
   def transpose
 	    new_hash = {}
     @values.each_pair { |key, value|
@@ -404,6 +389,4 @@ class SparseMatrix
       @column_count = column+1
     end
   end
-
-
 end
