@@ -15,6 +15,12 @@ class AttributesUnitTests < Test::Unit::TestCase
 		@sparse_diag_matrix = SparseMatrix.diagonal(1,2,3,4)
 		@empty_matrix = SparseMatrix[[]]
 
+		@hash_sm = {[0,0]=>1, [1,1]=>2, [2,0]=>3, [3,3]=>4}
+		@hash_sm_identity = {[0,0]=>1, [1,1]=>1}
+		@hash_sm_symmetric = {[0,0]=>1,[1,2]=>1,[2,1]=>1}
+		@hash_sm_diag = {[0,0]=>1, [1,1]=>2, [2,2]=>3, [3,3]=>4}
+		
+		
 		#pre
 		# matrices must be real
 		assert @sparse_matrix.real?, "SparseMatrix must be real."
@@ -22,8 +28,15 @@ class AttributesUnitTests < Test::Unit::TestCase
 		assert @identity_matrix.real?, "Identity SparseMatrix must be real."
 		assert @symmetric_matrix.real?, "Symmetric SparseMatrix must be real."
 		assert @sparse_diag_matrix.real?, "Diagonal SparseMatrix must be real."
-
+		
+		assert @hash_sm.eql?(@sparse_matrix.values), "Hashes must be equal"
+		assert @hash_sm_identity.eql?(@identity_matrix.values), "Hashes must be equal"
+		assert @hash_sm_symmetric.eql?(@symmetric_matrix.values), "Hashes must be equal"
+		assert @hash_sm_diag.eql?(@sparse_diag_matrix.values), "Hashes must be equal"
+		assert (@zero_matrix.values.empty?), "zero sparse matrix does not have empty value hash"
+		assert (@empty_matrix.values.empty?), "empty sparse matrix does not have empty value hash"
 		#post: no change in state for all methods
+		
 	end
 
 	def teardown
@@ -76,7 +89,8 @@ class AttributesUnitTests < Test::Unit::TestCase
 		assert @symmetric_matrix.symmetric?, "Matrix should be symmetric."
 		assert !@sparse_matrix.symmetric?, "Matrix should not be symmetric."
 	end
-
+	
+	#todo failing, identity is not unitary
 	def test_unitary?
 		assert @identity_matrix.unitary?, "Identity matrix should be unitary."
 		assert !@sparse_matrix.unitary?, "Sparse matrix should not be unitary."
