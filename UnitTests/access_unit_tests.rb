@@ -2,7 +2,7 @@ require 'test/unit'
 require '../sparse_matrix.rb'
 require 'matrix'
 
-#invariant to add
+# Invariant is implemented by copy-pasting pre conditions in setup into post conditions in teardown
 # Object should remain the same after these methods are called
 
 class AccessUnitTests < Test::Unit::TestCase
@@ -44,8 +44,32 @@ class AccessUnitTests < Test::Unit::TestCase
     assert !@sparse_matrix.values.has_value?(0), "Hash only stores non-zero elements."
     assert !@sm_w_duplicates.values.has_value?(0), "Hash only stores non-zero elements."
     assert !@diag_sm.values.has_value?(0), "Hash only stores non-zero elements."
-
 	end
+
+  def teardown
+    #pre
+    # Must be SparseMatrix objects
+    assert @sparse_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @sm_w_duplicates.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @diag_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+
+    # Must be real
+    assert @sparse_matrix.real?, "SparseMatrix should be real."
+    assert @sm_w_duplicates.real?, "SparseMatrix should be real."
+    assert @diag_sm.real?, "SparseMatrix should be real."
+
+    # Hashes should equal what's stored in the SparseMatrix values
+    assert @hash_sm.eql?(@sparse_matrix.values), "Hashes must be equal"
+    assert @hash_duplicates.eql?(@sm_w_duplicates.values), "Hashes must be equal"
+    assert @hash_diag.eql?(@diag_sm.values), "Hashes must be equal."
+    assert @zero_matrix.values.empty?, "zero sparse matrix does not have empty value hash"
+    assert @empty_matrix.values.empty?, "empty sparse matrix does not have empty value hash"
+
+    # Hash only stores non-zero elements
+    assert !@sparse_matrix.values.has_value?(0), "Hash only stores non-zero elements."
+    assert !@sm_w_duplicates.values.has_value?(0), "Hash only stores non-zero elements."
+    assert !@diag_sm.values.has_value?(0), "Hash only stores non-zero elements."
+  end
 
   def test_non_zero_count
     assert_equal 4, @sparse_matrix.nonzero_count(), "nonzero_count() method on a sparse matrix failed."

@@ -1,7 +1,9 @@
-
 require 'test/unit'
 require '../sparse_matrix.rb'
 require 'matrix'
+
+# Invariant is implemented by copy-pasting pre conditions in setup into post conditions in teardown
+# Object should remain the same after these methods are called
 
 class AttributesUnitTests < Test::Unit::TestCase
 	def setup
@@ -20,8 +22,15 @@ class AttributesUnitTests < Test::Unit::TestCase
 		@hash_sm_symmetric = {[0,0]=>1,[1,2]=>1,[2,1]=>1}
 		@hash_sm_diag = {[0,0]=>1, [1,1]=>2, [2,2]=>3, [3,3]=>4}
 		
-		
 		#pre
+		# Must be SparseMatrix objects
+    assert @sparse_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @zero_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @identity_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @symmetric_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @sparse_diag_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @empty_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+
 		# matrices must be real
 		assert @sparse_matrix.real?, "SparseMatrix must be real."
 		assert @zero_matrix.real?, "Zero SparseMatrix must be real."
@@ -29,18 +38,53 @@ class AttributesUnitTests < Test::Unit::TestCase
 		assert @symmetric_matrix.real?, "Symmetric SparseMatrix must be real."
 		assert @sparse_diag_matrix.real?, "Diagonal SparseMatrix must be real."
 		
+		# Hashes must be stored properly
 		assert @hash_sm.eql?(@sparse_matrix.values), "Hashes must be equal"
 		assert @hash_sm_identity.eql?(@identity_matrix.values), "Hashes must be equal"
 		assert @hash_sm_symmetric.eql?(@symmetric_matrix.values), "Hashes must be equal"
 		assert @hash_sm_diag.eql?(@sparse_diag_matrix.values), "Hashes must be equal"
 		assert (@zero_matrix.values.empty?), "zero sparse matrix does not have empty value hash"
 		assert (@empty_matrix.values.empty?), "empty sparse matrix does not have empty value hash"
+
+		 # Hash only stores non-zero elements
+    assert !@sparse_matrix.values.has_value?(0), "Hash only stores non-zero elements."
+    assert !@identity_matrix.values.has_value?(0), "Hash only stores non-zero elements."
+    assert !@symmetric_matrix.values.has_value?(0), "Hash only stores non-zero elements."
+    assert !@sparse_diag_matrix.values.has_value?(0), "Hash only stores non-zero elements."
+
 		#post: no change in state for all methods
 		
 	end
 
 	def teardown
-		# Nothing to teardown
+		# Must be SparseMatrix objects
+    assert @sparse_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @zero_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @identity_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @symmetric_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @sparse_diag_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert @empty_matrix.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+
+		# matrices must be real
+		assert @sparse_matrix.real?, "SparseMatrix must be real."
+		assert @zero_matrix.real?, "Zero SparseMatrix must be real."
+		assert @identity_matrix.real?, "Identity SparseMatrix must be real."
+		assert @symmetric_matrix.real?, "Symmetric SparseMatrix must be real."
+		assert @sparse_diag_matrix.real?, "Diagonal SparseMatrix must be real."
+		
+		# Hashes must be stored properly
+		assert @hash_sm.eql?(@sparse_matrix.values), "Hashes must be equal"
+		assert @hash_sm_identity.eql?(@identity_matrix.values), "Hashes must be equal"
+		assert @hash_sm_symmetric.eql?(@symmetric_matrix.values), "Hashes must be equal"
+		assert @hash_sm_diag.eql?(@sparse_diag_matrix.values), "Hashes must be equal"
+		assert (@zero_matrix.values.empty?), "zero sparse matrix does not have empty value hash"
+		assert (@empty_matrix.values.empty?), "empty sparse matrix does not have empty value hash"
+
+		 # Hash only stores non-zero elements
+    assert !@sparse_matrix.values.has_value?(0), "Hash only stores non-zero elements."
+    assert !@identity_matrix.values.has_value?(0), "Hash only stores non-zero elements."
+    assert !@symmetric_matrix.values.has_value?(0), "Hash only stores non-zero elements."
+    assert !@sparse_diag_matrix.values.has_value?(0), "Hash only stores non-zero elements."
 	end
 
 	def test_sparse?
@@ -90,7 +134,6 @@ class AttributesUnitTests < Test::Unit::TestCase
 		assert !@sparse_matrix.symmetric?, "Matrix should not be symmetric."
 	end
 	
-	#todo failing, identity is not unitary
 	def test_unitary?
 		assert @identity_matrix.unitary?, "Identity matrix should be unitary."
 		assert !@sparse_matrix.unitary?, "Sparse matrix should not be unitary."
