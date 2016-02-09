@@ -1,53 +1,36 @@
 require_relative './sparse_matrix.rb'
-
+#class NotImplementedError < StandardError; end
 class TridiagonalMatrix < SparseMatrix
 
   attr_reader :upper_diagonal, :mid_diagonal, :lower_diagonal, :n
 
   def initialize(*data)
 
-    @upper_diagonal = []
+    @max_degree_of_sparsity = 0.5
     @mid_diagonal = []
+    @upper_diagonal = []
     @lower_diagonal = []
 
     method = data[0]
     data.shift()
 
-    if method == :diagonals
-      @upper_diagonal, @mid_diagonal, @lower_diagonal = data
+    if method.is_a? Symbol
+      if method == :diagonals
+        @upper_diagonal, @mid_diagonal, @lower_diagonal = data
+      else
+        @mid_diagonal, @upper_diagonal, @lower_diagonal = compress_store(Matrix.send(method, *data))
+      end
       @n = @mid_diagonal.size
-      return
     end
-
-    @mid_diagonal, @upper_diagonal, @lower_diagonal = compress_store(Matrix.send(method, *data))
-    @n = @mid_diagonal.size
-
   end
-
-  #equivalent to compressed_store()
-  def TridiagonalMatrix.diagonals(upper_d, mid_d, lower_d)
-    TridiagonalMatrix.new(:diagonals, upper_d, mid_d, lower_d)
-  end
-
 
   def TridiagonalMatrix.[](*rows)
     TridiagonalMatrix.new(:[], *rows)
   end
 
-  def TridiagonalMatrix.zero(rows, cols=rows)
-    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
-  end
-
-  def TridiagonalMatrix.diagonal(*elements)
-    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
-  end
-
-  def TridiagonalMatrix.identity(n)
-    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
-  end
-
-  def TridiagonalMatrix.scalar(n, value)
-    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
+  #equivalent to compressed_store()
+  def TridiagonalMatrix.diagonals(upper_d, mid_d, lower_d)
+    TridiagonalMatrix.new(:diagonals, upper_d, mid_d, lower_d)
   end
 
   def TridiagonalMatrix.rows(rows)
@@ -65,11 +48,17 @@ class TridiagonalMatrix < SparseMatrix
     TridiagonalMatrix.new(:columns, columns)
   end
 
+  [:scalar, :diagonal, :zero, :identity].each do |unsupported_method|
+    define_singleton_method unsupported_method do |args|
+      raise Exception.new('Non-tridiagonal init methods not supported in Tridiagonal Matrix class')
+    end
+  end
+
   def full
     full_m = Array.new(@n) { |k| Array.new(@n) { |l| 0 }}
     @n.times do |i|
       if i-1 >= 0
-        full_m[i-1][i] = @upper_diagonal[i]
+        full_m[i-1][i] = @upper_diagonal[i-1]
       end
       full_m[i][i] = @mid_diagonal[i]
       if i+1 < @n
@@ -79,7 +68,6 @@ class TridiagonalMatrix < SparseMatrix
     Matrix.rows(full_m)
   end
 
-
   def compress_store(matrix)
     # returns values hash, row_count and column_count
     # storage of these values must be done manually in initialize if you want to do stuff with it.
@@ -88,7 +76,7 @@ class TridiagonalMatrix < SparseMatrix
     end
 
     if matrix.empty?
-      return {}, 0, 0 #empty hash
+      return [], [], [] #empty hash
     end
 
     #store in hash
@@ -114,29 +102,45 @@ class TridiagonalMatrix < SparseMatrix
     return mid_diagonal, upper_diagonal, lower_diagonal
   end
 
-  def extend_diagonal(mid, upper, lower)
+  def extend_diagonal(upper, mid, lower)
     @mid_diagonal.push(mid)
     @upper_diagonal.push(upper)
     @lower_diagonal.push(lower)
+    @n = @n+1
   end
 
-
   def method_missing(method, *args, &block)
-    full_m = self.full()
-    if full_m.respond_to?(method)
+    sparse_m = self.full()
+    if sparse_m.respond_to?(method)
+      puts "Trying sparse delegation"
+      result = sparse_m.send(method, *args)
+    elsif (full_m = sparse_m.full.respond_to?(method))
+      puts "Trying matrix delegation"
       if method.to_s.eql?('collect')
         result = full_m.send(method, &block)
       else
         result = full_m.send(method, *args)
       end
-      if result.is_a?(Matrix)
-        mid_diagonal, upper_diagonal, lower_diagonal = compress_store(result)
-        return TridiagonalMatrix.new(:diagonals, mid_diagonal, upper_diagonal, lower_diagonal)
-      else
-        return result
-      end
     else
       super
     end
+    if result.is_a?(Matrix)
+      mid_diagonal, upper_diagonal, lower_diagonal = compress_store(result)
+    elsif result.is_a?(SparseMatrix)
+      mid_diagonal, upper_diagonal, lower_diagonal = compress_store(result.full)
+    else
+      return result
+    end
+    return TridiagonalMatrix.new(:diagonals, mid_diagonal, upper_diagonal, lower_diagonal)
+
+  end
+
+  def tridiagonal?
+    return true
+  end
+
+  def sparsity
+    #The fraction of non-zero elements over the total number of elements
+    return (@mid_diagonal.size*3 -2).to_f / (@n*@n)
   end
 end

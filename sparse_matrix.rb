@@ -210,7 +210,7 @@ class SparseMatrix
 				full_m = self.full()
       	result_m = full_m.send(:-, arg)
       	if result_m.is_a?(Matrix)
-        	values, row_count, column_count = compress_store(result)
+        	values, row_count, column_count = compress_store(result_m)
         	return SparseMatrix.compressed_format(values, row_count, column_count)
         end
       when SparseMatrix
@@ -290,6 +290,13 @@ class SparseMatrix
 				if @column_count != arg.row_count
 					raise Exception.new('ErrDimensionMismatch')	
 				end
+				if self.real? and arg.real?
+					full_matrix_self = self.full()
+					result_matrix = full_matrix_self.send(:*,arg)
+					new_values, new_row_count, new_column_count = compress_store(result_matrix)
+					return SparseMatrix.new("compressed", new_values, new_row_count, new_column_count)
+				end
+				
 				
       when SparseMatrix
 				if @column_count != arg.row_count
