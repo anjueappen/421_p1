@@ -5,8 +5,6 @@ class SparseMatrix
   attr_reader :full_matrix, :values,
               :row_count, :column_count, :size
 
-# INITIALIZATION METHODS
-
   def initialize(*data)
     @values = {}
     @max_degree_of_sparsity = 0.5
@@ -71,7 +69,6 @@ class SparseMatrix
   end
 
   def SparseMatrix.columns(columns)
-    #this method will overwrite existing rows
     if not columns.kind_of?(Array) or not columns[0].kind_of?(Array)
       raise Exception.new('Parameter must be Array of Arrays.')
     end
@@ -83,8 +80,8 @@ class SparseMatrix
   end
 
   def compress_store(matrix)
-    # returns values hash, row_count and column_count
-    # storage of these values must be done manually in initialize if you want to do stuff with it.
+    # this will return the hash values, row_count and column_count
+    # storage of these return arguments must be done manually 
     if not matrix.is_a? Matrix
       raise Exception.new('Parameter must be a Matrix instance')
     end
@@ -94,7 +91,6 @@ class SparseMatrix
     end
 
     values = {}
-    #store in hash
     matrix.each_with_index do |element, row, column|
       if element != 0
         values[[row, column]] = element
@@ -134,14 +130,13 @@ class SparseMatrix
   end
 
   def full
-    # full() returns a Matrix object
+    # returns a Matrix object
 
-    #handle empty matrices
     if @values.empty? and @size == 0
       return Matrix[[]]
     end
 
-    full_m = Array.new(@row_count) { |m| Array.new(@column_count) { |n| 0 }}  # throwing error 'no implicit conversion from nil to integer'
+    full_m = Array.new(@row_count) { |m| Array.new(@column_count) { |n| 0 }} 
 
     if @values.empty?
       return Matrix.zero(@row_count,@column_count)
@@ -273,19 +268,17 @@ class SparseMatrix
   end
 
   def *(arg)
-    #todo test negative
     case(arg)
 
       when Numeric
         if arg.zero?
           return SparseMatrix.zero(@row_count, @column_count)
         else
-          #new_values = values.each_value {|value| value*arg}
 					new_values = {}
 					@values.each_pair { |key, value|
 						new_values[[key[0], key[1]]] = value*arg
 					}
-          return SparseMatrix.new("compressed", new_values, @row_count, @column_count)   #only values vector will change
+          return SparseMatrix.new("compressed", new_values, @row_count, @column_count)  
         end
 
       when Vector
@@ -322,15 +315,12 @@ class SparseMatrix
 
   def /(arg)
     case(arg)
-      # todo current error with rounding - rounds down and gets zero values for ints.
-      #todo test negative
       when Numeric
-        # todo think that ruby numeric class will handle divide by zero				
 				new_values = {}
 					@values.each_pair { |key, value|
 						new_values[[key[0], key[1]]] = value/arg.to_f
 					}
-          return SparseMatrix.new("compressed", new_values, @row_count, @column_count)   #only values vector will change
+          return SparseMatrix.new("compressed", new_values, @row_count, @column_count) 
 					
 			when Vector
 				raise NotImplementedError	

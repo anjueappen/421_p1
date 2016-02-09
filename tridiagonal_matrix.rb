@@ -54,6 +54,13 @@ class TridiagonalMatrix < SparseMatrix
     end
   end
 
+  [:-, :+, :*, :/].each do |operation|
+    define_method operation do  |args|
+      result = SparseMatrix.send(operation, args)
+      return TridiagonalMatrix.new(result.full)
+    end
+  end
+
   def full
     full_m = Array.new(@n) { |k| Array.new(@n) { |l| 0 }}
     @n.times do |i|
@@ -142,5 +149,9 @@ class TridiagonalMatrix < SparseMatrix
   def sparsity
     #The fraction of non-zero elements over the total number of elements
     return (@mid_diagonal.size*3 -2).to_f / (@n*@n)
+  end
+
+  def to_s
+    return full().send(:to_s).sub! 'Matrix', 'TridiagonalMatrix'
   end
 end
