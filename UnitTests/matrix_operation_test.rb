@@ -204,21 +204,21 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
   end
 
   def test_trace_empty
-    @sparse_matrix = SparseMatrix[[], []]
+    sparse_matrix_trace_empty = SparseMatrix[[], []]
 
     #invariant
-    assert_true @sparse_matrix.is_a? SparseMatrix
+    assert_true sparse_matrix_trace_empty.is_a? SparseMatrix
     assert_equal [], @sparse_matrix.values
     assert_equal [], @sparse_matrix.val_row
     assert_equal [], @sparse_matrix.val_col
 
-    trace = @sparse_matrix.trace
+    trace = sparse_matrix_trace_empty.trace
 
     #post
     assert_equal trace, 0
 
     #invariant
-    assert_true @sparse_matrix.is_a? SparseMatrix
+    assert_true sparse_matrix_trace_empty.is_a? SparseMatrix
     assert_equal [], @sparse_matrix.values
     assert_equal [], @sparse_matrix.val_row
     assert_equal [], @sparse_matrix.val_col
