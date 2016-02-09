@@ -153,14 +153,23 @@ class SparseMatrix
   end
 
   def increase_all_values_by(number)
-    # multiply number by matrix of ones.
     if number.zero?
       return self
     end
-    matrix_to_add = Matrix.empty(self.row_count,self.column_count)
-    matrix_to_add = matrix_to_add.collect {|value| number}
-    return self+matrix_to_add
-
+    new_values = {}
+    for i in 0..self.row_count-1
+    	for j in 0..self.column_count-1
+    		if @values.has_key?([i,j])
+    			new_element = @values[[i,j]] + number
+    			if new_element != 0
+    				new_values[[i,j]] = new_element
+    			end
+    		else
+    			new_values[[i,j]] = number
+    		end
+    	end
+    end
+   	SparseMatrix.compressed_format(new_values, self.row_count, self.column_count)
   end
 
   def -(arg)
@@ -184,13 +193,30 @@ class SparseMatrix
     case(arg)
 
       when Numeric
-
+      	raise Exception.new("ErrOperationNotDefined")
       when Vector
-
+      	raise NotImplementedError
       when Matrix
-
+      	full_m = self.full()
+      	result_m = full_m.send(:+, arg)
+      	if result_m.is_a?(Matrix)
+        	values, row_count, column_count = compress_store(result)
+        	return SparseMatrix.compressed_format(values, row_count, column_count)
+        end
       when SparseMatrix
-
+      	new_sm = {}
+      	for i in 0..self.row_count-1
+      		for j in 0..self.column_count-1
+      			if self.values.has_key?([i,j]) and arg.values.has_key?([i,j])
+      				new_sm[[i,j]] = self.values[[i,j]] + arg.values[[i,j]]
+      			elsif self.values.has_key?([i,j]) and !arg.values.has_key?([i,j])
+      				new_sm[[i,j]] = self.values[[i,j]]
+      			elsif !self.values.has_key?([i,j]) and arg.values.has_key?([i,j])
+      				new_sm[[i,j]] = arg.values[[i,j]]
+      			end
+      		end
+      	end
+      	return SparseMatrix.compressed_format(new_sm, self.row_count, self.column_count)
       else
         #try to coerce, but fail? or just raise exception?
 

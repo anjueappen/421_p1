@@ -264,8 +264,7 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
     checkHashAssertions(sm.values, Integer)
 
     trace = sm.trace
->>>>>>> 09324f5ad745a703eba55db9462d0a5b7eb28d7d
-
+    
     #data
     assert_equal trace, 0
 
