@@ -14,7 +14,8 @@ class TridiagonalMatrix < SparseMatrix
     data.shift()
 
     if method == :diagonals
-      @mid_diagonal, @upper_diagonal, @lower_diagonal = data
+      @upper_diagonal, @mid_diagonal, @lower_diagonal = data
+      @n = @mid_diagonal.size
       return
     end
 
@@ -24,10 +25,45 @@ class TridiagonalMatrix < SparseMatrix
   end
 
   #equivalent to compressed_store()
-  def TridiagonalMatrix.diagonals(mid_d, upper_d, lower_d)
-    TridiagonalMatrix.new(:diagonals, mid_d, upper_d, lower_d)
+  def TridiagonalMatrix.diagonals(upper_d, mid_d, lower_d)
+    TridiagonalMatrix.new(:diagonals, upper_d, mid_d, lower_d)
   end
 
+
+  def TridiagonalMatrix.[](*rows)
+    TridiagonalMatrix.new(:[], *rows)
+  end
+
+  def TridiagonalMatrix.zero(rows, cols=rows)
+    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
+  end
+
+  def TridiagonalMatrix.diagonal(*elements)
+    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
+  end
+
+  def TridiagonalMatrix.identity(n)
+    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
+  end
+
+  def TridiagonalMatrix.scalar(n, value)
+    raise ScriptError.NotImplementedError.new('Single diagonal matrix not supported in Tridiagonal Matrix class')
+  end
+
+  def TridiagonalMatrix.rows(rows)
+    if not rows.kind_of?(Array) or not rows[0].kind_of?(Array)
+      raise Exception.new('Parameter must be Array of Arrays.')
+    end
+    TridiagonalMatrix.new(:rows, rows)
+  end
+
+  def TridiagonalMatrix.columns(columns)
+    #this method will overwrite existing rows
+    if not columns.kind_of?(Array) or not columns[0].kind_of?(Array)
+      raise Exception.new('Parameter must be Array of Arrays.')
+    end
+    TridiagonalMatrix.new(:columns, columns)
+  end
 
   def full
     full_m = Array.new(@n) { |k| Array.new(@n) { |l| 0 }}
@@ -72,8 +108,7 @@ class TridiagonalMatrix < SparseMatrix
         end
       end
     end
-
-    if !(mid_diagonal.size == upper_diagonal.size-1) and !(mid_diagonal.size == lower_diagonal.size-1)
+    if !(mid_diagonal.size-1 == upper_diagonal.size) or !(mid_diagonal.size-1 == lower_diagonal.size)
       raise Exception.new('Matrix diagonals are improper length')
     end
     return mid_diagonal, upper_diagonal, lower_diagonal

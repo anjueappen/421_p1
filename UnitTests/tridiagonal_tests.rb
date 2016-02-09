@@ -6,46 +6,38 @@ class TriDiagonalTests < Test::Unit::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
 
-  def checkTriMatrixAssertions(sm)
-    assert sm.is_a?(TridiagonalMatrix), "#{sm.class} must be a Tridiagonal matrix."
-    assert !sm.values.empty?, "Hash cannot be empty."
+  def checkTriMatrixAssertions(tm)
+    assert tm.is_a?(TridiagonalMatrix), "#{tm.class} must be a Tridiagonal matrix."
+    assert !tm.values.empty?, "Hash cannot be empty."
     assert_true @tm.is_tridiagonal?
-    assert !sm.mid_diagonal.has_value?(0), "Diagonal only stores non-zero elements."
-    assert !sm.upper_diagonal.has_value?(0), "Diagonal only stores non-zero elements."
-    assert !sm.lower_diagonal.has_value?(0), "Diagonal only stores non-zero elements."
+    assert !tm.mid_diagonal.has_value?(0), "Diagonal only stores non-zero elements."
+    assert !tm.upper_diagonal.has_value?(0), "Diagonal only stores non-zero elements."
+    assert !tm.lower_diagonal.has_value?(0), "Diagonal only stores non-zero elements."
   end
 
   def setup
     @tm = TridiagonalMatrix[[6, 5, 0], [3, 8, 6], [0, 2, 7]]
+  end
 
+
+  def test_init_diagonal
     #pre
-
     assert_equal 3, @tm.n
     assert_equal [6, 8, 7], @tm.mid_diagonal
-    assert_equal [3, 2], @tm.val_row
-    assert_equal [5, 6], @tm.val_col
+    assert_equal [3, 2], @tm.lower_diagonal
+    assert_equal [5, 6], @tm.upper_diagonal
 
     #invariant
     checkTriMatrixAssertions @tm
 
-  end
-
-  # Called after every test method runs. Can be used to tear
-  # down fixture information.
-
-  def teardown
-    #invariant
-    checkTriMatrixAssertions(@tm)
-  end
-
-  def test_init_diagonal
-    @tm = TriDiagonalMatrix.diagonal([5, 6], [6, 8, 7], [3, 2])
+    #data
+    @tm = TriDiagonalMatrix.diagonals([5, 6], [6, 8, 7], [3, 2])
 
     #post
     assert_equal 3, @tm.n
     assert_equal [6, 8, 7], @tm.mid_diagonal
-    assert_equal [3, 2], @tm.val_row
-    assert_equal [5, 6], @tm.val_col
+    assert_equal [3, 2], @tm.lower_diagonal
+    assert_equal [5, 6], @tm.upper_diagonal
   end
 
   def test_init_diagonal_improper_lengths
@@ -66,8 +58,8 @@ class TriDiagonalTests < Test::Unit::TestCase
     #post
     assert_equal 3, @tm.n
     assert_equal ['a', 'd', 'g'], @tm.mid_diagonal
-    assert_equal ['b', 'e'], @tm.val_row
-    assert_equal ['c', 'f'], @tm.val_col
+    assert_equal ['b', 'e'], @tm.lower_diagonal
+    assert_equal ['c', 'f'], @tm.upper_diagonal
   end
 
 
@@ -77,8 +69,8 @@ class TriDiagonalTests < Test::Unit::TestCase
     #post
     assert_equal 4, @tm.n
     assert_equal [6, 8, 7, 2], @tm.mid_diagonal
-    assert_equal [3, 2, 3], @tm.val_row
-    assert_equal [5, 6, 4], @tm.val_col
+    assert_equal [3, 2, 3], @tm.lower_diagonal
+    assert_equal [5, 6, 4], @tm.upper_diagonal
   end
 
 
@@ -88,8 +80,8 @@ class TriDiagonalTests < Test::Unit::TestCase
     #post
     assert_equal 4, @tm.n
     assert_equal [6, 8, 7, 2.01], @tm.mid_diagonal
-    assert_equal [3, 2, 3.01], @tm.val_row
-    assert_equal [5, 6, 4.01], @tm.val_col
+    assert_equal [3, 2, 3.01], @tm.lower_diagonal
+    assert_equal [5, 6, 4.01], @tm.upper_diagonal
   end
 
   def test_extend_diagonal_chars
@@ -98,8 +90,11 @@ class TriDiagonalTests < Test::Unit::TestCase
     #post
     assert_equal 4, @tm.n
     assert_equal [6, 8, 7, 'a'], @tm.mid_diagonal
-    assert_equal [3, 2, 'b'], @tm.val_row
-    assert_equal [5, 6, 'c'], @tm.val_col
+    assert_equal [3, 2, 'b'], @tm.lower_diagonal
+    assert_equal [5, 6, 'c'], @tm.upper_diagonal
+
+    #invariant
+    checkTriMatrixAssertions(@tm)
 
   end
 
