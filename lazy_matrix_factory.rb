@@ -2,15 +2,6 @@ require 'matrix'
 
 class LazyMatrixFactory
 
-  [:scalar, :columns, :diagonal, :identity, :zero].each do |method|
-    define_singleton_method method  do |args|
-      if Matrix.respond_to? method
-        LazyMatrixFactory.compress_store(Matrix.send(method, args)) #once this matrix is stored, its thrown away
-      end
-    end
-  end
-
-
   def method_missing(method, *args, &block)
     full_m = self.full()
     if full_m.respond_to?(method)

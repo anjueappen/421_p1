@@ -2,7 +2,7 @@ require 'matrix'
 
 class SparseMatrix
 
-  attr_reader :full_matrix, :values, 
+  attr_reader :full_matrix, :values,
               :row_count, :column_count, :size
 
 # INITIALIZATION METHODS
@@ -298,4 +298,6 @@ class SparseMatrix
       @column_count = column+1
     end
   end
+
+
 end
