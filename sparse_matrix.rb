@@ -202,7 +202,7 @@ class SparseMatrix
 				full_m = self.full()
       	result_m = full_m.send(:-, arg)
       	if result_m.is_a?(Matrix)
-        	values, row_count, column_count = compress_store(result)
+        	values, row_count, column_count = compress_store(result_m)
         	return SparseMatrix.compressed_format(values, row_count, column_count)
         end
       when SparseMatrix
