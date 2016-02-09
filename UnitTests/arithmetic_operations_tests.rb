@@ -19,7 +19,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
   def checkMatrixAssertions(sm, sc)
     assert sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
-    assert !@sm.empty?
+    assert !sm.empty?
 		assert !sm.values.empty?, "Hash cannot be empty."
     assert !sm.values.has_value?(0), "Hash only stores non-zero elements."
 		assert_equal  sc.full(),  sm.full(), "Original matrix was altered."
@@ -141,7 +141,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert (@value_to_add.is_a? Float), "Value is not a float"
+		assert (value_to_add.is_a? Float), "Value is not a float"
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
 		
 		# invariant
@@ -484,7 +484,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
 		
 		#data tests
-		actual_matrix =  sparse_matrix1-(@sparse_matrix2)
+		actual_matrix =  sparse_matrix1-(sparse_matrix2)
 		assert_equal  actual_matrix.full(),  expected_matrix, "Integer vector subtraction failed"
 		
 		#post
@@ -635,8 +635,10 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	def test_multiplication_numeric_int
 		#setup
 		sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
-
+		hash_sm = {[0,0]=>1,[0,2]=>3,[1,2]=>1,[2,1]=>2}
+		
 		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		hash_expected = {[0,0]=>4,[0,2]=>12,[1,2]=>4,[2,1]=>8}
 		
 		value = 4
 		
@@ -644,22 +646,21 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert (value.is_a? Integer), "Value is not an integer"
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 		#data tests
-		 actual_matrix =   sparse_matrix*value
-		assert_equal  actual_matrix.column_count, 3, "incorrect column count"
-		assert_equal  actual_matrix.row_count, 3 , "incorrect row count"
-		assert_equal  actual_matrix.values, [4,12,4,8], "Multiplication by integer - values vector incorrect"
-		assert_equal  actual_matrix.full(), Matrix[[4,0,12],[0,0,4],[0,8,0]], "Multiplication of matrix by integer failed."
+		result_matrix =   sparse_matrix*value
+		assert_equal  result_matrix.full(), Matrix[[4,0,12],[0,0,4],[0,8,0]], "Multiplication of matrix by integer failed."
 		
 		#post
-
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		assert hash_expected.eql?(result_matrix.values), "Hashes must be equal"
+		
 		#invariant
-		assert (@actual_matrix.is_a? SparseMatrix), "failed. resulting matrix is not of class SparseMatrix"
-		assert_equal  sparse_clone.full(),  sparse_matrix.full(), "Original matrix was altered."
-		assert_equal  sparse_clone.val_row,  actual_matrix.val_row, "fail. val_row changed"
-		assert_equal  sparse_clone.val_col,  actual_matrix.val_col, "fail. val_col changed"
-		assert !@sparse_matrix.empty?
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 	end
 	
@@ -685,7 +686,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		
 		#post
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
-		assert (actual_matrix.values.empty?), "hash not empty"
+		assert (result_matrix.values.empty?), "hash not empty"
 		assert_equal  result_matrix.full(), Matrix.zero(sparse_matrix.row_count,sparse_matrix.column_count), "Multiplication of matrix by 0 failed."
 		
 		#invariant
@@ -1105,7 +1106,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert (@exponent.is_a? Integer), "Exponent is not an integer"
+		assert (exponent.is_a? Integer), "Exponent is not an integer"
 		assert  sparse_matrix.square?, "Matrix is not square"
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
 		
