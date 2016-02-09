@@ -9,12 +9,13 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
   # to set up fixture information.
   def setup
     @sparse_matrix = SparseMatrix[[1,0], [0,2]]
-
+		hash_sm = {[0,0]=>1, [1,1]=>2}
+		
     #pre
     assert @sparse_matrix.is_a? SparseMatrix
-    assert_equal [1, 2], @sparse_matrix.values
-    assert_equal [0, 1], @sparse_matrix.val_row
-    assert_equal [0, 1], @sparse_matrix.val_col
+		assert @sparse_matrix.real?, "SparseMatrix must be real."
+		assert @hash_sm.eql?(@sparse_matrix.values), "Hashes must be equal"		
+		
   end
 
   # Called after every test method runs. Can be used to tear
@@ -27,18 +28,18 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
   # Fake test
   def test_det_not_square
     #setup
-    @sparse_matrix = SparseMatrix[[1,0]]
-
+    sparse_matrix1 = SparseMatrix[[1,0]]
+		hash_sm1 = {[0,0]=>1}
+		
     #invariant
-    assert_true @sparse_matrix.is_a? SparseMatrix
-
-    #pre
-    assert_equal [1], @sparse_matrix.values
-    assert_equal [0], @sparse_matrix.val_row
-    assert_equal [0], @sparse_matrix.val_col
-
+    assert_true sparse_matrix1.is_a? SparseMatrix
+		assert sparse_matrix1.real?, "SparseMatrix must be real."
+    
+		#pre
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal"	
+		
     begin
-      @sparse_matrix.det
+      sparse_matrix1.det
     rescue Exception => e
     else
           assert_true (e.is_a? Matrix::ErrDimensionMismatch), "Incorrect exception thrown: #{e}"
@@ -51,35 +52,28 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
 
     #invariant
     assert_true @sparse_matrix.is_a? SparseMatrix
-    assert_equal [1, 2], @sparse_matrix.values
-    assert_equal [0, 1], @sparse_matrix.val_row
-    assert_equal [0, 1], @sparse_matrix.val_col
+		assert @sparse_matrix.real?, "SparseMatrix must be real."
+		assert @hash_sm.eql?(@sparse_matrix.values), "Hashes must be equal"
+		
   end
 
 
   def test_det_chars
-    @sparse_matrix = SparseMatrix[['a', 0], [0, 'b']]
-
-    #invariant
-    assert_true @sparse_matrix.is_a? SparseMatrix
-    assert_equal ['a', 'b'], @sparse_matrix.values
-    assert_equal [0, 1], @sparse_matrix.val_row
-    assert_equal [0, 1], @sparse_matrix.val_col
-
-
+    sparse_matrix_char = SparseMatrix[['a', 0], [0, 'b']]
+		hash_sm_char = {[0,0]=>'a',[1,1]=>'b'}
+		
     begin
-      @sparse_matrix.det
+      sparse_matrix_char.det
     rescue Exception => e
       assert_true (e.is_a? NoMethodError), "Incorrect exception thrown: #{e}"
     else
       fail 'No Exception thrown'
     end
 
-    #invariant
-    assert_true @sparse_matrix.is_a? SparseMatrix
-    assert_equal ['a', 'b'], @sparse_matrix.values
-    assert_equal [0, 1], @sparse_matrix.val_row
-    assert_equal [0, 1], @sparse_matrix.val_col
+		#invariant
+    assert_true sparse_matrix_char.is_a? SparseMatrix
+    assert hash_sm_char.eql?(sparse_matrix_char.values), "Hashes must be equal"
+		
   end
 
   def test_det_empty

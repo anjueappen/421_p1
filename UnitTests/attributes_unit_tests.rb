@@ -35,6 +35,7 @@ class AttributesUnitTests < Test::Unit::TestCase
 		assert @hash_sm_diag.eql?(@sparse_diag_matrix.values), "Hashes must be equal"
 		assert (@zero_matrix.values.empty?), "zero sparse matrix does not have empty value hash"
 		assert (@empty_matrix.values.empty?), "empty sparse matrix does not have empty value hash"
+		
 		#post: no change in state for all methods
 		
 	end
