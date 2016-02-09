@@ -18,6 +18,7 @@ scalar_sm = SparseMatrix.scalar(3,2)
 rows_sm = SparseMatrix.rows([[1,0,0],[0,0,2],[0,3,0]])
 columns_sm = SparseMatrix.columns([[1,0,0],[0,0,2],[0,3,0]])
 compressed_sm = SparseMatrix.compressed_format({[0,0]=>1,[1,0]=>2,[1,1]=>3,[2,2]=>1},3,3)
+small_square_sm = SparseMatrix[[2,2],[0,0]]
 
 matrix = Matrix[[1,3,2,0], [1,2,1,1], [3,2,0,0], [0,0,0,4]]
 
@@ -52,6 +53,29 @@ puts (sm.decrease_all_values_by(2)).full
 puts (sm*2).full
 puts (sm/2).full 
 puts (sm**2).full
+
+# illegal operations - dimensions do not agree
+#puts (diag_sm*identity_sm) # ErrDimensionMismatch
+begin
+	diag_sm*identity_sm
+rescue Exception => e
+	if (e.message == "ErrDimensionMismatch")
+		puts "ErrDimensionMismatch"
+	end
+else
+	fail 'No Exception thrown'
+end
+
+#puts (identity_sm+small_square_sm) # ErrDimensionMismatch
+begin
+	identity_sm+small_square_sm
+rescue Exception => e
+	if (e.message == "ErrDimensionMismatch")
+		puts "ErrDimensionMismatch"
+	end
+else
+	fail 'No Exception thrown'
+end
 
 # MATRIX FUNCTIONS
 puts sm.transpose.full

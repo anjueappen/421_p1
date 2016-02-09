@@ -202,6 +202,9 @@ class SparseMatrix
       when Vector
       	raise NotImplementedError
       when Matrix
+				if @row_count != arg.row_count and @column_count != arg.column_count
+					raise Exception.new("ErrDimensionMismatch")
+				end
 				full_m = self.full()
       	result_m = full_m.send(:-, arg)
       	if result_m.is_a?(Matrix)
@@ -209,6 +212,9 @@ class SparseMatrix
         	return SparseMatrix.compressed_format(values, row_count, column_count)
         end
       when SparseMatrix
+				if @row_count != arg.row_count and @column_count != arg.column_count
+					raise Exception.new("ErrDimensionMismatch")
+				end
 				new_sm = {}
       	for i in 0..self.row_count-1
       		for j in 0..self.column_count-1
@@ -235,6 +241,9 @@ class SparseMatrix
       when Vector
       	raise NotImplementedError
       when Matrix
+				if @row_count != arg.row_count and @column_count != arg.column_count
+					raise Exception.new("ErrDimensionMismatch")
+				end
       	full_m = self.full()
       	result_m = full_m.send(:+, arg)
       	if result_m.is_a?(Matrix)
@@ -242,6 +251,9 @@ class SparseMatrix
         	return SparseMatrix.compressed_format(values, row_count, column_count)
         end
       when SparseMatrix
+				if @row_count != arg.row_count and @column_count != arg.column_count
+					raise Exception.new("ErrDimensionMismatch")
+				end
       	new_sm = {}
       	for i in 0..self.row_count-1
       		for j in 0..self.column_count-1
