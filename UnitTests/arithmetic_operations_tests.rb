@@ -6,17 +6,7 @@ require 'matrix'
 # todo assert in all posts that resulting matrix is a sparse matrix
 class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
-	def checkHashAssertions(hash, valueType)
-    hash.each_pair { |key, value|
-      assert key.is_a?(Array), "Key must be an array."
-      assert (key[0].is_a?(Integer) and key[1].is_a?(Integer)), "Keys must be integers."
-      assert_operator key[0], :>=, 0, "Keys must be positive."
-      assert_operator key[1], :>=, 0, "Keys must be positive."
-      assert value.is_a?(valueType), "Values should be Integers."
-    }
-    assert !hash.has_value?(0), "Only non-zero elements can be stored."
-  end
-
+	
   def checkMatrixAssertions(sm, sc)
     assert sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
     assert !sm.empty?
