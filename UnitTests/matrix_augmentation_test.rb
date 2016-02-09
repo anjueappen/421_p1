@@ -190,4 +190,34 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
     checkHashAssertions(hash, Integer)
     checkMatrixAssertions(sm)
   end
+
+  def test_negative_indexes
+    #setup
+    hash = {[0,0] => 1, [1,1] => 2}
+    sm = SparseMatrix.compressed_format(hash, 2, 2)
+
+    #pre
+    assert_equal Matrix[[1,0], [0,2]], sm.full(), "Matrices must be equal."
+
+    #invariant
+    checkHashAssertions(hash, Integer)
+    checkMatrixAssertions(sm)
+
+    begin
+      sm.putNonZero 5, -1, -1
+    rescue Exception => e
+      assert_true (e.is_a? ArgumentError), "Incorrect exception raised #{e}"
+    else
+      fail 'No Exception thrown'
+    end
+
+    #post
+    assert_equal Matrix[[1,0], [0,2]], sm.full(), "Matrices must be equal."
+    assert_equal 2, sm.row_count
+    assert_equal 2, sm.column_count
+
+    #invariant
+    checkHashAssertions(hash, Integer)
+    checkMatrixAssertions(sm)
+  end
 end

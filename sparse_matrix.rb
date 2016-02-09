@@ -277,7 +277,7 @@ INITIALIZATION METHODS
 	def putNonZero(value, row, column)
 		if value == 0
 			raise Exception.new('Value must be non-zero')
-    elsif !row.is_a?Integer or !column.is_a?Integer
+    elsif !row.is_a?Integer or !column.is_a?Integer or row < 0  or column < 0
       raise ArgumentError
     end
 
