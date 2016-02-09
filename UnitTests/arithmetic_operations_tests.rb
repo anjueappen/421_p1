@@ -324,6 +324,77 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
 		
 	end
+
+def test_add_sparse_and_matrix_int
+		#setup
+		sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0],[0,1,0]]
+		hash_sm1 = {[0,0]=>1,[0,2]=>3, [1,2]=>1, [2,0]=>2, [3,1]=>1} 
+		
+		matrix = Matrix[[0,1,0],[0,2,0],[1,0,0],[0,-2,-1]]
+		
+		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		
+		expected_matrix = Matrix[[1, 1, 3], [0, 2, 1], [3, 0, 0], [0, -1, -1]]
+		hash_expected = {[0,0]=>1,[0,1]=>1, [0,2]=>3, [1,1]=>2, [1,2]=>1, [2,0]=>3, [3,1]=>-1, [3,2]=>-1}
+		
+		#pre
+		assert_equal  sparse_matrix1.row_count,  matrix.row_count, "Incompatible dimension (row) for matrix addition"
+		assert_equal  sparse_matrix1.column_count,  matrix.column_count, "Incompatible dimension (column) for matrix addition"
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		
+		#data tests
+		result_matrix = sparse_matrix1+(matrix)
+		assert_equal  expected_matrix, result_matrix.full(), "Integer matrix addition not working correctly"
+		
+		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		
+	end
+
+	def test_add_sparse_and_matrix_float
+		#setup
+		sparse_matrix1 = SparseMatrix[[-1.08,0,3.14],[0,0,1.00],[2.02,0,0],[0,1.08,0]]
+		hash_sm1 = {[0,0]=>-1.08, [0,2]=>3.14, [1,2]=>1.00, [2,0]=>2.02, [3,1]=>1.08}
+		
+		matrix = Matrix[[0,1.16,0],[0,0,2.04],[1.06,0,0],[0,2.14,0]]
+		
+		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		
+		expected_matrix = Matrix[[-1.08,1.16,3.14],[0,0,3.04],[3.08,0,0],[0,3.24,0]]
+		hash_expected = {[0,0]=>-1.08, [0,1]=>1.16, [0,2]=>3.14, [1,2]=>3.04, [2,0]=>3.08, [3,1]=>3.24}
+		
+		#pre
+		assert_equal  sparse_matrix1.row_count,  matrix.row_count, "Incompatible dimension (row) for matrix addition"
+		assert_equal  sparse_matrix1.column_count,  matrix.column_count, "Incompatible dimension (column) for matrix addition"
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		
+		#data tests
+		result_matrix =  sparse_matrix1+(matrix)
+		for row in 0..result_matrix.row_count-1
+			for col in 0..result_matrix.column_count-1
+				assert_in_delta  result_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
+			end
+		end
+		
+		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		
+	end
+
 	
 	# Subraction
 	def test_decrease_all_values_by_int
@@ -732,6 +803,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		 
 	end
 
+=begin
 	def test_multiplication_vector_int
 		#setup
 		sparse_matrix1 = SparseMatrix[[1,0,3,4],[0,0,0,2],[1,0,0,1]] #3x4
@@ -819,7 +891,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
 		
 	end
-
+=end
 	def test_multiplication_matrix_int
 		#setup
 		sparse_matrix1 = SparseMatrix[[0,0,1,0],[0,2,0,2],[0,1,0,2]]  #3x4
@@ -863,6 +935,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
 	
 	end
+
 
 	def test_multiplication_matrix_float
 		#setup
