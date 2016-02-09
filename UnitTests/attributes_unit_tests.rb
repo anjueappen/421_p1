@@ -43,17 +43,14 @@ class AttributesUnitTests < Test::Unit::TestCase
 		assert @hash_sm_identity.eql?(@identity_matrix.values), "Hashes must be equal"
 		assert @hash_sm_symmetric.eql?(@symmetric_matrix.values), "Hashes must be equal"
 		assert @hash_sm_diag.eql?(@sparse_diag_matrix.values), "Hashes must be equal"
-		assert (@zero_matrix.values.empty?), "zero sparse matrix does not have empty value hash"
-		assert (@empty_matrix.values.empty?), "empty sparse matrix does not have empty value hash"
+		assert @zero_matrix.values.empty?, "zero sparse matrix does not have empty value hash"
+		assert @empty_matrix.values.empty?, "empty sparse matrix does not have empty value hash"
 
-		 # Hash only stores non-zero elements
+		# Hash only stores non-zero elements
     assert !@sparse_matrix.values.has_value?(0), "Hash only stores non-zero elements."
     assert !@identity_matrix.values.has_value?(0), "Hash only stores non-zero elements."
     assert !@symmetric_matrix.values.has_value?(0), "Hash only stores non-zero elements."
     assert !@sparse_diag_matrix.values.has_value?(0), "Hash only stores non-zero elements."
-
-		#post: no change in state for all methods
-		
 	end
 
 	def teardown

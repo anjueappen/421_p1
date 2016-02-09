@@ -258,6 +258,7 @@ INITIALIZATION METHODS
 	end
 
 	def transpose
+	# todo fix transpose
 		SparseMatrix.new('compressed', @values, @val_row, @val_col)
 	end
 
