@@ -1016,25 +1016,34 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	def test_exponentiation_numeric_int
 		#setup
-		 sparse_matrix = SparseMatrix[[0,2,1],[1,0,0],[0,3,0]]
-		 sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
-		 exponent = 2
+		sparse_matrix = SparseMatrix[[0,2,1],[1,0,0],[0,3,0]]
+		hash_sm = {[0,1]=>2, [0,2]=>1, [1,0]=>1, [2,1]=>3}
+		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		
+		hash_expected = {[0,0]=>2,[0,1]=>3,[1,1]=>2,[1,2]=>1,[2,0]=>3}
+		
+		exponent = 2
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert (@exponent.is_a? Integer), "Exponent is not an integer"
+		assert (exponent.is_a? Integer), "Exponent is not an integer"
 		assert  sparse_matrix.square?, "Matrix is not square"
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		
+		# invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 		#data tests
-		 actual_matrix =  sparse_matrix**(@exponent)
+		actual_matrix =  sparse_matrix**(exponent)
 		assert_equal  actual_matrix.full(), Matrix[[2,3,0],[0,2,1],[3,0,0]], "Integer matrix eponentiation failed"
 		
 		#post
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		assert hash_expected.eql?(actual_matrix.values), "Hashes must be equal"
 		
-		#invariant
-		assert_equal  sparse_clone.full(),  sparse_matrix.full(), "Original matrix was altered."
-		assert !@sparse_matrix.empty?
+		# invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 	end
 	
