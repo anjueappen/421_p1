@@ -33,8 +33,8 @@ class AttributesUnitTests < Test::Unit::TestCase
 		assert @hash_sm_identity.eql?(@identity_matrix.values), "Hashes must be equal"
 		assert @hash_sm_symmetric.eql?(@symmetric_matrix.values), "Hashes must be equal"
 		assert @hash_sm_diag.eql?(@sparse_diag_matrix.values), "Hashes must be equal"
-		assert (@zero_matrix.values.empty?), "zero sparse matrix does not have empty value hash"
-		assert (@empty_matrix.values.empty?), "empty sparse matrix does not have empty value hash"
+		assert (@zero_matrix.values.empty?), "zero sparse matrix does not have empty values hash"
+		assert (@empty_matrix.values.empty?), "empty sparse matrix does not have empty values hash"
 		
 		#post: no change in state for all methods
 		
