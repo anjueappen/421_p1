@@ -596,7 +596,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
 		 
 		expected = Matrix[[1.08,-1.16,3.14],[0,0,-1.04],[1.04,0,0],[0,1.06,0]]
-		hash_expected = {[0,0]=>1.08, [0,1]=>-1,.16 [0,2]=>3.14, [1,2]=>-1.04, [2,0]=>1.04, [3,1]=>1.06}
+		hash_expected = {[0,0]=>1.08, [0,1]=>-1.16, [0,2]=>3.14, [1,2]=>-1.04, [2,0]=>1.04, [3,1]=>1.06}
 		
 		#pre
 		assert  sparse_matrix1.real?, "SparseMatrix should be real."
