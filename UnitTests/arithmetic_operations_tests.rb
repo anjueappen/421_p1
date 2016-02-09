@@ -17,10 +17,12 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
     assert !hash.has_value?(0), "Only non-zero elements can be stored."
   end
 
-  def checkMatrixAssertions(sm)
+  def checkMatrixAssertions(sm, sc)
     assert sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
-    assert !sm.values.empty?, "Hash cannot be empty."
+    assert !@sm.empty?
+		assert !sm.values.empty?, "Hash cannot be empty."
     assert !sm.values.has_value?(0), "Hash only stores non-zero elements."
+		assert_equal  sc.full(),  sm.full(), "Original matrix was altered."
   end
 	
 	# Addition
@@ -31,25 +33,29 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		 sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
 		 
 		 expected_matrix = Matrix[[5,6,4],[6,4,4],[4,4,5]]
-		 hash_expected = {[0,0]=>5, [0,1]=>6, [0,2]=>4, [1,0]=>6, [1,1]=>4, []=>, []=>, []=>, []=>}
+		 hash_expected = {[0,0]=>5, [0,1]=>6, [0,2]=>4, [1,0]=>6, [1,1]=>4, [1,2]=>4, [2,0]=>4, [2,1]=>4, [2,2]=>5}
+		 
 		 value = 4
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
 		assert (value.is_a? Integer), "Value is not an integer"
-		
-		#data tests
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
-		actual_matrix =  sparse_matrix.increase_all_values_by(value)
-		assert_equal  actual_matrix.full(),  expected_matrix, "Matrix values were not increased correctly."
-		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
-		
-		#post
 		
 		#invariant
-		assert_equal  sparse_clone.full(),  sparse_matrix.full(), "Original matrix was altered."
-		assert !@sparse_matrix.empty?
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
+		
+		#data tests
+		actual_matrix =  sparse_matrix.increase_all_values_by(value)
+		assert_equal  actual_matrix.full(),  expected_matrix, "Matrix values were not increased correctly."
+		
+		#post
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		assert hash_expected.eql?(actual_matrix.values), "Hashes must be equal"
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 	end
 
