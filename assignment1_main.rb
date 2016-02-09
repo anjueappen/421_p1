@@ -57,5 +57,20 @@ puts (sm**2).full
 puts sm.transpose.full
 puts sm.trace
 
+puts "TRIDIAGONAL ATTRIBUTES"
+tm = TridiagonalMatrix.diagonals([1, 2], [3, 4, 5], [6, 7])
+puts tm.full
+puts "Is this sparse? #{tm.sparse?}"
+puts "Is this tridiagonal? #{tm.tridiagonal?}"
+puts "Matrix size: #{tm.n}"
+
+tm.extend_diagonal(8, 8, 8)
+
+puts tm.full
+puts "Is this sparse? #{tm.sparse?}"
+puts "Is this tridiagonal? #{tm.tridiagonal?}"
+puts "Matrix size: #{tm.n}"
+
+puts 'Tridiagonal inherits from sparse, therefore it would have most of the same functionality as above, except for matrix arithmetic operations.'
 # NOTE: Matrix functions that are not specified in this file can still be used, they will just be delegated to the Matrix class.
 

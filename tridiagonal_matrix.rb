@@ -54,9 +54,15 @@ class TridiagonalMatrix < SparseMatrix
     end
   end
 
+  [:-, :+, :*, :/].each do |operation|
+    define_method operation do  |args|
+      result = SparseMatrix.send(operation, args)
+      return TridiagonalMatrix.new(result.full)
+    end
+  end
+
   def full
     full_m = Array.new(@n) { |k| Array.new(@n) { |l| 0 }}
-    puts full_m.to_s
     @n.times do |i|
       if i-1 >= 0
         full_m[i-1][i] = @upper_diagonal[i-1]
@@ -66,7 +72,6 @@ class TridiagonalMatrix < SparseMatrix
         full_m[i+1][i] = @lower_diagonal[i]
       end
     end
-    puts full_m.to_s
     Matrix.rows(full_m)
   end
 
