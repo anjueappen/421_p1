@@ -279,7 +279,15 @@ INITIALIZATION METHODS
 			raise Exception.new('Value must be non-zero')
     elsif !row.is_a?Integer or !column.is_a?Integer
       raise ArgumentError
-		end
+    end
+
+    if row > @row_count-1
+      @row_count = row
+    end
+    if column > @column_count-1
+      @column_count = column
+    end
+    
     @values[[row, column]] = value
     if row > @row_count-1
     	@row_count = row+1

@@ -17,7 +17,6 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
   def checkMatrixAssertions(sm)
     assert sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
-   # assert_true sm.real?, "Real sparse_matrix"
     assert !sm.values.empty?, "Hash cannot be empty."
     assert !sm.values.has_value?(0), "Hash only stores non-zero elements."
   end
@@ -29,16 +28,20 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #pre
     assert_equal Matrix[[1,0], [0,2]], sm.full(), "Matrices must be equal."
+    assert_equal 2, sm.row_count
+    assert_equal 2, sm.column_count
 
     #invariant
     checkHashAssertions(hash, Integer)
     checkMatrixAssertions(sm)
 
     #data
-    sm.putNonZero 5, 3, 3
+    sm.putNonZero 5, 2, 2
 
     #post
-    assert_equal Matrix[[1,0, 0,0],[0,2,0,0],[0,0,0,0],[0,0,0,5]], sm.full(), "Matrices must be equal."
+    assert_equal Matrix[[1,0, 0], [0,2, 0], [0, 0, 5]], sm.full(), "Matrices must be equal."
+    assert_equal 3, sm.row_count
+    assert_equal 3, sm.column_count
 
     #invariant
     checkHashAssertions(hash, Integer)
@@ -52,16 +55,20 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #pre
     assert_equal Matrix[['a', 0], [0, 'b']], sm.full(), "Matrices must be equal."
+    assert_equal 2, sm.row_count
+    assert_equal 2, sm.column_count
 
     #invariant
     checkHashAssertions(hash, String)
     checkMatrixAssertions(sm)
 
     #data
-    sm.putNonZero 'c', 3, 3
+    sm.putNonZero 'c', 2, 2
 
     #post
     assert_equal Matrix[['a',0, 0], [0,'b', 0], [0, 0, 'c']], sm.full(), "Matrices must be equal."
+    assert_equal 3, sm.row_count
+    assert_equal 3, sm.column_count
 
     #invariant
     checkHashAssertions(hash, String)
@@ -75,18 +82,22 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #pre
     assert_equal Matrix[[1.01, 0], [0, 2.01]], sm.full(), "Matrices must be equal."
+    assert_equal 2, sm.row_count
+    assert_equal 2, sm.column_count
 
     #invariant
     checkHashAssertions(hash, Float)
     checkMatrixAssertions(sm)
 
     #data
-    sm.putNonZero 3.01, 3, 3
+    sm.putNonZero 3.01, 2, 2
 
     #post
     sm.full()
     Matrix[[1.01,0, 0], [0,2.01, 0], [0, 0, 3.01]]
     assert_equal Matrix[[1.01,0, 0], [0,2.01, 0], [0, 0, 3.01]], sm.full(), "Matrices must be equal."
+    assert_equal 3, sm.row_count
+    assert_equal 3, sm.column_count
 
     #invariant
     checkHashAssertions(hash, Float)
@@ -100,6 +111,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #pre
     assert_equal Matrix[[1, 0], [0, 2]], sm.full(), "Matrices must be equal."
+    assert_equal 2, sm.row_count
+    assert_equal 2, sm.column_count
 
     #invariant
     checkHashAssertions(hash, Integer)
@@ -110,6 +123,8 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #post
     assert_equal Matrix[[5,0], [0,2]], sm.full(), "Matrices must be equal."
+    assert_equal 2, sm.row_count
+    assert_equal 2, sm.column_count
 
     #invariant
     checkHashAssertions(hash, Integer)
@@ -138,10 +153,41 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
 
     #post
     assert_equal Matrix[[1,0], [0,2]], sm.full(), "Matrices must be equal."
+    assert_equal 2, sm.row_count
+    assert_equal 2, sm.column_count
+
+    #invariant
+    checkHashAssertions(hash, Integer)
+    checkMatrixAssertions(sm)
+  end
+
+  def test_add_zero
+    #setup
+    hash = {[0,0] => 1, [1,1] => 2}
+    sm = SparseMatrix.compressed_format(hash, 2, 2)
+
+    #pre
+    assert_equal Matrix[[1,0], [0,2]], sm.full(), "Matrices must be equal."
 
     #invariant
     checkHashAssertions(hash, Integer)
     checkMatrixAssertions(sm)
 
+    begin
+      sm.putNonZero 5, 4, 'a'
+    rescue Exception => e
+      assert_true (e.is_a? ArgumentError), "Incorrect exception raised #{e}"
+    else
+      fail 'No Exception thrown'
+    end
+
+    #post
+    assert_equal Matrix[[1,0], [0,2]], sm.full(), "Matrices must be equal."
+    assert_equal 2, sm.row_count
+    assert_equal 2, sm.column_count
+
+    #invariant
+    checkHashAssertions(hash, Integer)
+    checkMatrixAssertions(sm)
   end
 end
