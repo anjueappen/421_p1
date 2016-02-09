@@ -109,6 +109,14 @@ class SparseMatrix
     return self.full().send(:to_s).sub! 'Matrix', 'SparseMatrix'
   end
 
+  def is_a?(klass)
+  	if klass == Matrix
+  		return true
+  	else
+  		super
+  	end
+  end
+
   def nonzero_count
     return @values.size
   end
@@ -221,7 +229,7 @@ class SparseMatrix
       	return SparseMatrix.compressed_format(new_sm, self.row_count, self.column_count)
       else
         #try to coerce, but fail? or just raise exception?
-
+        raise Exception.new("ErrOperationNotDefined")
     end
   end
 
@@ -255,7 +263,7 @@ class SparseMatrix
       	return SparseMatrix.compressed_format(new_sm, self.row_count, self.column_count)
       else
         #try to coerce, but fail? or just raise exception?
-
+        raise Exception.new("ErrOperationNotDefined")
     end
   end
 
@@ -345,17 +353,17 @@ class SparseMatrix
   end
 
 
-  def **(arg)
-    #todo test negative
-    if !arg.is_a? Integer
-      # throw exception
-      # call multiplication with self arg number of times
-    end
-  end
+  # def **(arg)
+  #   case arg
+  #   	when Integer
+    		
+  #   	when Numeric
+  #   end
+
+  # end
 
   def transpose
-    # todo fix transpose
-    new_hash = {}
+	    new_hash = {}
     @values.each_pair { |key, value|
       new_hash[[key[1], key[0]]] = value
     }

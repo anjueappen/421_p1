@@ -42,6 +42,7 @@ class InitializationUnitTests < Test::Unit::TestCase
     assert simple_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
     assert duplicates_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
     assert zero_sm.is_a?(SparseMatrix), "Object must be a SparseMatrix."
+    assert simple_sm.is_a?(Matrix)
 
     # Must be real
     assert simple_sm.real?, "Real sparse_matrix"
