@@ -122,7 +122,6 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 			fail 'No Exception thrown'
 		end
 		
-		
 		#post
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
 		
@@ -287,13 +286,15 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#setup
 		sparse_matrix1 = SparseMatrix[[-1.08,0,3.14],[0,0,1.00],[2.02,0,0],[0,1.08,0]]
 		hash_sm1 = {[0,0]=>-1.08, [0,2]=>3.14, [1,2]=>1.00, [2,0]=>2.02, [3,1]=>1.08}
+		
 		sparse_matrix2 = SparseMatrix[[0,1.16,0],[0,0,2.04],[1.06,0,0],[0,2.14,0]]
 		hash_sm2 = {[0,1]=>1.16,[1,2]=>2.04,[2,0]=>1.06,[3,1]=>2.14}
+		
 		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
 		sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
 		
 		expected_matrix = Matrix[[-1.08,1.16,3.14],[0,0,3.04],[3.08,0,0],[0,3.24,0]]
-		hash_expected = {[]=>-1.08, []=>1.16, []=>3.14, []=>3.04, []=>3.08, []=>3.24}
+		hash_expected = {[0,0]=>-1.08, [0,1]=>1.16, [0,2]=>3.14, [1,2]=>3.04, [2,0]=>3.08, [3,1]=>3.24}
 		
 		#pre
 		assert_equal  sparse_matrix1.row_count,  sparse_matrix2.row_count, "Incompatible dimension (row) for matrix addition"
@@ -321,6 +322,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#invariant
 		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
 		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
+		
 	end
 
 	# Subraction
