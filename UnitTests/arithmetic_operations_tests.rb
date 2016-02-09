@@ -73,7 +73,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert (@value.is_a? Float), "Value is not a float"
+		assert (value.is_a? Float), "Value is not a float"
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
 		
 		#invariant
@@ -501,7 +501,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	def test_subtraction_vector_float
 		#setup
 		sparse_matrix1 = SparseMatrix[[4.04],[0],[0],[-4.02]]  #4x1
-		hash_sm1 = {[0,0]=>4.04,[3,0]=>4.02}
+		hash_sm1 = {[0,0]=>4.04,[3,0]=>-4.02}
 		 
 		sparse_matrix2 = SparseMatrix[[4.01],[0],[0],[1.01]]  #4x1
 		hash_sm2 = {[0,0]=>4.01,[3,0]=>1.01}
@@ -665,23 +665,23 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 	
 	def test_multiplication_numeric_zero
 		#setup
-		 sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
-		 sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
-		 value = 0
+		sparse_matrix = SparseMatrix[[1,0,3],[0,0,1],[0,2,0]]
+		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		value = 0
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert (@value.is_a? Integer), "Value is not an integer"
+		assert (value.is_a? Integer), "Value is not an integer"
 		
 		#data tests
-		 actual_matrix =   sparse_matrix*(@value)
+		 actual_matrix =   sparse_matrix*(value)
 		assert_equal  actual_matrix.values,[], "Multiplication by integer - values array incorrect"
 		assert_equal  actual_matrix.val_row,[], "Multiplication by integer - val_row array incorrect"
 		assert_equal  actual_matrix.val_col,[], "Multiplication by integer - val_col array incorrect"
 		
 		#invariant
-		assert_equal  actual_matrix.full(), Matrix.zero(@sparse_matrix.row_count,@sparse_matrix.column_count), "Multiplication of matrix by 0 failed."
+		assert_equal  actual_matrix.full(), Matrix.zero(sparse_matrix.row_count,sparse_matrix.column_count), "Multiplication of matrix by 0 failed."
 		assert_equal  sparse_clone.full(),  sparse_matrix.full(), "Original matrix was altered."
 		assert !@sparse_matrix.empty?
 		
@@ -696,7 +696,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert (@value.is_a? Float), "Value is not a float"
+		assert (value.is_a? Float), "Value is not a float"
 		
 		#data tests
 		 actual_matrix =   sparse_matrix*(@value)
@@ -737,7 +737,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_equal  sparse_matrix1.column_count,  sparse_matrix2.row_count, "incompatible dimensions for matrix multiplication"
 		
 		#data tests
-		 expected_matrix =  sparse_matrix1*(@sparse_matrix2)
+		 expected_matrix =  sparse_matrix1*(sparse_matrix2)
 		assert_equal  expected_matrix.values, [9,4,3], "Multiplication by vector(integer) - values vector incorrect "
 		assert_equal  expected_matrix.full(), Matrix[[9],[4],[3]], "Multiplication of matrix by vector(integer) failed."
 		
