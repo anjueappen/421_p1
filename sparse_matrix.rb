@@ -222,7 +222,7 @@ class SparseMatrix
       	return SparseMatrix.compressed_format(new_sm, self.row_count, self.column_count)
       else
         #try to coerce, but fail? or just raise exception?
-
+        raise Exception.new("ErrOperationNotDefined")
     end
   end
 
@@ -256,7 +256,7 @@ class SparseMatrix
       	return SparseMatrix.compressed_format(new_sm, self.row_count, self.column_count)
       else
         #try to coerce, but fail? or just raise exception?
-
+        raise Exception.new("ErrOperationNotDefined")
     end
   end
 
