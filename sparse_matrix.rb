@@ -281,5 +281,11 @@ INITIALIZATION METHODS
       raise ArgumentError
 		end
     @values[[row, column]] = value
+    if row > @row_count-1
+    	@row_count = row+1
+    end
+    if column > @column_count-1
+    	@column_count = column+1
+    end
 	end
 end

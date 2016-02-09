@@ -38,7 +38,7 @@ class SparseMatrixAugmentationTest < Test::Unit::TestCase
     sm.putNonZero 5, 3, 3
 
     #post
-    assert_equal Matrix[[1,0, 0], [0,2, 0], [0, 0, 5]], sm.full(), "Matrices must be equal."
+    assert_equal Matrix[[1,0, 0,0],[0,2,0,0],[0,0,0,0],[0,0,0,5]], sm.full(), "Matrices must be equal."
 
     #invariant
     checkHashAssertions(hash, Integer)
