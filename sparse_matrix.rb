@@ -205,10 +205,12 @@ class SparseMatrix
         if arg.zero?
           return SparseMatrix.zero(self.row_count, self.column_count)
         else
-          # todo values used here
-          # todo values used here
-          new_values = self.values.collect {|value| value*arg}
-          return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row, self.row_count, self.column_count)  #only values vector will change
+          #new_values = values.each_value {|value| value*arg}
+					new_values = {}
+					@values.each_pair { |key, value|
+						new_values[[key[0], key[1]]] = value*arg
+					}
+          return SparseMatrix.new("compressed", new_values, self.row_count, self.column_count)   #only values vector will change
         end
 
       when Vector
@@ -231,9 +233,9 @@ class SparseMatrix
         # todo think that ruby numeric class will handle divide by zero
         # todo values used here
         new_values = self.values.collect {|value| value/arg.to_f}
-        return SparseMatrix.compressed_format(new_values, self.val_col, self.val_row, self.row_count, self.column_count)  #only values vector will change
-
-      when Vector
+				return SparseMatrix.new("compressed", new_values, self.row_count, self.column_count)   #only values vector will change
+      
+			when Vector
 
       when Matrix
 
