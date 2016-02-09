@@ -840,7 +840,7 @@ def test_add_sparse_and_matrix_int
 		
 		#post
 		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
-		assert hash_expected.eql?(actual_matrix.values), "Hashes must be equal"
+		assert hash_expected.eql?(result_matrix.values), "Hashes must be equal"
 		
 		#invariant
 		checkMatrixAssertions(sparse_matrix, sparse_clone)
@@ -1294,6 +1294,94 @@ def test_add_sparse_and_matrix_int
 				
 	end
 
+	def test_division_sparse_and_matrix_int
+		#setup
+		sparse_matrix1 = SparseMatrix[[1,0],[4,0],[0,7]]
+		hash_sm1 = {[0,0]=>1, [1,0]=>4, [2,1]=>7}
+		
+		matrix = Matrix[[2,0],[0,9]]
+		
+		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		
+		
+		expected_matrix = Matrix[[0.5,0],[2,0],[0,0.77778]]
+		hash_expected = {[0,0]=>0.5, [1,0]=>2, [2,1]=>0.77778}
+		
+		#pre
+		assert  sparse_matrix1.real?, "SparseMatrix should be real."
+		assert_not_nil  sparse_matrix1.values, "SparseMatrix values stored should not be nil."
+		assert  matrix.real?, "Matrix should be real."
+		assert_not_nil  matrix, "Matrix values stored should not be nil."
+		assert matrix.square?, "Cannot didvide - divisor matrix is not square"
+		assert !matrix.singular?, "Cannot divide - divisor matrix is singular"
+		assert_equal sparse_matrix1.column_count, matrix.row_count, "Incompatible dimensions for matrix division"
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		
+		#data tests
+		result_matrix =  sparse_matrix1/(matrix)
+		for row in 0..result_matrix.row_count-1
+			for col in 0..result_matrix.column_count-1
+				assert_in_delta  result_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
+			end
+		end
+		
+		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert_equal  expected_matrix.row_count,  sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
+		assert_equal  expected_matrix.column_count,  matrix.column_count, "Matrix multiplication dimension error (column)"
+
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		
+	end
+
+	def test_division_sparse_and_matrix_float
+		#setup
+		sparse_matrix1 = SparseMatrix[[1.10,0],[4.50,0],[0,0]]
+		hash_sm1 = {[0,0]=>1.10, [1,0]=>4.50}
+		
+		matrix = Matrix[[2.10,0],[0,9.10]]
+		
+		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+
+		expected_matrix = Matrix[[0.5238,0],[2.1429,0],[0,0]]
+		hash_expected = {[0,0]=>0.5238,[1,0]=>2.1429}
+		
+		#pre
+		assert  sparse_matrix1.real?, "SparseMatrix should be real."
+		assert_not_nil  sparse_matrix1.values, "SparseMatrix values stored should not be nil."
+		assert  matrix.real?, "Matrix should be real."
+		assert_not_nil  matrix, "Matrix values stored should not be nil."
+		assert matrix.square?, "Cannot didvide - divisor matrix is not square"
+		assert matrix.singular?, "Cannot divide - divisor matrix is singular"
+		assert_equal sparse_matrix1.column_count, matrix.row_count, "Incompatible dimensions for matrix division"
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		
+		#data tests
+		result_matrix =  sparse_matrix1/(matrix)
+		for row in 0..result_matrix.row_count-1
+			for col in 0..result_matrix.column_count-1
+				assert_in_delta  result_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
+			end
+		end
+		
+		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_expected.eql?(result_matrix.values), "Hashes must equal."
+		assert_equal  expected_matrix.row_count,  sparse_matrix1.row_count, "Matrix multiplication dimension error (row)"
+		assert_equal  expected_matrix.column_count,  matrix.column_count, "Matrix multiplication dimension error (column)"
+
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+				
+	end
+	
 	# Exponentiation
 	def test_exponentiation_zero
 		#setup
