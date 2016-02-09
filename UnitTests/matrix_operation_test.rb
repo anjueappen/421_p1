@@ -9,7 +9,7 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
   # to set up fixture information.
   def setup
     @sparse_matrix = SparseMatrix[[1,0], [0,2]]
-		hash_sm = {[0,0]=>1, [1,1]=>2}
+		@hash_sm = {[0,0]=>1, [1,1]=>2}
 		
     #pre
     assert @sparse_matrix.is_a? SparseMatrix
@@ -153,26 +153,30 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
 
   def test_transpose_ints
     transpose = @sparse_matrix.transpose
-
-    #post
-    assert_true transpose.is_a? SparseMatrix
-    assert_equal [1, 2], transpose.values
-    assert_equal [0, 1], transpose.val_row
-    assert_equal [0, 1], transpose.val_col
+		# transpose is [[1,0],[0,2]]
+		hash_transpose = {[0,0]=>1, [1,1]=>2}
+    
+		# todo - feel like this isn't the correct way to check if the hash is correct?
+		
+		#post
+		assert_true transpose.is_a? SparseMatrix
+		assert transpose.real?, "SparseMatrix must be real."
+		assert hash_transpose.eql?(transpose.values), "Hashes must be equal"
+		
   end
 
   def test_transpose_chars
-    @sparse_matrix = SparseMatrix[['a', 0], [0, 'b']]
+    sparse_matrix_char = SparseMatrix[['a', 0], [0, 'b']]
+		hash_char = {[0,0]=>'a', [1,1]=>'b'}
 
-
-
-    transpose = @sparse_matrix.transpose
-
+		# todo - feel like this isn't the correct way to check if the hash is correct?
+    transpose = sparse_matrix_char.transpose
+		hash_transpose = {[]=>, []=>}
+		
     #post
     assert_true transpose.is_a? SparseMatrix
-    assert_equal ['a', 'b'], transpose.values
-    assert_equal [0, 1], transpose.val_row
-    assert_equal [0, 1], transpose.val_col
+		assert hash_transpose.eql?(transpose.values), "Hashes must be equal"
+		
   end
 
   def test_transpose_empty
