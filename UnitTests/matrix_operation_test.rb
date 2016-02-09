@@ -171,7 +171,7 @@ class SparseMatrixOperationTests < Test::Unit::TestCase
 
 		# todo - feel like this isn't the correct way to check if the hash is correct?
     transpose = sparse_matrix_char.transpose
-		hash_transpose = {[]=>, []=>}
+		#hash_transpose = {[]=>, []=>}
 		
     #post
     assert_true transpose.is_a? SparseMatrix
