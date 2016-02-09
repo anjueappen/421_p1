@@ -30,9 +30,15 @@ INITIALIZATION METHODS
 		full_m = self.full()
 		if full_m.respond_to?(method)
 			if method.to_s.eql?('collect')
-				full_m.send(method, &block)
+				result = full_m.send(method, &block)
 			else
-				full_m.send(method, *args)
+				result = full_m.send(method, *args)
+			end
+			if result.is_a?(Matrix)
+				values, row_count, column_count = compress_store(result)
+				return SparseMatrix.new("compressed", values, row_count, column_count)
+			else
+				return result
 			end
 		else
 			super
@@ -111,21 +117,6 @@ INITIALIZATION METHODS
 
 	def nonzeros
 		return @values
-	end
-
-	def first_minor(row, col)
-		full_m = self.full()
-		fm_matrix = full_m.send(:first_minor, row, col)
-		compress_store(fm_matrix)
-		#puts self.values             ## todo not values of new matrix
-		return self # return the sparse matrix
-		# compress_store just sets values
-	end
-
-	def cofactor(row,col)
-		sm_first_minor = self.first_minor(row,col)
-		determinant_sm = sm_first_minor.full().send(:determinant)
-		return determinant_sm *(-1) **(row + col) 
 	end
 	
 	def unitary?
