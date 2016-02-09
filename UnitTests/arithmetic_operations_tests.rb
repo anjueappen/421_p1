@@ -397,50 +397,67 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_subtraction_numeric_int
 		# setup
-		 sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
-		 value_to_subtract = 4
+		sparse_matrix = SparseMatrix[[1,2,0],[2,0,0],[0,0,1]]
+		hash_sm = {[0,0]=>1, [0,1]=>2, [1,0]=>2, [2,2]=>1}
+		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		
+		value_to_subtract = 4
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert (@value_to_subtract.is_a? Integer), "Value is not an integer"
+		assert (value_to_subtract.is_a? Integer), "Value is not an integer"
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
 		
 		#data tests  
 		begin
-			 sparse_matrix-(@value_to_subtract)
+			 sparse_matrix-(value_to_subtract)
 		rescue Exception => e
-			if e.is_a? ErrOperationNotDefined
-				pass "Correct exception raised"
-			else
-				fail "Incorrect excpetion raised"
-			end
+			assert_true (e.is_a? ErrOperationNotDefined), "Incorrect exception thrown: #{e}"
+		else
+				fail 'No Exception thrown'
 		end
 		
 		#post
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		
+		# invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
+		
 	end
 
 	def test_subtraction_numeric_float
 		# setup
-		 sparse_matrix = SparseMatrix[[1.20,2.20,0],[2.40,0,0],[0,0,1.04]]
-		 value_to_subtract = 4.55
+		sparse_matrix = SparseMatrix[[1.20,2.20,0],[2.40,0,0],[0,0,1.04]]
+		hash_sm = {[0,0]=>1.20, [0,1]=>2.20, [1,0]=>2.40, [2,2]=>1.04}
+		sparse_clone =  sparse_matrix.clone()  # used to check that matrix used in operation was not changed
+		
+		value_to_subtract = 4.55
 		
 		#pre
 		assert  sparse_matrix.real?, "SparseMatrix should be real."
 		assert_not_nil  sparse_matrix.values, "SparseMatrix values stored should not be nil."
-		assert (@value_to_subtract.is_a? Float), "Value is not a float"
+		assert (value_to_subtract.is_a? Float), "Value is not a float"
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
 		
 		#data tests  
 		begin
-			 sparse_matrix-(@value_to_subtract)
+			 sparse_matrix-(value_to_subtract)
 		rescue Exception => e
-			if e.is_a? ErrOperationNotDefined
-				pass "Correct exception raised"
-			else
-				fail "Incorrect excpetion raised"
-			end
+			assert_true (e.is_a? ErrOperationNotDefined), "Incorrect exception thrown: #{e}"
+		else
+			fail 'No Exception thrown'
 		end
 		
 		#post
+		assert hash_sm.eql?(sparse_matrix.values), "Hashes must be equal."
+		
+		# invariant
+		checkMatrixAssertions(sparse_matrix, sparse_clone)
+		
 	end
 
 	def test_subtraction_vector_int
