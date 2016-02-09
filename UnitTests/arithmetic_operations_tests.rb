@@ -543,11 +543,17 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 
 	def test_subtraction_matrix_int
 		#setup
-		 sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0],[0,1,0]]
-		 sparse_matrix2 = SparseMatrix[[0,1,0],[0,0,2],[1,0,0],[0,2,0]]
-		 sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
-		 sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
-		 expected = Matrix[[1,-1,3],[0,0,-1],[1,0,0],[0,-1,0]]
+		sparse_matrix1 = SparseMatrix[[1,0,3],[0,0,1],[2,0,0],[0,1,0]]
+		hash_sm1 = {[0,0]=>1,[0,2]=>3, [1,2]=>1, [2,0]=>2, [3,1]=>1} 
+		 
+		sparse_matrix2 = SparseMatrix[[0,1,0],[0,2,0],[1,0,0],[0,-2,-1]]
+		hash_sm2 = {[0,1]=>1,[1,1]=>2, [2,0]=>1, [3,1]=>-2, [3,2]=>-1}
+		
+		sparse_clone1 =  sparse_matrix1.clone()  # used to check that matrix used in operation was not changed
+		sparse_clone2 =  sparse_matrix2.clone()  # used to check that matrix used in operation was not changed
+		 
+		expected = Matrix[[1,-1,3],[0,-2,1],[1,0,0],[0,1,1]]
+		hash_expected = {[0,0]=>1,[0,1]=>-1,[0,2]=>3,[1,1]=>-2,[1,2]=>1,[2,0]=>1,[3,1]=>1,[3,2]=>1}
 		
 		#pre
 		assert  sparse_matrix1.real?, "SparseMatrix should be real."
@@ -556,18 +562,25 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		assert_not_nil  sparse_matrix2.values, "SparseMatrix values stored should not be nil."
 		assert_equal  sparse_matrix1.row_count,  sparse_matrix2.row_count, "Incompatible dimension (row) for matrix subtraction"
 		assert_equal  sparse_matrix1.column_count,  sparse_matrix2.column_count, "Incompatible dimension (column) for matrix subtraction"
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
+		
+		#invariant
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
 		
 		#data tests
-		 actual_matrix =  sparse_matrix1-(@sparse_matrix2)
+		actual_matrix =  sparse_matrix1-(sparse_matrix2)
 		assert_equal  actual_matrix.full(),  expected_matrix, "Integer matrix subtraction not working correctly"
 		
 		#post
+		assert hash_sm1.eql?(sparse_matrix1.values), "Hashes must be equal."
+		assert hash_sm2.eql?(sparse_matrix2.values), "Hashes must be equal."
+		assert hash_expected.eql?(actual_matrix.values), "Hashes must equal."
 		
 		#invariant
-		assert_equal  sparse_clone1,  sparse_matrix1, "Original matrix was altered"
-		assert !@sparse_matrix1.empty?
-		assert_equal  sparse_clone2,  sparse_matrix2, "Original matrix was altered"
-		assert !@sparse_matrix2.empty?
+		checkMatrixAssertions(sparse_matrix1, sparse_clone1)
+		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
 		
 	end
 
