@@ -83,7 +83,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		actual_matrix =  sparse_matrix.increase_all_values_by(value)
 		for row in 0..actual_matrix.row_count-1
 			for col in 0..actual_matrix.column_count-1
-				assert_in_delta  actual_matrix.full().rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+				assert_in_delta  actual_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
 			end
 		end
 		
@@ -229,7 +229,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		result_matrix =  sparse_matrix1+(sparse_matrix2)
 		for row in 0..result_matrix.row_count-1
 			for col in 0..result_matrix.column_count-1
-				assert_in_delta  result_matrix.full().rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+				assert_in_delta  result_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
 			end
 		end
 		
@@ -310,7 +310,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		result_matrix =  sparse_matrix1+(sparse_matrix2)
 		for row in 0..result_matrix.row_count-1
 			for col in 0..result_matrix.column_count-1
-				assert_in_delta  result_matrix.full().rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+				assert_in_delta  result_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
 			end
 		end
 		
@@ -382,7 +382,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		actual_matrix =  sparse_matrix.increase_all_values_by(value)
 		for row in 0..actual_matrix.row_count-1
 			for col in 0..actual_matrix.column_count-1
-				assert_in_delta  actual_matrix.full().rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+				assert_in_delta  actual_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
 			end
 		end
 		
@@ -526,7 +526,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		result_matrix =   sparse_matrix1-(sparse_matrix2)
 		for row in 0..result_matrix.row_count-1
 			for col in 0..result_matrix.column_count-1
-				assert_in_delta  result_matrix.full().rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+				assert_in_delta  result_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
 			end
 		end
 		
@@ -616,7 +616,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		result_matrix =  sparse_matrix1-(sparse_matrix2)
 		for row in 0..result_matrix.row_count-1
 			for col in 0..result_matrix.column_count-1
-				assert_in_delta  result_matrix.full().rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+				assert_in_delta  result_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
 			end
 		end
 		
@@ -1026,7 +1026,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		result_matrix =  sparse_matrix1/(sparse_matrix2)
 		for row in 0..result_matrix.row_count-1
 			for col in 0..result_matrix.column_count-1
-				assert_in_delta  result_matrix.full().rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+				assert_in_delta  result_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
 			end
 		end
 		
@@ -1075,7 +1075,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		result_matrix =  sparse_matrix1/(sparse_matrix2)
 		for row in 0..result_matrix.row_count-1
 			for col in 0..result_matrix.column_count-1
-				assert_in_delta  result_matrix.full().rows(row)[col],  expected_matrix.rows(row)[col], 0.01, "Matrix values were not increased correctly."
+				assert_in_delta  result_matrix.full().row(row)[col],  expected_matrix.row(row)[col], 0.01, "Matrix values were not increased correctly."
 			end
 		end
 		
