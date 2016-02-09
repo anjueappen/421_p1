@@ -324,7 +324,7 @@ class ArithmeticOperationsUnitTests < Test::Unit::TestCase
 		checkMatrixAssertions(sparse_matrix2, sparse_clone2)
 		
 	end
-
+	
 	# Subraction
 	def test_decrease_all_values_by_int
 		# setup
